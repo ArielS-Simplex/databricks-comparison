@@ -1,35 +1,24 @@
 import React, { useState } from 'react';
-// Using React's built-in transitions instead of framer-motion due to compatibility issues
-// with React 19
-
-const awsComponents = [
-  { service: 'S3', description: 'Scalable object storage', category: 'Storage' },
-  { service: 'RDS', description: 'Managed relational databases', category: 'Database' },
-  { service: 'Redshift', description: 'Petabyte-scale data warehouse', category: 'Analytics' },
-  { service: 'DynamoDB', description: 'Fast NoSQL database', category: 'Database' },
-  { service: 'Glue', description: 'Serverless ETL service', category: 'ETL' },
-  { service: 'EMR', description: 'Big data processing with Hadoop', category: 'Analytics' },
-  { service: 'Lambda', description: 'Serverless compute', category: 'Compute' },
-  { service: 'Kinesis', description: 'Real-time data streaming', category: 'Streaming' },
-  { service: 'Snowflake', description: 'Cloud-native data warehouse', category: 'Analytics' },
-  { service: 'Amplitude', description: 'Product analytics platform', category: 'Analytics' }
-];
-
-const azureComponents = [
-  { service: 'Blob Storage', description: 'Massively scalable object storage', category: 'Storage' },
-  { service: 'Azure SQL', description: 'Fully managed SQL database', category: 'Database' },
-  { service: 'Synapse', description: 'Integrated analytics service', category: 'Analytics' },
-  { service: 'Cosmos DB', description: 'Globally distributed NoSQL', category: 'Database' },
-  { service: 'Data Factory', description: 'Hybrid data integration', category: 'ETL' },
-  { service: 'HDInsight', description: 'Managed big data service', category: 'Analytics' },
-  { service: 'Functions', description: 'Event-driven serverless compute', category: 'Compute' },
-  { service: 'Event Hubs', description: 'Big data streaming platform', category: 'Streaming' },
-  { service: 'Databricks', description: 'Collaborative analytics platform', category: 'Analytics' },
-  { service: 'Power BI', description: 'Interactive data visualization', category: 'Analytics' }
-];
+import serviceCategories from '../data/serviceCategories';
 
 const AwsVsAzureComparison = () => {
   const [selectedService, setSelectedService] = useState(null);
+  const [expandedServices, setExpandedServices] = useState({});
+
+  // Toggle expansion of a service category
+  const toggleServiceExpansion = (categoryIndex, cloud) => {
+    const key = `${cloud}-${categoryIndex}`;
+    setExpandedServices(prev => ({
+      ...prev,
+      [key]: !prev[key]
+    }));
+  };
+
+  // Check if a service is expanded
+  const isServiceExpanded = (categoryIndex, cloud) => {
+    const key = `${cloud}-${categoryIndex}`;
+    return !!expandedServices[key];
+  };
 
   // Animation style helpers (instead of framer-motion variants)
   const getAnimationStyle = (isVisible) => ({
@@ -48,137 +37,113 @@ const AwsVsAzureComparison = () => {
   };
 
   return (
-    <div className="container mx-auto p-6 bg-gray-50 min-h-screen">
-      {/* Header */}
+    <div>
+      {/* Header with blue-to-purple gradient */}
       <div 
-        className="bg-gradient-to-r from-orange-500 via-blue-600 to-blue-500 p-8 rounded-xl shadow-lg mb-8 text-center"
-        style={{ opacity: 1, animation: 'fadeIn 0.5s' }}
+        className="bg-gradient-to-r from-blue-600 to-purple-600 p-6 rounded-xl shadow-lg mb-4 text-center"
       >
-        <h1 className="text-3xl font-bold text-white mb-2">AWS vs Azure: Data Services</h1>
-        <p className="text-white/80">Interactive comparison of cloud data solutions</p>
+        <h1 className="text-3xl font-bold text-white mb-2">AWS vs Azure: Data Engineering Solutions</h1>
+        <p className="text-white/80">Interactive comparison of cloud data processing and Databricks integration</p>
       </div>
 
-      {/* Services Comparison */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-        {/* AWS Column */}
-        <div className="bg-white rounded-lg shadow-md p-6 hover:shadow-xl transition-shadow">
-          <h2 className="text-2xl font-semibold text-orange-500 mb-4">AWS Services</h2>
-          <div className="space-y-3">
-            {awsComponents.map((component) => (
-              <div
-                key={component.service}
-                className="p-3 bg-gray-100 rounded-md cursor-pointer transition-all duration-200"
-                onClick={() => setSelectedService(component)}
-                onMouseEnter={(e) => getHoverStyle(e, true)}
-                onMouseLeave={(e) => getHoverStyle(e, false)}
-              >
-                <div className="flex justify-between">
-                  <span className="font-medium">{component.service}</span>
-                  <span className="text-sm text-gray-500">{component.category}</span>
-                </div>
-                <p className="text-sm text-gray-600">{component.description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
+      {/* Services Comparison Table */}
+      <div className="bg-white rounded-lg shadow-md p-6 hover:shadow-xl transition-shadow mb-4">
+        <h2 className="text-2xl font-semibold mb-4 text-center">Cloud Services Comparison</h2>
+        <div className="overflow-x-auto">
+          <table className="min-w-full">
+            <thead>
+              <tr>
+                <th className="px-4 py-2 border-b-2 text-left">Category</th>
+                <th className="px-4 py-2 border-b-2 text-left bg-amber-50">AWS Services</th>
+                <th className="px-4 py-2 border-b-2 text-left bg-blue-50">Azure Services</th>
+              </tr>
+            </thead>
+            <tbody>
+              {serviceCategories.map((category, idx) => (
+                <React.Fragment key={`category-${idx}`}>
+                  {/* Category row */}
+                  <tr className="border-b hover:bg-gray-50">
+                    <td className="px-4 py-3 font-medium">{category.category}</td>
+                    
+                    {/* AWS Service */}
+                    <td className="px-4 py-3 bg-amber-50/30">
+                      {category.aws.parent ? (
+                        <div 
+                          className="cursor-pointer flex justify-between items-center"
+                          onClick={() => category.aws.children.length > 0 && toggleServiceExpansion(idx, 'aws')}
+                        >
+                          <div>
+                            <div className="font-semibold text-amber-800">{category.aws.parent.service}</div>
+                            <div className="text-xs text-gray-600">{category.aws.parent.description}</div>
+                          </div>
+                          {category.aws.children.length > 0 && (
+                            <span className="text-amber-600">
+                              {isServiceExpanded(idx, 'aws') ? '▼' : '▶'}
+                            </span>
+                          )}
+                        </div>
+                      ) : (
+                        <div className="text-gray-400 italic">No equivalent service</div>
+                      )}
+                    </td>
+                    
+                    {/* Azure Service */}
+                    <td className="px-4 py-3 bg-blue-50/30">
+                      {category.azure.parent ? (
+                        <div 
+                          className="cursor-pointer flex justify-between items-center"
+                          onClick={() => category.azure.children.length > 0 && toggleServiceExpansion(idx, 'azure')}
+                        >
+                          <div>
+                            <div className="font-semibold text-blue-800">{category.azure.parent.service}</div>
+                            <div className="text-xs text-gray-600">{category.azure.parent.description}</div>
+                          </div>
+                          {category.azure.children.length > 0 && (
+                            <span className="text-blue-600">
+                              {isServiceExpanded(idx, 'azure') ? '▼' : '▶'}
+                            </span>
+                          )}
+                        </div>
+                      ) : (
+                        <div className="text-gray-400 italic">No equivalent service</div>
+                      )}
+                    </td>
+                  </tr>
 
-        {/* Azure Column */}
-        <div className="bg-white rounded-lg shadow-md p-6 hover:shadow-xl transition-shadow">
-          <h2 className="text-2xl font-semibold text-blue-600 mb-4">Azure Services</h2>
-          <div className="space-y-3">
-            {azureComponents.map((component) => (
-              <div
-                key={component.service}
-                className="p-3 bg-gray-100 rounded-md cursor-pointer transition-all duration-200"
-                onClick={() => setSelectedService(component)}
-                onMouseEnter={(e) => getHoverStyle(e, true)}
-                onMouseLeave={(e) => getHoverStyle(e, false)}
-              >
-                <div className="flex justify-between">
-                  <span className="font-medium">{component.service}</span>
-                  <span className="text-sm text-gray-500">{component.category}</span>
-                </div>
-                <p className="text-sm text-gray-600">{component.description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
+                  {/* AWS Sub-services */}
+                  {isServiceExpanded(idx, 'aws') && category.aws.children.map((child, childIdx) => (
+                    <tr key={`aws-child-${idx}-${childIdx}`} className="border-b bg-amber-50/10">
+                      <td className="px-4 py-2"></td>
+                      <td className="px-4 py-2 pl-8">
+                        <div className="font-medium text-sm">{child.service}</div>
+                        <div className="text-xs text-gray-600">{child.description}</div>
+                      </td>
+                      <td></td>
+                    </tr>
+                  ))}
 
-      {/* Flow Charts */}
-      <div className="bg-white rounded-lg shadow-md p-6">
-        <h2 className="text-2xl font-semibold mb-6 text-center">Data Processing Flows</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {/* AWS Flow */}
-          <div
-            className="flex flex-col items-center"
-            style={getAnimationStyle(true)}
-          >
-            <h3 className="text-lg font-medium text-orange-500 mb-4">AWS Flow</h3>
-            <div className="space-y-4">
-              {[
-                'App',
-                'Kafka',
-                'S3',
-                'Snowflake',
-                'Amplitude'
-              ].map((step, index) => (
-                <div key={step} className="flex flex-col items-center">
-                  <div
-                    className="w-32 p-3 bg-orange-100 border border-orange-200 rounded-lg text-center font-medium transition-transform duration-200"
-                    onMouseEnter={(e) => getHoverStyle(e, true)}
-                    onMouseLeave={(e) => getHoverStyle(e, false)}
-                  >
-                    {step}
-                  </div>
-                  {index < 4 && (
-                    <div className="h-6 flex items-center">
-                      <span className="text-orange-500 text-2xl">↓</span>
-                    </div>
-                  )}
-                </div>
+                  {/* Azure Sub-services */}
+                  {isServiceExpanded(idx, 'azure') && category.azure.children.map((child, childIdx) => (
+                    <tr key={`azure-child-${idx}-${childIdx}`} className="border-b bg-blue-50/10">
+                      <td className="px-4 py-2"></td>
+                      <td></td>
+                      <td className="px-4 py-2 pl-8">
+                        <div className="font-medium text-sm">{child.service}</div>
+                        <div className="text-xs text-gray-600">{child.description}</div>
+                      </td>
+                    </tr>
+                  ))}
+                </React.Fragment>
               ))}
-            </div>
-          </div>
-
-          {/* Azure Flow */}
-          <div
-            className="flex flex-col items-center"
-            style={getAnimationStyle(true)}
-          >
-            <h3 className="text-lg font-medium text-blue-600 mb-4">Azure Flow</h3>
-            <div className="space-y-4">
-              {[
-                'App',
-                'Event Hubs',
-                'Blob Storage',
-                'Databricks',
-                'Power BI'
-              ].map((step, index) => (
-                <div key={step} className="flex flex-col items-center">
-                  <div
-                    className="w-32 p-3 bg-blue-100 border border-blue-200 rounded-lg text-center font-medium transition-transform duration-200"
-                    onMouseEnter={(e) => getHoverStyle(e, true)}
-                    onMouseLeave={(e) => getHoverStyle(e, false)}
-                  >
-                    {step}
-                  </div>
-                  {index < 4 && (
-                    <div className="h-6 flex items-center">
-                      <span className="text-blue-600 text-2xl">↓</span>
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
+            </tbody>
+          </table>
         </div>
       </div>
 
-      {/* Service Details Modal (Simplified) */}
+      {/* Service Details Modal */}
       {selectedService && (
         <div 
-          className="fixed inset-0 bg-black/50 flex items-center justify-center" 
+          className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" 
           onClick={() => setSelectedService(null)}
         >
           <div 
@@ -198,6 +163,14 @@ const AwsVsAzureComparison = () => {
           </div>
         </div>
       )}
+
+      {/* CSS animation for modal only - removed flowchart specific styles */}
+      <style jsx>{`
+        @keyframes scaleIn {
+          from { transform: scale(0.9); opacity: 0; }
+          to { transform: scale(1); opacity: 1; }
+        }
+      `}</style>
     </div>
   );
 };

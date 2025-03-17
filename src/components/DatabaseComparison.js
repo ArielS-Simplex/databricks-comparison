@@ -1,119 +1,11 @@
 import React, { useState } from 'react';
+import databricksTerminology from '../data/databricksTerminology';
 
 const DatabaseComparison = () => {
   // State to track which comparison is expanded
   const [expandedItem, setExpandedItem] = useState(null);
   // State for viewing mode
   const [viewMode, setViewMode] = useState('all');
-
-  // Databricks terminology definitions
-  const databricksTerminology = [
-    {
-      id: 'delta-lake',
-      term: 'Delta Lake',
-      definition: 'An open-source storage layer that brings ACID transactions to big data workloads.',
-      example: 'When two data engineers update the same customer dataset simultaneously, Delta Lake ensures neither overrides the other\'s changes.',
-      why: 'Provides reliability and consistency guarantees previously only available in traditional databases.'
-    },
-    {
-      id: 'medallion',
-      term: 'Medallion Architecture',
-      definition: 'A data organization framework using Bronze (raw), Silver (validated), and Gold (aggregated) layers.',
-      example: 'Raw JSON payment transactions go into Bronze, cleansed data with proper types into Silver, and daily merchant summaries into Gold.',
-      why: 'Creates clear separation of concerns and progressive data quality improvement through the pipeline.'
-    },
-    {
-      id: 'lakehouse',
-      term: 'Lakehouse',
-      definition: 'A hybrid architecture combining data lake storage with data warehouse functionality.',
-      example: 'Storing petabytes of raw data while still providing SQL query capabilities and BI tool connectivity.',
-      why: 'Eliminates need for separate systems for different data workloads (analytics, ML, BI).'
-    },
-    {
-      id: 'unity-catalog',
-      term: 'Unity Catalog',
-      definition: 'Unified governance layer for managing data assets across clouds with fine-grained access controls.',
-      example: 'Restricting access to PII columns in customer data while allowing aggregated metrics for analytics teams.',
-      why: 'Centralizes security, auditing, and lineage tracking across all data assets.'
-    },
-    {
-      id: 'photon',
-      term: 'Photon Engine',
-      definition: 'C++ vectorized query execution engine that accelerates Spark workloads without code changes.',
-      example: 'A complex aggregation query runs 5x faster with Photon enabled without modifying any SQL code.',
-      why: 'Delivers significant performance gains for data-intensive workloads, especially for analytics.'
-    },
-    {
-      id: 'delta-live-tables',
-      term: 'Delta Live Tables (DLT)',
-      definition: 'Declarative framework for building reliable data pipelines with quality controls and monitoring.',
-      example: 'Defining data quality expectations like "all transaction_ids must be unique" directly in pipeline code.',
-      why: 'Reduces boilerplate code and increases reliability by automating dependency management and quality checks.'
-    },
-    {
-      id: 'mlflow',
-      term: 'MLflow',
-      definition: 'Open-source platform for managing the ML lifecycle including experimentation, reproducibility, and deployment.',
-      example: 'Tracking model parameters, metrics, and artifacts during fraud detection model development.',
-      why: 'Standardizes the machine learning process from experiment to production.'
-    },
-    {
-      id: 'structured-streaming',
-      term: 'Structured Streaming',
-      definition: 'Spark API for continuous data processing with exactly-once guarantees.',
-      example: 'Processing a stream of payment events as they arrive, updating fraud detection models in real-time.',
-      why: 'Enables real-time data processing using the same APIs as batch processing.'
-    },
-    {
-      id: 'z-ordering',
-      term: 'Z-Ordering',
-      definition: 'Physical data organization technique that co-locates related data for faster queries.',
-      example: 'Z-ordering transaction data by date and merchant_id improves filtering performance by 10-100x.',
-      why: 'Optimizes read performance for specific query patterns without requiring index maintenance.'
-    },
-    {
-      id: 'dbus',
-      term: 'DBUs (Databricks Units)',
-      definition: 'Billing units representing compute resources consumed per hour.',
-      example: 'A Standard cluster with 4 cores might consume 0.75 DBUs per hour while running.',
-      why: 'Forms the basis of usage-based pricing model, allowing cost optimization via scaling.'
-    },
-    {
-      id: 'notebooks',
-      term: 'Notebooks',
-      definition: 'Interactive documents combining code, visualizations, and markdown in multiple languages.',
-      example: 'Creating an end-to-end data pipeline with SQL data preparation, Python modeling, and R visualizations in a single notebook.',
-      why: 'Enables collaborative, documented data workflows bridging data engineering and data science.'
-    },
-    {
-      id: 'workspace',
-      term: 'Workspace',
-      definition: 'Collaborative environment for organizing and developing Databricks assets.',
-      example: 'Organizing notebooks into folders for different departments while sharing common utilities.',
-      why: 'Provides team-based collaboration, access controls, and versioning for data assets.'
-    },
-    {
-      id: 'clusters',
-      term: 'Clusters',
-      definition: 'Managed compute resources that execute Databricks workloads with auto-scaling capabilities.',
-      example: 'Setting up an auto-scaling cluster that grows to 20 nodes during peak processing and scales down to 2 during quiet periods.',
-      why: 'Separates storage from compute, allowing flexible scaling based on workload demands.'
-    },
-    {
-      id: 'auto-loader',
-      term: 'Auto Loader',
-      definition: 'Efficient data ingestion service for incrementally processing new files in cloud storage.',
-      example: 'Automatically detecting and processing new transaction log files as they arrive in S3 without explicit listing operations.',
-      why: 'Simplifies data ingestion while optimizing for cost and performance compared to manual approaches.'
-    },
-    {
-      id: 'delta-sharing',
-      term: 'Delta Sharing',
-      definition: 'Open protocol for securely sharing data across organizations regardless of platform.',
-      example: 'Sharing payment transaction aggregates with partner organizations without giving direct access to your data lake.',
-      why: 'Enables secure, efficient data sharing workflows across organizational boundaries.'
-    }
-  ];
 
   // Data for the comparison
   const comparisonData = [
@@ -394,55 +286,59 @@ const DatabaseComparison = () => {
   }, {});
 
   return (
-    <div className="flex flex-col max-w-6xl mx-auto p-4">
-      <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-6 rounded-t-lg text-center">
-        <h1 className="text-2xl font-bold text-white">SingleStore vs Databricks</h1>
-        <p className="text-white opacity-80 mt-2">Interactive Comparison for Data Engineering Teams</p>
+    <div>
+      {/* Updated header with blue-to-purple gradient */}
+      <div 
+        className="bg-gradient-to-r from-blue-600 to-purple-600 p-6 rounded-xl shadow-lg mb-4 text-center"
+      >
+        <h1 className="text-3xl font-bold text-white mb-2">SingleStore vs Databricks</h1>
+        <p className="text-white/80">Interactive Comparison for Data Engineering Teams</p>
       </div>
       
-      <div className="bg-white p-4 border-b">
-        <div className="flex justify-center space-x-3 flex-wrap gap-y-2">
+      {/* Filter buttons with improved alignment */}
+      <div className="bg-white rounded-lg shadow-md p-6 hover:shadow-xl transition-shadow mb-8">
+        <div className="flex justify-center flex-wrap">
           <button 
             onClick={() => setViewMode('all')}
-            className={`px-4 py-2 rounded-lg transition-all duration-200 ${
+            className={`px-4 py-2 mx-2 my-1 rounded-lg transition-all duration-200 ${
               viewMode === 'all' 
-                ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-md' 
+                ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-sm' 
                 : 'bg-gray-100 text-gray-700 border border-gray-200 hover:bg-gray-200'
             }`}>
             All Comparisons
           </button>
           <button 
             onClick={() => setViewMode('performance')}
-            className={`px-4 py-2 rounded-lg transition-all duration-200 ${
+            className={`px-4 py-2 mx-2 my-1 rounded-lg transition-all duration-200 ${
               viewMode === 'performance' 
-                ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-md' 
+                ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-sm' 
                 : 'bg-gray-100 text-gray-700 border border-gray-200 hover:bg-gray-200'
             }`}>
             Performance
           </button>
           <button 
             onClick={() => setViewMode('cost')}
-            className={`px-4 py-2 rounded-lg transition-all duration-200 ${
+            className={`px-4 py-2 mx-2 my-1 rounded-lg transition-all duration-200 ${
               viewMode === 'cost' 
-                ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-md' 
+                ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-sm' 
                 : 'bg-gray-100 text-gray-700 border border-gray-200 hover:bg-gray-200'
             }`}>
             Cost Efficiency
           </button>
           <button 
             onClick={() => setViewMode('efficiency')}
-            className={`px-4 py-2 rounded-lg transition-all duration-200 ${
+            className={`px-4 py-2 mx-2 my-1 rounded-lg transition-all duration-200 ${
               viewMode === 'efficiency' 
-                ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-md' 
+                ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-sm' 
                 : 'bg-gray-100 text-gray-700 border border-gray-200 hover:bg-gray-200'
             }`}>
             Development Efficiency
           </button>
           <button 
             onClick={() => setViewMode('terminology')}
-            className={`px-4 py-2 rounded-lg transition-all duration-200 ${
+            className={`px-4 py-2 mx-2 my-1 rounded-lg transition-all duration-200 ${
               viewMode === 'terminology' 
-                ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-md' 
+                ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-sm' 
                 : 'bg-gray-100 text-gray-700 border border-gray-200 hover:bg-gray-200'
             }`}>
             Databricks Terms
@@ -450,13 +346,13 @@ const DatabaseComparison = () => {
         </div>
       </div>
       
-      <div className="bg-white shadow-lg overflow-hidden">
+      <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow">
         {viewMode === 'terminology' ? (
-          <div className="p-4">
-            <h2 className="text-xl font-semibold mb-4">Databricks Terminology</h2>
-            <p className="mb-6 text-gray-700">Quick reference guide to Databricks concepts and terminology for your team</p>
+          <div className="p-6">
+            <h2 className="text-2xl font-semibold mb-4 text-center">Databricks Terminology</h2>
+            <p className="mb-6 text-gray-700 text-center">Quick reference guide to Databricks concepts and terminology for your team</p>
             
-            <div className="grid grid-cols-1 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {databricksTerminology.map(item => (
                 <div key={item.id} className="border rounded-lg overflow-hidden">
                   <div className="bg-purple-100 p-3 border-b">
@@ -552,10 +448,10 @@ const DatabaseComparison = () => {
         )}
       </div>
       
-      <div className="mt-6 bg-white p-4 rounded shadow">
+      <div className="mt-6 bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow">
         <h2 className="text-lg font-semibold text-gray-800 mb-2">How to Use This Comparison</h2>
         <p className="text-gray-700">Click on any row to expand and see detailed information about that specific comparison point. Use the filter buttons above to focus on performance, cost efficiency, or development efficiency metrics. All metrics are based on official vendor documentation, benchmarks, and published case studies.</p>
-        <div className="mt-4 bg-yellow-50 border border-yellow-200 p-3 rounded">
+        <div className="mt-4 bg-yellow-50 border border-yellow-200 p-3 rounded-lg">
           <p className="text-sm text-yellow-800">
             <strong>Note:</strong> Performance and cost metrics can vary significantly based on specific workloads, configurations, and deployment scenarios. These figures represent typical scenarios but your actual results may differ.
           </p>

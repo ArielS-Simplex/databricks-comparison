@@ -3,6 +3,7 @@ import DatabaseComparison from './components/DatabaseComparison';
 import DataEngineeringGlossary from './components/DataEngineeringGlossary';
 import AwsVsAzureComparison from './components/AwsVsAzureComparison';
 import DataProcessingFlows from './components/DataProcessingFlows';
+import CloudStorageComparison from './components/CloudStorageComparison';
 import './App.css';
 
 function App() {
@@ -45,6 +46,16 @@ function App() {
             AWS vs Azure
           </button>
           <button 
+            onClick={() => setActiveTab('cloud-storage')} 
+            className={`px-6 py-3 mx-2 my-1 rounded-lg text-lg font-medium transition-all duration-200 shadow-md ${
+              activeTab === 'cloud-storage' 
+                ? 'bg-white text-blue-700 transform scale-105' 
+                : 'bg-blue-500/30 text-white hover:bg-blue-500/50'
+            }`}
+          >
+            Blob vs S3
+          </button>
+          <button 
             onClick={() => setActiveTab('data-flows')} 
             className={`px-6 py-3 mx-2 my-1 rounded-lg text-lg font-medium transition-all duration-200 shadow-md ${
               activeTab === 'data-flows' 
@@ -63,6 +74,7 @@ function App() {
         {activeTab === 'comparison' && <DatabaseComparison />}
         {activeTab === 'glossary' && <DataEngineeringGlossary />}
         {activeTab === 'aws-vs-azure' && <AwsVsAzureComparison />}
+        {activeTab === 'cloud-storage' && <CloudStorageComparison />}
         {activeTab === 'data-flows' && <DataProcessingFlows />}
       </div>
     </div>

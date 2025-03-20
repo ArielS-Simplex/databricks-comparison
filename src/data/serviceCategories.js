@@ -139,7 +139,11 @@ const serviceCategories = [
       children: []
     },
     azure: {
-      parent: null,
+      parent: { 
+        service: 'Azure Databricks', 
+        description: 'Analytics platform that can serve as a data processing solution', 
+        category: 'Analytics'
+      },
       children: []
     }
   },
@@ -154,7 +158,11 @@ const serviceCategories = [
       children: []
     },
     azure: {
-      parent: null,
+      parent: { 
+        service: 'Azure Databricks', 
+        description: 'Analytics platform with transformation capabilities', 
+        category: 'Analytics'
+      },
       children: []
     }
   },

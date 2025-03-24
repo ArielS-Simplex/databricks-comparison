@@ -1,17 +1,17 @@
 {
   "files": {
-    "main.css": "/databricks-comparison/static/css/main.b861f060.chunk.css",
-    "main.js": "/databricks-comparison/static/js/main.91eeb56a.chunk.js",
-    "main.js.map": "/databricks-comparison/static/js/main.91eeb56a.chunk.js.map",
-    "runtime~main.js": "/databricks-comparison/static/js/runtime~main.50cc5049.js",
-    "runtime~main.js.map": "/databricks-comparison/static/js/runtime~main.50cc5049.js.map",
-    "static/js/2.ae026ab9.chunk.js": "/databricks-comparison/static/js/2.ae026ab9.chunk.js",
-    "static/js/2.ae026ab9.chunk.js.map": "/databricks-comparison/static/js/2.ae026ab9.chunk.js.map",
-    "static/js/3.a29efab2.chunk.js": "/databricks-comparison/static/js/3.a29efab2.chunk.js",
-    "static/js/3.a29efab2.chunk.js.map": "/databricks-comparison/static/js/3.a29efab2.chunk.js.map",
+    "main.css": "/databricks-comparison/static/css/main.de36eb6d.chunk.css",
+    "main.js": "/databricks-comparison/static/js/main.f5d24ed7.chunk.js",
+    "main.js.map": "/databricks-comparison/static/js/main.f5d24ed7.chunk.js.map",
+    "runtime~main.js": "/databricks-comparison/static/js/runtime~main.590ac9e9.js",
+    "runtime~main.js.map": "/databricks-comparison/static/js/runtime~main.590ac9e9.js.map",
+    "static/js/2.13dc0c1a.chunk.js": "/databricks-comparison/static/js/2.13dc0c1a.chunk.js",
+    "static/js/2.13dc0c1a.chunk.js.map": "/databricks-comparison/static/js/2.13dc0c1a.chunk.js.map",
+    "static/js/3.ba8b7f13.chunk.js": "/databricks-comparison/static/js/3.ba8b7f13.chunk.js",
+    "static/js/3.ba8b7f13.chunk.js.map": "/databricks-comparison/static/js/3.ba8b7f13.chunk.js.map",
     "index.html": "/databricks-comparison/index.html",
-    "precache-manifest.c70b9d83b5684f3276f4429f46c3fa7a.js": "/databricks-comparison/precache-manifest.c70b9d83b5684f3276f4429f46c3fa7a.js",
+    "precache-manifest.560df6743ec6673982377bd272085491.js": "/databricks-comparison/precache-manifest.560df6743ec6673982377bd272085491.js",
     "service-worker.js": "/databricks-comparison/service-worker.js",
-    "static/css/main.b861f060.chunk.css.map": "/databricks-comparison/static/css/main.b861f060.chunk.css.map"
+    "static/css/main.de36eb6d.chunk.css.map": "/databricks-comparison/static/css/main.de36eb6d.chunk.css.map"
   }
 }

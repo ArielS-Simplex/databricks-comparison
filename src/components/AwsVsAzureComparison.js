@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import serviceCategories from '../data/serviceCategories';
-import '../styles/buttons.css'; // Add this import
+import '../styles/buttons.css';
 
 const AwsVsAzureComparison = () => {
   const [selectedService, setSelectedService] = useState(null);
@@ -20,13 +20,6 @@ const AwsVsAzureComparison = () => {
     const key = `${cloud}-${categoryIndex}`;
     return !!expandedServices[key];
   };
-
-  // Animation style helpers (instead of framer-motion variants)
-  const getAnimationStyle = (isVisible) => ({
-    opacity: isVisible ? 1 : 0,
-    transform: `translateY(${isVisible ? 0 : 20}px)`,
-    transition: 'opacity 0.3s, transform 0.3s',
-  });
 
   // Helper for hover animations
   const getHoverStyle = (e, scale = true) => {
@@ -111,33 +104,87 @@ const AwsVsAzureComparison = () => {
                     </td>
                   </tr>
 
-                  {/* AWS Sub-services */}
-                  {isServiceExpanded(idx, 'aws') && category.aws.children.map((child, childIdx) => (
-                    <tr key={`aws-child-${idx}-${childIdx}`} className="border-b bg-amber-50/10">
-                      <td className="px-4 py-2"></td>
-                      <td className="px-4 py-2 pl-8">
-                        <div className="font-medium text-sm">{child.service}</div>
-                        <div className="text-xs text-gray-600">{child.description}</div>
-                      </td>
-                      <td></td>
-                    </tr>
-                  ))}
-
-                  {/* Azure Sub-services */}
-                  {isServiceExpanded(idx, 'azure') && category.azure.children.map((child, childIdx) => (
-                    <tr key={`azure-child-${idx}-${childIdx}`} className="border-b bg-blue-50/10">
-                      <td className="px-4 py-2"></td>
-                      <td></td>
-                      <td className="px-4 py-2 pl-8">
-                        <div className="font-medium text-sm">{child.service}</div>
-                        <div className="text-xs text-gray-600">{child.description}</div>
-                      </td>
-                    </tr>
-                  ))}
+                  {/* FIXED: Render child services in aligned pairs */}
+                  {(isServiceExpanded(idx, 'aws') || isServiceExpanded(idx, 'azure')) && 
+                    Array.from({ length: Math.max(
+                      isServiceExpanded(idx, 'aws') ? category.aws.children.length : 0,
+                      isServiceExpanded(idx, 'azure') ? category.azure.children.length : 0
+                    )}).map((_, childIdx) => (
+                      <tr key={`child-row-${idx}-${childIdx}`} className="border-b">
+                        <td className="px-4 py-2"></td>
+                        
+                        {/* AWS Child */}
+                        <td className={`px-4 py-2 ${isServiceExpanded(idx, 'aws') ? 'bg-amber-50/10' : ''}`}>
+                          {isServiceExpanded(idx, 'aws') && childIdx < category.aws.children.length ? (
+                            <div className="pl-8">
+                              <div className="font-medium text-sm">{category.aws.children[childIdx].service}</div>
+                              <div className="text-xs text-gray-600">{category.aws.children[childIdx].description}</div>
+                            </div>
+                          ) : null}
+                        </td>
+                        
+                        {/* Azure Child */}
+                        <td className={`px-4 py-2 ${isServiceExpanded(idx, 'azure') ? 'bg-blue-50/10' : ''}`}>
+                          {isServiceExpanded(idx, 'azure') && childIdx < category.azure.children.length ? (
+                            <div className="pl-8">
+                              <div className="font-medium text-sm">{category.azure.children[childIdx].service}</div>
+                              <div className="text-xs text-gray-600">{category.azure.children[childIdx].description}</div>
+                            </div>
+                          ) : null}
+                        </td>
+                      </tr>
+                    ))
+                  }
                 </React.Fragment>
               ))}
             </tbody>
           </table>
+        </div>
+      </div>
+
+      {/* Service Categories Summary Cards */}
+      <div className="bg-white rounded-lg shadow-md p-6 hover:shadow-xl transition-shadow mb-4">
+        <h2 className="text-xl font-semibold mb-4 text-center">Platform Strengths</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="bg-amber-50 p-4 rounded-lg border border-amber-200">
+            <h3 className="text-lg font-medium text-amber-800 mb-2">AWS Advantages</h3>
+            <ul className="list-disc pl-5 space-y-2 text-gray-700">
+              <li>Greater market share and longer history in cloud services</li>
+              <li>More granular services with specialized capabilities</li>
+              <li>Extremely broad global infrastructure</li>
+              <li>Deep integration with data lake technologies</li>
+              <li>Strong serverless computing options (Lambda, Step Functions)</li>
+            </ul>
+          </div>
+          
+          <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
+            <h3 className="text-lg font-medium text-blue-800 mb-2">Azure Advantages</h3>
+            <ul className="list-disc pl-5 space-y-2 text-gray-700">
+              <li>Tighter integration with Microsoft ecosystem</li>
+              <li>Native Databricks integration and optimization</li>
+              <li>Stronger enterprise identity management with Entra ID</li>
+              <li>More comprehensive hybrid cloud options</li>
+              <li>Power BI integration for business analytics</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      {/* Selection guidance */}
+      <div className="bg-white rounded-lg shadow-md p-6 hover:shadow-xl transition-shadow">
+        <h2 className="text-xl font-semibold mb-4 text-center">Selection Guidance</h2>
+        <div className="bg-gradient-to-r from-purple-50 to-blue-50 p-4 rounded-lg border border-blue-100">
+          <h3 className="font-medium mb-2">How to Choose Between AWS and Azure</h3>
+          <p className="text-gray-700 mb-3">When selecting between AWS and Azure for data engineering workloads, consider these factors:</p>
+          <ul className="list-disc pl-5 space-y-1 text-gray-700">
+            <li>Existing organizational expertise and investments</li>
+            <li>Integration requirements with other systems</li>
+            <li>Specific features needed for your data pipeline</li>
+            <li>Geographic availability in your target regions</li>
+            <li>Cost structure and pricing models</li>
+            <li>Compliance and governance requirements</li>
+          </ul>
+          <p className="mt-3 text-gray-700">For Databricks-centric workflows, Azure offers more seamless integration, while AWS provides greater flexibility with third-party tools and services.</p>
         </div>
       </div>
 
@@ -165,7 +212,7 @@ const AwsVsAzureComparison = () => {
         </div>
       )}
 
-      {/* CSS animation for modal only - removed flowchart specific styles */}
+      {/* CSS animation for modal */}
       <style jsx>{`
         @keyframes scaleIn {
           from { transform: scale(0.9); opacity: 0; }

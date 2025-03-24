@@ -6,7 +6,7 @@ import DataProcessingFlows from './components/DataProcessingFlows';
 import CloudStorageComparison from './components/CloudStorageComparison';
 import AzureDatabricksInfraDetail from './components/AzureDatabricksInfra';
 import StoragePricingComparison from './components/StoragePricingComparison';
-import AICapabilityMatrix from './components/AICapabilityMatrix'; // Import the new AI component
+import SimplifiedComparison from './components/SimplifiedComparison'; // Import the new component
 import './App.css';
 import './styles/buttons.css';
 
@@ -14,40 +14,58 @@ function App() {
   // State to track active primary category and subcategory
   const [activeCategory, setActiveCategory] = useState('cloud-compare');
   const [activeSubcategory, setActiveSubcategory] = useState('overview');
+  // View mode for database section only
+  const [databaseViewMode, setDatabaseViewMode] = useState('technical');
 
   // Navigation structure with categories and subcategories
   const navigation = {
     'cloud-compare': {
       label: 'AWS vs Azure',
       subcategories: {
-        'overview': { label: 'Services Overview', component: <AwsVsAzureComparison /> },
-        'storage': { label: 'Storage Services', component: <CloudStorageComparison /> },
-        'storage-pricing': { label: 'Storage Pricing', component: <StoragePricingComparison /> },
-        'data-flows': { label: 'Data Processing Flows', component: <DataProcessingFlows /> }
+        'overview': { 
+          label: 'Services Overview', 
+          component: <AwsVsAzureComparison />
+        },
+        'storage': { 
+          label: 'Storage Services', 
+          component: <CloudStorageComparison />
+        },
+        'storage-pricing': { 
+          label: 'Storage Pricing', 
+          component: <StoragePricingComparison />
+        },
+        'data-flows': { 
+          label: 'Data Processing Flows', 
+          component: <DataProcessingFlows />
+        }
       }
     },
     'database-compare': {
       label: 'Database Technologies',
       subcategories: {
-        'database': { label: 'SingleStore vs Databricks vs Snowflake', component: <DatabaseComparison /> }
+        'database': { 
+          label: 'SingleStore vs Databricks vs Snowflake',
+          // For database section, we'll use the view mode to determine which component to show
+          hasMutipleViews: true
+        }
       }
     },
     'architecture': {
       label: 'Architecture',
       subcategories: {
-        'databricks': { label: 'Databricks Architecture', component: <AzureDatabricksInfraDetail /> }
+        'databricks': { 
+          label: 'Databricks Architecture', 
+          component: <AzureDatabricksInfraDetail />
+        }
       }
     },
     'reference': {
       label: 'Reference',
       subcategories: {
-        'glossary': { label: 'Data Engineering Glossary', component: <DataEngineeringGlossary /> }
-      }
-    },
-    'ai-capabilities': {  // New AI Capabilities category
-      label: 'AI Capabilities',
-      subcategories: {
-        'matrix': { label: 'AI Capability Matrix', component: <AICapabilityMatrix /> }
+        'glossary': { 
+          label: 'Data Engineering Glossary', 
+          component: <DataEngineeringGlossary />
+        }
       }
     }
   };
@@ -56,6 +74,28 @@ function App() {
     setActiveCategory(category);
     // Select the first subcategory when changing categories
     setActiveSubcategory(Object.keys(navigation[category].subcategories)[0]);
+  };
+
+  // Get the current component based on active category and subcategory
+  const getCurrentComponent = () => {
+    const subcategory = navigation[activeCategory].subcategories[activeSubcategory];
+    
+    // Special handling for database section which has multiple view modes
+    if (activeCategory === 'database-compare' && activeSubcategory === 'database') {
+      if (databaseViewMode === 'simplified') {
+        return <SimplifiedComparison />;
+      } else {
+        return <DatabaseComparison audienceView={databaseViewMode} />;
+      }
+    }
+    
+    // For other sections, just return the regular component
+    return subcategory.component;
+  };
+
+  // Check if the current section has multiple view modes
+  const hasMultipleViews = () => {
+    return navigation[activeCategory].subcategories[activeSubcategory].hasMutipleViews;
   };
 
   return (
@@ -98,9 +138,49 @@ function App() {
         </div>
       </div>
 
+      {/* View mode selector - Only show for database comparison */}
+      {hasMultipleViews() && (
+        <div className="bg-white py-3 px-6 shadow-sm mb-6">
+          <div className="flex justify-center w-full max-w-6xl mx-auto">
+            <div className="bg-gray-100 p-1 rounded-lg inline-flex">
+              <button
+                onClick={() => setDatabaseViewMode('technical')}
+                className={`px-4 py-2 text-sm font-medium rounded-md transition-colors ${
+                  databaseViewMode === 'technical'
+                    ? 'bg-blue-600 text-white'
+                    : 'text-gray-700 hover:bg-gray-200'
+                }`}
+              >
+                Technical Details
+              </button>
+              <button
+                onClick={() => setDatabaseViewMode('executive')}
+                className={`px-4 py-2 text-sm font-medium rounded-md transition-colors ${
+                  databaseViewMode === 'executive'
+                    ? 'bg-blue-600 text-white'
+                    : 'text-gray-700 hover:bg-gray-200'
+                }`}
+              >
+                Executive Summary
+              </button>
+              <button
+                onClick={() => setDatabaseViewMode('simplified')}
+                className={`px-4 py-2 text-sm font-medium rounded-md transition-colors ${
+                  databaseViewMode === 'simplified'
+                    ? 'bg-blue-600 text-white'
+                    : 'text-gray-700 hover:bg-gray-200'
+                }`}
+              >
+                Simplified View
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Container for component content */}
       <div className="container max-w-6xl mx-auto p-6">
-        {navigation[activeCategory].subcategories[activeSubcategory].component}
+        {getCurrentComponent()}
       </div>
     </div>
   );

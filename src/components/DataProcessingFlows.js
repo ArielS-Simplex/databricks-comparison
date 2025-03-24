@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import AzureDatabricksInfra from './AzureDatabricksInfra';
+import '../styles/buttons.css'; // Add this import
 
 // Flow step explanations
 const flowExplanations = {
@@ -272,7 +274,6 @@ const DataProcessingFlows = () => {
           </div>
         </div>
       </div>
-
       {/* Flow Step Details Modal */}
       {selectedFlowStep && (
         <div 
@@ -290,7 +291,7 @@ const DataProcessingFlows = () => {
               <p className="text-gray-700">{selectedFlowStep.details}</p>
             </div>
             <button
-              className="mt-4 px-4 py-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded hover:bg-blue-700"
+              className="mt-4 btn btn-gradient"
               onClick={() => setSelectedFlowStep(null)}
             >
               Close

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import serviceCategories from '../data/serviceCategories';
+import '../styles/buttons.css'; // Add this import
 
 const AwsVsAzureComparison = () => {
   const [selectedService, setSelectedService] = useState(null);
@@ -155,7 +156,7 @@ const AwsVsAzureComparison = () => {
             <p className="text-gray-600">{selectedService.description}</p>
             <p className="text-sm text-gray-500 mt-2">Category: {selectedService.category}</p>
             <button
-              className="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+              className="mt-4 btn btn-gradient"
               onClick={() => setSelectedService(null)}
             >
               Close

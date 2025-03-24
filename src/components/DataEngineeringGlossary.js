@@ -67,7 +67,7 @@ const DataEngineeringGlossary = () => {
                 className={`px-4 py-2 mx-2 my-1 rounded-lg transition-all duration-200 ${
                   categoryFilter === category.id 
                     ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-sm' 
-                    : 'bg-gray-100 text-gray-700 border border-gray-200 hover:bg-gray-200'
+                    : 'border border-gray-200 hover:bg-gradient-to-r hover:from-blue-600/80 hover:to-purple-600/80 hover:text-white'
                 }`}
               >
                 {category.name}

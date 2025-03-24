@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import databricksTerminology from '../data/databricksTerminology';
+import '../styles/buttons.css'; // Add this import
 
 const DatabaseComparison = () => {
   // State to track which comparison is expanded
@@ -300,47 +301,32 @@ const DatabaseComparison = () => {
         <div className="flex justify-center flex-wrap">
           <button 
             onClick={() => setViewMode('all')}
-            className={`px-4 py-2 mx-2 my-1 rounded-lg transition-all duration-200 ${
-              viewMode === 'all' 
-                ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-sm' 
-                : 'bg-gray-100 text-gray-700 border border-gray-200 hover:bg-gray-200'
-            }`}>
+            className={`btn ${viewMode === 'all' ? 'btn-gradient' : 'btn-standard'}`}
+          >
             All Comparisons
           </button>
           <button 
             onClick={() => setViewMode('performance')}
-            className={`px-4 py-2 mx-2 my-1 rounded-lg transition-all duration-200 ${
-              viewMode === 'performance' 
-                ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-sm' 
-                : 'bg-gray-100 text-gray-700 border border-gray-200 hover:bg-gray-200'
-            }`}>
+            className={`btn ${viewMode === 'performance' ? 'btn-gradient' : 'btn-standard'}`}
+          >
             Performance
           </button>
           <button 
             onClick={() => setViewMode('cost')}
-            className={`px-4 py-2 mx-2 my-1 rounded-lg transition-all duration-200 ${
-              viewMode === 'cost' 
-                ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-sm' 
-                : 'bg-gray-100 text-gray-700 border border-gray-200 hover:bg-gray-200'
-            }`}>
+            className={`btn ${viewMode === 'cost' ? 'btn-gradient' : 'btn-standard'}`}
+          >
             Cost Efficiency
           </button>
           <button 
             onClick={() => setViewMode('efficiency')}
-            className={`px-4 py-2 mx-2 my-1 rounded-lg transition-all duration-200 ${
-              viewMode === 'efficiency' 
-                ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-sm' 
-                : 'bg-gray-100 text-gray-700 border border-gray-200 hover:bg-gray-200'
-            }`}>
+            className={`btn ${viewMode === 'efficiency' ? 'btn-gradient' : 'btn-standard'}`}
+          >
             Development Efficiency
           </button>
           <button 
             onClick={() => setViewMode('terminology')}
-            className={`px-4 py-2 mx-2 my-1 rounded-lg transition-all duration-200 ${
-              viewMode === 'terminology' 
-                ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-sm' 
-                : 'bg-gray-100 text-gray-700 border border-gray-200 hover:bg-gray-200'
-            }`}>
+            className={`btn ${viewMode === 'terminology' ? 'btn-gradient' : 'btn-standard'}`}
+          >
             Databricks Terms
           </button>
         </div>

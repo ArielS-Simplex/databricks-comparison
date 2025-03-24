@@ -4,7 +4,9 @@ import DataEngineeringGlossary from './components/DataEngineeringGlossary';
 import AwsVsAzureComparison from './components/AwsVsAzureComparison';
 import DataProcessingFlows from './components/DataProcessingFlows';
 import CloudStorageComparison from './components/CloudStorageComparison';
+import AzureDatabricksInfraDetail from './components/AzureDatabricksInfra'; // new import
 import './App.css';
+import './styles/buttons.css'; // Import the button styles
 
 function App() {
   // State to track active tab
@@ -17,53 +19,63 @@ function App() {
         <div className="flex justify-center w-full max-w-6xl mx-auto flex-wrap">
           <button 
             onClick={() => setActiveTab('comparison')} 
-            className={`px-6 py-3 mx-2 my-1 rounded-lg text-lg font-medium transition-all duration-200 shadow-md ${
+            className={`btn-nav ${
               activeTab === 'comparison' 
-                ? 'bg-white text-blue-700 transform scale-105' 
-                : 'bg-blue-500/30 text-white hover:bg-blue-500/50'
+                ? 'btn-nav-active' 
+                : 'btn-nav-inactive'
             }`}
           >
             Database Comparison
           </button>
           <button 
             onClick={() => setActiveTab('glossary')} 
-            className={`px-6 py-3 mx-2 my-1 rounded-lg text-lg font-medium transition-all duration-200 shadow-md ${
+            className={`btn-nav ${
               activeTab === 'glossary' 
-                ? 'bg-white text-blue-700 transform scale-105' 
-                : 'bg-blue-500/30 text-white hover:bg-blue-500/50'
+                ? 'btn-nav-active' 
+                : 'btn-nav-inactive'
             }`}
           >
             Data Engineering Glossary
           </button>
           <button 
             onClick={() => setActiveTab('aws-vs-azure')} 
-            className={`px-6 py-3 mx-2 my-1 rounded-lg text-lg font-medium transition-all duration-200 shadow-md ${
+            className={`btn-nav ${
               activeTab === 'aws-vs-azure' 
-                ? 'bg-white text-blue-700 transform scale-105' 
-                : 'bg-blue-500/30 text-white hover:bg-blue-500/50'
+                ? 'btn-nav-active' 
+                : 'btn-nav-inactive'
             }`}
           >
             AWS vs Azure
           </button>
           <button 
             onClick={() => setActiveTab('cloud-storage')} 
-            className={`px-6 py-3 mx-2 my-1 rounded-lg text-lg font-medium transition-all duration-200 shadow-md ${
+            className={`btn-nav ${
               activeTab === 'cloud-storage' 
-                ? 'bg-white text-blue-700 transform scale-105' 
-                : 'bg-blue-500/30 text-white hover:bg-blue-500/50'
+                ? 'btn-nav-active' 
+                : 'btn-nav-inactive'
             }`}
           >
             Blob vs S3
           </button>
           <button 
             onClick={() => setActiveTab('data-flows')} 
-            className={`px-6 py-3 mx-2 my-1 rounded-lg text-lg font-medium transition-all duration-200 shadow-md ${
+            className={`btn-nav ${
               activeTab === 'data-flows' 
-                ? 'bg-white text-blue-700 transform scale-105' 
-                : 'bg-blue-500/30 text-white hover:bg-blue-500/50'
+                ? 'btn-nav-active' 
+                : 'btn-nav-inactive'
             }`}
           >
             Processing Flows
+          </button>
+          <button 
+            onClick={() => setActiveTab('infra')} 
+            className={`btn-nav ${
+              activeTab === 'infra' 
+                ? 'btn-nav-active' 
+                : 'btn-nav-inactive'
+            }`}
+          >
+            Databricks Infra
           </button>
         </div>
       </div>
@@ -76,6 +88,7 @@ function App() {
         {activeTab === 'aws-vs-azure' && <AwsVsAzureComparison />}
         {activeTab === 'cloud-storage' && <CloudStorageComparison />}
         {activeTab === 'data-flows' && <DataProcessingFlows />}
+        {activeTab === 'infra' && <AzureDatabricksInfraDetail />}  {/* new render */}
       </div>
     </div>
   );

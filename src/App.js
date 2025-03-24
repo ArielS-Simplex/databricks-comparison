@@ -85,7 +85,8 @@ function App() {
       if (databaseViewMode === 'simplified') {
         return <SimplifiedComparison />;
       } else {
-        return <DatabaseComparison audienceView={databaseViewMode} />;
+        // Pass hideViewSelector=true to prevent showing duplicate view selectors
+        return <DatabaseComparison audienceView={databaseViewMode} hideViewSelector={true} />;
       }
     }
     
@@ -137,47 +138,6 @@ function App() {
           ))}
         </div>
       </div>
-
-      {/* View mode selector - Only show for database comparison */}
-      {hasMultipleViews() && (
-        <div className="bg-white py-3 px-6 shadow-sm mb-6">
-          <div className="flex justify-center w-full max-w-6xl mx-auto">
-            <div className="bg-gray-100 p-1 rounded-lg inline-flex">
-              <button
-                onClick={() => setDatabaseViewMode('technical')}
-                className={`px-4 py-2 text-sm font-medium rounded-md transition-colors ${
-                  databaseViewMode === 'technical'
-                    ? 'bg-blue-600 text-white'
-                    : 'text-gray-700 hover:bg-gray-200'
-                }`}
-              >
-                Technical Details
-              </button>
-              <button
-                onClick={() => setDatabaseViewMode('executive')}
-                className={`px-4 py-2 text-sm font-medium rounded-md transition-colors ${
-                  databaseViewMode === 'executive'
-                    ? 'bg-blue-600 text-white'
-                    : 'text-gray-700 hover:bg-gray-200'
-                }`}
-              >
-                Executive Summary
-              </button>
-              <button
-                onClick={() => setDatabaseViewMode('simplified')}
-                className={`px-4 py-2 text-sm font-medium rounded-md transition-colors ${
-                  databaseViewMode === 'simplified'
-                    ? 'bg-blue-600 text-white'
-                    : 'text-gray-700 hover:bg-gray-200'
-                }`}
-              >
-                Simplified View
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
       {/* Container for component content */}
       <div className="container max-w-6xl mx-auto p-6">
         {getCurrentComponent()}

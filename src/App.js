@@ -5,6 +5,7 @@ import AwsVsAzureComparison from './components/AwsVsAzureComparison';
 import DataProcessingFlows from './components/DataProcessingFlows';
 import CloudStorageComparison from './components/CloudStorageComparison';
 import AzureDatabricksInfraDetail from './components/AzureDatabricksInfra'; // new import
+import StoragePricingComparison from './components/StoragePricingComparison'; // added import
 import './App.css';
 import './styles/buttons.css'; // Import the button styles
 
@@ -25,7 +26,7 @@ function App() {
                 : 'btn-nav-inactive'
             }`}
           >
-            Database Comparison
+            SingleStore vs Databricks
           </button>
           <button 
             onClick={() => setActiveTab('glossary')} 
@@ -45,7 +46,7 @@ function App() {
                 : 'btn-nav-inactive'
             }`}
           >
-            AWS vs Azure
+            AWS vs Azure Cloud Services
           </button>
           <button 
             onClick={() => setActiveTab('cloud-storage')} 
@@ -77,6 +78,16 @@ function App() {
           >
             Databricks Infra
           </button>
+          <button 
+            onClick={() => setActiveTab('storage-pricing')} 
+            className={`btn-nav ${
+              activeTab === 'storage-pricing' 
+                ? 'btn-nav-active' 
+                : 'btn-nav-inactive'
+            }`}
+          >
+            AWS vs Azure Storage Pricing
+          </button>
         </div>
       </div>
 
@@ -89,6 +100,7 @@ function App() {
         {activeTab === 'cloud-storage' && <CloudStorageComparison />}
         {activeTab === 'data-flows' && <DataProcessingFlows />}
         {activeTab === 'infra' && <AzureDatabricksInfraDetail />}  {/* new render */}
+        {activeTab === 'storage-pricing' && <StoragePricingComparison />}
       </div>
     </div>
   );

@@ -1,238 +1,17 @@
 import React, { useState } from 'react';
 import databricksTerminology from '../data/databricksTerminology';
-import '../styles/buttons.css'; // Add this import
+import databaseComparisonData from '../data/databaseComparisonData';
+import '../styles/buttons.css';
 
 const DatabaseComparison = () => {
   // State to track which comparison is expanded
   const [expandedItem, setExpandedItem] = useState(null);
   // State for viewing mode
   const [viewMode, setViewMode] = useState('all');
-
-  // Data for the comparison
-  const comparisonData = [
-    {
-      id: 'primary-design',
-      category: 'Architecture',
-      title: 'Primary Design',
-      singlestore: 'Memory-optimized, transactional database with analytical capabilities',
-      databricks: 'Data lakehouse platform optimized for analytics and ML',
-      details: 'SingleStore was designed as a distributed SQL database that combines in-memory performance with disk-based durability. Databricks was built around Apache Spark as a unified analytics platform, later evolving into the lakehouse paradigm combining data lake storage with data warehouse functionality.',
-      metrics: {
-        type: 'qualitative',
-        description: 'Architectural differences make direct comparison difficult'
-      }
-    },
-    {
-      id: 'data-storage',
-      category: 'Architecture',
-      title: 'Data Storage',
-      singlestore: 'Primarily in-memory with disk persistence',
-      databricks: 'Primarily disk-based with intelligent caching',
-      details: 'SingleStore keeps active data in memory for fast access with disk-based persistence for durability. Databricks stores data in distributed file systems (typically cloud storage) with intelligent caching mechanisms to optimize frequently accessed data.',
-      metrics: {
-        type: 'performance',
-        winner: 'conditional',
-        description: 'SingleStore: Up to 10x faster for point lookups and small queries | Databricks: More cost-effective for large datasets (50-80% lower storage costs)',
-        source: 'Published benchmarks from both vendors'
-      }
-    },
-    {
-      id: 'use-case',
-      category: 'Architecture',
-      title: 'Use Case Strength',
-      singlestore: 'High-throughput OLTP with some OLAP',
-      databricks: 'Primarily OLAP, ML and data engineering',
-      details: 'SingleStore excels at high-throughput transactional workloads while supporting analytical queries. Databricks is optimized for data engineering, analytics, and machine learning workflows rather than high-volume transaction processing.',
-      metrics: {
-        type: 'performance',
-        winner: 'conditional',
-        description: 'SingleStore: Up to 100x faster for high-volume OLTP | Databricks: 2-5x faster for complex analytics queries',
-        source: 'TPC-H and TPC-DS benchmarks'
-      }
-    },
-    {
-      id: 'medallion',
-      category: 'Data Management',
-      title: 'Medallion Architecture',
-      singlestore: 'Would require manual implementation',
-      databricks: 'Native built-in concept',
-      details: 'The bronze-silver-gold medallion architecture is a core Databricks concept, with native tools for implementing each layer. In SingleStore, you would need to manually design and implement this architecture using schemas or separate databases.',
-      metrics: {
-        type: 'efficiency',
-        winner: 'databricks',
-        description: '60-70% reduction in development time for implementing data quality frameworks',
-        source: 'Databricks customer case studies'
-      }
-    },
-    {
-      id: 'query-language',
-      category: 'Development',
-      title: 'Query Language',
-      singlestore: 'SQL',
-      databricks: 'SQL, Python, R, Scala',
-      details: 'SingleStore primarily uses SQL for data manipulation and queries. Databricks supports multiple languages including SQL, Python, R, and Scala, making it more flexible for different data science and engineering workflows.',
-      metrics: {
-        type: 'efficiency',
-        winner: 'databricks',
-        description: 'Multi-language support enables 25-40% broader team collaboration',
-        source: 'Developer productivity studies'
-      }
-    },
-    {
-      id: 'ml-integration',
-      category: 'Development',
-      title: 'Machine Learning',
-      singlestore: 'Limited, requires external tools',
-      databricks: 'Deeply integrated',
-      details: 'Databricks has native ML capabilities with MLflow for experiment tracking, model registry, and deployment workflows. SingleStore has limited ML capabilities and typically requires integration with external tools or platforms for machine learning workflows.',
-      metrics: {
-        type: 'efficiency',
-        winner: 'databricks',
-        description: '3-5x faster ML deployment cycles with MLflow compared to custom integration solutions',
-        source: 'Databricks MLflow documentation and case studies'
-      }
-    },
-    {
-      id: 'scalability',
-      category: 'Performance',
-      title: 'Scalability',
-      singlestore: 'Horizontal scaling via sharding',
-      databricks: 'Elastic compute separate from storage',
-      details: 'SingleStore scales horizontally by adding nodes and distributing data via sharding. Databricks follows a cloud-native approach with separate compute and storage, allowing you to scale compute resources independently and elastically, even scaling to zero when not in use.',
-      metrics: {
-        type: 'cost',
-        winner: 'databricks',
-        description: '30-50% cost savings for variable workloads due to compute elasticity and scaling to zero',
-        source: 'Cloud cost optimization studies'
-      }
-    },
-    {
-      id: 'data-integration',
-      category: 'Connectivity',
-      title: 'Data Integration',
-      singlestore: 'JDBC/ODBC, pipelines for specific sources',
-      databricks: 'Extensive native connectors ecosystem',
-      details: 'Databricks offers extensive connectivity options including native connectors for various data sources, Delta Live Tables for ETL, and Auto Loader for data ingestion. SingleStore supports standard database connections and has dedicated pipelines for specific data sources.',
-      metrics: {
-        type: 'efficiency',
-        winner: 'databricks',
-        description: '40-60% reduction in integration development time',
-        source: 'Databricks partner integration benchmarks'
-      }
-    },
-    {
-      id: 'governance',
-      category: 'Management',
-      title: 'Governance & Security',
-      singlestore: 'Traditional database security model',
-      databricks: 'Unity Catalog with fine-grained controls',
-      details: 'Databricks Unity Catalog provides fine-grained governance across clouds with comprehensive audit logging, lineage tracking, and access controls at the row/column level. SingleStore follows a more traditional database security model with roles and permissions.',
-      metrics: {
-        type: 'efficiency',
-        winner: 'databricks',
-        description: '50-70% reduction in governance setup and maintenance time',
-        source: 'Enterprise security implementation studies'
-      }
-    },
-    {
-      id: 'cost-model',
-      category: 'Management',
-      title: 'Cost Model',
-      singlestore: 'Capacity-based licensing',
-      databricks: 'Compute usage-based pricing',
-      details: 'SingleStore typically uses capacity-based licensing models (RAM/CPU). Databricks follows a usage-based model centered around compute DBUs (Databricks Units), allowing for more flexible scaling based on actual workloads.',
-      metrics: {
-        type: 'cost',
-        winner: 'databricks',
-        description: '20-40% cost reduction for variable workloads with usage-based pricing vs. fixed capacity models',
-        source: 'Cloud cost optimization analyses'
-      }
-    },
-    {
-      id: 'deployment',
-      category: 'Management',
-      title: 'Deployment Options',
-      singlestore: 'Cloud, on-premises, hybrid',
-      databricks: 'Multi-cloud, limited on-premises',
-      details: 'SingleStore offers flexible deployment across cloud platforms, on-premises, and hybrid environments. Databricks is primarily cloud-focused (AWS, Azure, GCP) with more limited on-premises options.',
-      metrics: {
-        type: 'qualitative',
-        winner: 'singlestore',
-        description: 'Greater deployment flexibility for regulated environments',
-        source: 'Vendor documentation'
-      }
-    },
-    {
-      id: 'streaming',
-      category: 'Data Processing',
-      title: 'Streaming Data Support',
-      singlestore: 'Fast ingest, limited processing',
-      databricks: 'Native structured streaming',
-      details: 'Databricks provides native structured streaming capabilities for real-time data processing with exactly-once semantics. SingleStore offers fast data ingestion but has more limited stream processing capabilities compared to Databricks.',
-      metrics: {
-        type: 'performance',
-        winner: 'conditional',
-        description: 'SingleStore: Up to 1M+ rows/sec for simple ingestion | Databricks: Superior for complex stream processing with 2-3x throughput for transformations',
-        source: 'Vendor documentation and streaming benchmarks'
-      }
-    },
-    {
-      id: 'recovery',
-      category: 'Management',
-      title: 'Recovery & Backup',
-      singlestore: 'Traditional backup and restore',
-      databricks: 'Time travel and ACID transactions',
-      details: 'Databricks Delta Lake provides time travel capabilities allowing you to access previous versions of data and ACID transactions for reliability. SingleStore offers more traditional database backup and restore mechanisms.',
-      metrics: {
-        type: 'efficiency',
-        winner: 'databricks',
-        description: 'Up to 90% reduction in recovery time using Delta Lake time travel vs. traditional restore operations',
-        source: 'Databricks Delta Lake documentation'
-      }
-    },
-    {
-      id: 'perf-tuning',
-      category: 'Performance',
-      title: 'Performance Tuning',
-      singlestore: 'Query optimization, indexing, sharding',
-      databricks: 'Query optimization, Delta optimizations, Photon engine',
-      details: 'SingleStore offers traditional database tuning approaches like indexing strategies, query optimization, and data distribution via sharding. Databricks provides Delta Lake optimizations (Z-ordering, compaction), the Photon execution engine for vectorized processing, and automated cluster optimization.',
-      metrics: {
-        type: 'performance',
-        winner: 'databricks',
-        description: 'Photon engine delivers 2-7x performance improvement for data-intensive analytical queries compared to Spark SQL',
-        source: 'Databricks Photon benchmark reports'
-      }
-    },
-    {
-      id: 'community',
-      category: 'Ecosystem',
-      title: 'Community & Ecosystem',
-      singlestore: 'Smaller community, commercial focus',
-      databricks: 'Large open-source ecosystem',
-      details: 'Databricks benefits from the large Apache Spark ecosystem and open-source communities around Delta Lake, MLflow, and other projects. SingleStore has a smaller, more commercially-focused community and ecosystem.',
-      metrics: {
-        type: 'qualitative',
-        winner: 'databricks',
-        description: '10x+ larger developer community and ecosystem',
-        source: 'GitHub activity and community metrics'
-      }
-    },
-    {
-      id: 'etl-capabilities',
-      category: 'Data Processing',
-      title: 'ETL/ELT Capabilities',
-      singlestore: 'Basic transformation during load',
-      databricks: 'Advanced ETL with Delta Live Tables',
-      details: 'Databricks offers Delta Live Tables for declarative ETL pipelines with quality controls, monitoring, and automatic optimization. SingleStore provides more basic transformation capabilities during data loading.',
-      metrics: {
-        type: 'efficiency',
-        winner: 'databricks',
-        description: '40-60% reduction in ETL development time with Delta Live Tables vs. traditional ETL approaches',
-        source: 'Databricks customer case studies'
-      }
-    }
-  ];
+  // State for platform filter
+  const [platformFilter, setPlatformFilter] = useState('all');
+  // State for showing the quick metrics column
+  const [showQuickMetrics, setShowQuickMetrics] = useState(true);
 
   // Toggle expanded state
   const toggleExpand = (id) => {
@@ -252,6 +31,9 @@ const DatabaseComparison = () => {
     } else if (metrics.winner === 'singlestore') {
       badgeColor = "bg-blue-100 text-blue-800";
       icon = "🔥";
+    } else if (metrics.winner === 'snowflake') {
+      badgeColor = "bg-cyan-100 text-cyan-800";
+      icon = "🔥";
     } else if (metrics.winner === 'conditional') {
       badgeColor = "bg-yellow-100 text-yellow-800";
       icon = "⚖️";
@@ -268,8 +50,82 @@ const DatabaseComparison = () => {
     );
   };
 
+  // Function to extract the key metrics from the description
+  const getMetricsSummary = (item) => {
+    if (!item.metrics) return "No comparative data available";
+    
+    // Use the actual metrics description to extract key data points
+    const description = item.metrics.description;
+    let summaryText = "";
+    
+    if (item.metrics.winner === 'databricks') {
+      // Extract the Databricks-specific metric from the description
+      const databricksMatch = description.match(/Databricks:([^|]+)/);
+      if (databricksMatch && databricksMatch[1]) {
+        summaryText = `Winner: Databricks - ${databricksMatch[1].trim()}`;
+      } else {
+        summaryText = `Winner: Databricks - ${description}`;
+      }
+    } else if (item.metrics.winner === 'singlestore') {
+      // Extract the SingleStore-specific metric
+      const singlestoreMatch = description.match(/SingleStore:([^|]+)/);
+      if (singlestoreMatch && singlestoreMatch[1]) {
+        summaryText = `Winner: SingleStore - ${singlestoreMatch[1].trim()}`;
+      } else {
+        summaryText = `Winner: SingleStore - ${description}`;
+      }
+    } else if (item.metrics.winner === 'snowflake') {
+      // Extract the Snowflake-specific metric
+      const snowflakeMatch = description.match(/Snowflake:([^|]+)/);
+      if (snowflakeMatch && snowflakeMatch[1]) {
+        summaryText = `Winner: Snowflake - ${snowflakeMatch[1].trim()}`;
+      } else {
+        summaryText = `Winner: Snowflake - ${description}`;
+      }
+    } else if (item.metrics.winner === 'conditional') {
+      // For conditional, provide the specific conditions
+      if (item.id === 'use-case') {
+        summaryText = `OLTP: SingleStore (100x faster) | ML: Databricks (2-5x faster) | SQL: Snowflake (3-4x better concurrency)`;
+      } else if (item.id === 'scalability') {
+        summaryText = `Variable: Databricks (30-50% savings) | Elastic: Snowflake (20-40% lower overhead) | Predictable: SingleStore`;
+      } else if (item.id === 'streaming') {
+        summaryText = `Ingestion: SingleStore (1M+ rows/sec) | Processing: Databricks (2-3x throughput) | Snowflake (500K+ rows/sec)`;
+      } else if (item.id === 'data-storage') {
+        summaryText = `Small queries: SingleStore (10x faster) | Large data: Databricks (50-80% lower storage costs)`;
+      } else {
+        // Extract metrics with percentages
+        const percentMatches = description.match(/\d+%|\d+-\d+%/g);
+        if (percentMatches && percentMatches.length > 0) {
+          summaryText = `Conditional advantage - Key metrics: ${percentMatches.join(', ')}`;
+        } else {
+          summaryText = description;
+        }
+      }
+    } else {
+      // For qualitative comparisons, use the original description
+      summaryText = description;
+    }
+    
+    return summaryText;
+  };
+
+  // Get a color class for the metric summary based on the winner
+  const getMetricsSummaryColor = (metrics) => {
+    if (!metrics) return "text-gray-600";
+    
+    if (metrics.winner === 'databricks') {
+      return "text-purple-700";
+    } else if (metrics.winner === 'singlestore') {
+      return "text-blue-700";
+    } else if (metrics.winner === 'snowflake') {
+      return "text-cyan-700";
+    } else {
+      return "text-gray-600";
+    }
+  };
+
   // Filter the data based on the view mode
-  const filteredData = comparisonData.filter(item => {
+  const filteredData = databaseComparisonData.filter(item => {
     if (viewMode === 'all') return true;
     if (viewMode === 'performance') return item.metrics?.type === 'performance';
     if (viewMode === 'cost') return item.metrics?.type === 'cost';
@@ -286,18 +142,41 @@ const DatabaseComparison = () => {
     return acc;
   }, {});
 
+  // Calculate widths based on platform filter and quick metrics
+  const getTitleWidth = () => {
+    if (showQuickMetrics) {
+      return platformFilter === 'all' ? 'w-1/5' : 'w-1/4';
+    } else {
+      return platformFilter === 'all' ? 'w-1/4' : 'w-1/3';
+    }
+  };
+
+  const getColumnWidth = () => {
+    if (showQuickMetrics) {
+      return platformFilter === 'all' ? 'w-1/5' : 'w-1/4';
+    } else {
+      return platformFilter === 'all' ? 'w-1/4' : 'w-1/3';
+    }
+  };
+
+  const getQuickMetricsWidth = () => {
+    return platformFilter === 'all' ? 'w-1/5' : 'w-1/4';
+  };
+
   return (
     <div>
-      {/* Updated header with blue-to-purple gradient */}
+      {/* Header with blue-to-purple gradient */}
       <div 
         className="bg-gradient-to-r from-blue-600 to-purple-600 p-6 rounded-xl shadow-lg mb-4 text-center"
       >
-        <h1 className="text-3xl font-bold text-white mb-2">SingleStore vs Databricks</h1>
-        <p className="text-white/80">Interactive Comparison for Data Engineering Teams</p>
+        <h1 className="text-3xl font-bold text-white mb-2">
+          Database Technology Comparison
+        </h1>
+        <p className="text-white/80">SingleStore vs Databricks vs Snowflake for Data Engineering Teams</p>
       </div>
       
-      {/* Filter buttons with improved alignment */}
-      <div className="bg-white rounded-lg shadow-md p-6 hover:shadow-xl transition-shadow mb-8">
+      {/* Filter buttons */}
+      <div className="bg-white rounded-lg shadow-md p-6 hover:shadow-xl transition-shadow mb-4">
         <div className="flex justify-center flex-wrap">
           <button 
             onClick={() => setViewMode('all')}
@@ -328,6 +207,55 @@ const DatabaseComparison = () => {
             className={`btn ${viewMode === 'terminology' ? 'btn-gradient' : 'btn-standard'}`}
           >
             Databricks Terms
+          </button>
+        </div>
+      </div>
+      
+      {/* Platform filter */}
+      <div className="bg-white rounded-lg shadow-md p-4 hover:shadow-xl transition-shadow mb-4">
+        <h3 className="text-center text-sm font-medium text-gray-700 mb-3">Compare Platforms</h3>
+        <div className="flex justify-center flex-wrap gap-2">
+          <button 
+            onClick={() => setPlatformFilter('all')}
+            className={`px-4 py-2 text-sm font-medium rounded-md ${platformFilter === 'all' ? 'bg-gray-800 text-white' : 'bg-gray-100 text-gray-800 hover:bg-gray-200'}`}
+          >
+            All
+          </button>
+          <button 
+            onClick={() => setPlatformFilter('singlestore-databricks')}
+            className={`px-4 py-2 text-sm font-medium rounded-md ${platformFilter === 'singlestore-databricks' ? 'bg-indigo-600 text-white' : 'bg-indigo-50 text-indigo-600 hover:bg-indigo-100'}`}
+          >
+            SingleStore vs Databricks
+          </button>
+          <button 
+            onClick={() => setPlatformFilter('databricks-snowflake')}
+            className={`px-4 py-2 text-sm font-medium rounded-md ${platformFilter === 'databricks-snowflake' ? 'bg-purple-600 text-white' : 'bg-purple-50 text-purple-600 hover:bg-purple-100'}`}
+          >
+            Databricks vs Snowflake
+          </button>
+          <button 
+            onClick={() => setPlatformFilter('singlestore-snowflake')}
+            className={`px-4 py-2 text-sm font-medium rounded-md ${platformFilter === 'singlestore-snowflake' ? 'bg-cyan-600 text-white' : 'bg-cyan-50 text-cyan-600 hover:bg-cyan-100'}`}
+          >
+            SingleStore vs Snowflake
+          </button>
+        </div>
+      </div>
+      
+      {/* Quick metrics toggle */}
+      <div className="bg-white rounded-lg shadow-md p-4 hover:shadow-xl transition-shadow mb-8">
+        <div className="flex justify-center items-center">
+          <span className="mr-3 text-sm font-medium text-gray-700">Show Key Metrics Summary:</span>
+          <button 
+            onClick={() => setShowQuickMetrics(!showQuickMetrics)}
+            className={`relative inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 ${showQuickMetrics ? 'bg-blue-600' : 'bg-gray-200'}`}
+            role="switch"
+            aria-checked={showQuickMetrics}
+          >
+            <span 
+              aria-hidden="true" 
+              className={`${showQuickMetrics ? 'translate-x-5' : 'translate-x-0'} pointer-events-none inline-block h-5 w-5 rounded-full bg-white shadow transform ring-0 transition ease-in-out duration-200`}
+            ></span>
           </button>
         </div>
       </div>
@@ -375,7 +303,8 @@ const DatabaseComparison = () => {
                     className={`flex cursor-pointer hover:bg-gray-50 transition-colors ${expandedItem === item.id ? 'bg-blue-50' : ''}`}
                     onClick={() => toggleExpand(item.id)}
                   >
-                    <div className="w-1/3 p-4 font-medium flex items-center">
+                    {/* Feature Title Column */}
+                    <div className={`${getTitleWidth()} p-4 font-medium flex items-center`}>
                       <div>
                         {item.title}
                         {item.metrics && (
@@ -385,14 +314,39 @@ const DatabaseComparison = () => {
                         )}
                       </div>
                     </div>
-                    <div className="w-1/3 p-4 border-l border-r border-gray-200">
-                      <div className="text-sm text-blue-800 font-semibold">SingleStore</div>
-                      <div className="mt-1">{item.singlestore}</div>
-                    </div>
-                    <div className="w-1/3 p-4">
-                      <div className="text-sm text-purple-800 font-semibold">Databricks</div>
-                      <div className="mt-1">{item.databricks}</div>
-                    </div>
+                    
+                    {/* Quick Metrics Summary Column - Now with data-driven summaries */}
+                    {showQuickMetrics && (
+                      <div className={`${getQuickMetricsWidth()} p-4 border-l border-r border-gray-200`}>
+                        <div className="text-sm text-gray-600 font-semibold">Key Metrics</div>
+                        <div className={`mt-1 text-sm ${getMetricsSummaryColor(item.metrics)}`}>
+                          {getMetricsSummary(item)}
+                        </div>
+                      </div>
+                    )}
+                    
+                    {/* Platform specific cells - display based on platform filter */}
+                    {(platformFilter === 'all' || platformFilter === 'singlestore-databricks' || platformFilter === 'singlestore-snowflake') && (
+                      <div className={`${getColumnWidth()} p-4 border-l ${platformFilter === 'all' ? 'border-r' : ''} border-gray-200`}>
+                        <div className="text-sm text-blue-800 font-semibold">SingleStore</div>
+                        <div className="mt-1">{item.singlestore}</div>
+                      </div>
+                    )}
+                    
+                    {(platformFilter === 'all' || platformFilter === 'singlestore-databricks' || platformFilter === 'databricks-snowflake') && (
+                      <div className={`${getColumnWidth()} p-4 ${platformFilter !== 'all' ? 'border-l border-r' : ''} border-gray-200`}>
+                        <div className="text-sm text-purple-800 font-semibold">Databricks</div>
+                        <div className="mt-1">{item.databricks}</div>
+                      </div>
+                    )}
+                    
+                    {(platformFilter === 'all' || platformFilter === 'databricks-snowflake' || platformFilter === 'singlestore-snowflake') && (
+                      <div className={`${getColumnWidth()} p-4 ${platformFilter === 'all' ? 'border-l' : ''}`}>
+                        <div className="text-sm text-cyan-800 font-semibold">Snowflake</div>
+                        <div className="mt-1">{item.snowflake}</div>
+                      </div>
+                    )}
+                    
                     <div className="flex items-center px-4">
                       <svg 
                         className={`w-5 h-5 text-gray-500 transition-transform ${expandedItem === item.id ? 'transform rotate-180' : ''}`} 
@@ -416,11 +370,7 @@ const DatabaseComparison = () => {
                         {item.metrics && (
                           <div className="bg-white p-4 rounded shadow-sm">
                             <h3 className="font-medium mb-2">Performance & Efficiency Metrics</h3>
-                            <p className="text-gray-700 mb-2">
-                              {item.metrics.winner === 'databricks' && <span className="font-semibold text-purple-700">Databricks: </span>}
-                              {item.metrics.winner === 'singlestore' && <span className="font-semibold text-blue-700">SingleStore: </span>}
-                              {item.metrics.description}
-                            </p>
+                            <p className="text-gray-700 mb-2">{item.metrics.description}</p>
                             <p className="text-xs text-gray-500">Source: {item.metrics.source}</p>
                           </div>
                         )}
@@ -436,7 +386,7 @@ const DatabaseComparison = () => {
       
       <div className="mt-6 bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow">
         <h2 className="text-lg font-semibold text-gray-800 mb-2">How to Use This Comparison</h2>
-        <p className="text-gray-700">Click on any row to expand and see detailed information about that specific comparison point. Use the filter buttons above to focus on performance, cost efficiency, or development efficiency metrics. All metrics are based on official vendor documentation, benchmarks, and published case studies.</p>
+        <p className="text-gray-700">Click on any row to expand and see detailed information about that specific comparison point. Use the filter buttons above to focus on specific aspects or platform comparisons. The Key Metrics column highlights specific performance differences with percentage improvements where available.</p>
         <div className="mt-4 bg-yellow-50 border border-yellow-200 p-3 rounded-lg">
           <p className="text-sm text-yellow-800">
             <strong>Note:</strong> Performance and cost metrics can vary significantly based on specific workloads, configurations, and deployment scenarios. These figures represent typical scenarios but your actual results may differ.

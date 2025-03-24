@@ -4,103 +4,96 @@ import DataEngineeringGlossary from './components/DataEngineeringGlossary';
 import AwsVsAzureComparison from './components/AwsVsAzureComparison';
 import DataProcessingFlows from './components/DataProcessingFlows';
 import CloudStorageComparison from './components/CloudStorageComparison';
-import AzureDatabricksInfraDetail from './components/AzureDatabricksInfra'; // new import
-import StoragePricingComparison from './components/StoragePricingComparison'; // added import
+import AzureDatabricksInfraDetail from './components/AzureDatabricksInfra';
+import StoragePricingComparison from './components/StoragePricingComparison';
 import './App.css';
-import './styles/buttons.css'; // Import the button styles
+import './styles/buttons.css';
 
 function App() {
-  // State to track active tab
-  const [activeTab, setActiveTab] = useState('comparison');
+  // State to track active primary category and subcategory
+  const [activeCategory, setActiveCategory] = useState('cloud-compare');
+  const [activeSubcategory, setActiveSubcategory] = useState('overview');
+
+  // Navigation structure with categories and subcategories
+  const navigation = {
+    'cloud-compare': {
+      label: 'AWS vs Azure',
+      subcategories: {
+        'overview': { label: 'Services Overview', component: <AwsVsAzureComparison /> },
+        'storage': { label: 'Storage Services', component: <CloudStorageComparison /> },
+        'storage-pricing': { label: 'Storage Pricing', component: <StoragePricingComparison /> },
+        'data-flows': { label: 'Data Processing Flows', component: <DataProcessingFlows /> }
+      }
+    },
+    'database-compare': {
+      label: 'Database Technologies',
+      subcategories: {
+        'database': { label: 'SingleStore vs Databricks vs Snowflake', component: <DatabaseComparison /> }
+      }
+    },
+    'architecture': {
+      label: 'Architecture',
+      subcategories: {
+        'databricks': { label: 'Databricks Architecture', component: <AzureDatabricksInfraDetail /> }
+      }
+    },
+    'reference': {
+      label: 'Reference',
+      subcategories: {
+        'glossary': { label: 'Data Engineering Glossary', component: <DataEngineeringGlossary /> }
+      }
+    }
+  };
+
+  const handleCategoryClick = (category) => {
+    setActiveCategory(category);
+    // Select the first subcategory when changing categories
+    setActiveSubcategory(Object.keys(navigation[category].subcategories)[0]);
+  };
 
   return (
     <div className="App bg-gray-50 min-h-screen">
-      {/* Blue-to-purple gradient for the main tabs */}
-      <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-6 flex justify-center shadow-md">
+      {/* Primary navigation - Categories */}
+      <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-6 shadow-md">
         <div className="flex justify-center w-full max-w-6xl mx-auto flex-wrap">
-          <button 
-            onClick={() => setActiveTab('comparison')} 
-            className={`btn-nav ${
-              activeTab === 'comparison' 
-                ? 'btn-nav-active' 
-                : 'btn-nav-inactive'
-            }`}
-          >
-            SingleStore vs Databricks
-          </button>
-          <button 
-            onClick={() => setActiveTab('glossary')} 
-            className={`btn-nav ${
-              activeTab === 'glossary' 
-                ? 'btn-nav-active' 
-                : 'btn-nav-inactive'
-            }`}
-          >
-            Data Engineering Glossary
-          </button>
-          <button 
-            onClick={() => setActiveTab('aws-vs-azure')} 
-            className={`btn-nav ${
-              activeTab === 'aws-vs-azure' 
-                ? 'btn-nav-active' 
-                : 'btn-nav-inactive'
-            }`}
-          >
-            AWS vs Azure Cloud Services
-          </button>
-          <button 
-            onClick={() => setActiveTab('cloud-storage')} 
-            className={`btn-nav ${
-              activeTab === 'cloud-storage' 
-                ? 'btn-nav-active' 
-                : 'btn-nav-inactive'
-            }`}
-          >
-            Blob vs S3
-          </button>
-          <button 
-            onClick={() => setActiveTab('data-flows')} 
-            className={`btn-nav ${
-              activeTab === 'data-flows' 
-                ? 'btn-nav-active' 
-                : 'btn-nav-inactive'
-            }`}
-          >
-            Processing Flows
-          </button>
-          <button 
-            onClick={() => setActiveTab('infra')} 
-            className={`btn-nav ${
-              activeTab === 'infra' 
-                ? 'btn-nav-active' 
-                : 'btn-nav-inactive'
-            }`}
-          >
-            Databricks Infra
-          </button>
-          <button 
-            onClick={() => setActiveTab('storage-pricing')} 
-            className={`btn-nav ${
-              activeTab === 'storage-pricing' 
-                ? 'btn-nav-active' 
-                : 'btn-nav-inactive'
-            }`}
-          >
-            AWS vs Azure Storage Pricing
-          </button>
+          {Object.entries(navigation).map(([category, { label }]) => (
+            <button 
+              key={category}
+              onClick={() => handleCategoryClick(category)} 
+              className={`btn-nav ${
+                activeCategory === category 
+                  ? 'btn-nav-active' 
+                  : 'btn-nav-inactive'
+              }`}
+            >
+              {label}
+            </button>
+          ))}
         </div>
       </div>
 
-      {/* Container with consistent max width and padding */}
+      {/* Secondary navigation - Subcategories */}
+      <div className="bg-gray-100 py-3 px-6 border-b">
+        <div className="flex justify-center w-full max-w-6xl mx-auto flex-wrap">
+          {Object.entries(navigation[activeCategory].subcategories).map(([subcategory, { label }]) => (
+            <button 
+              key={subcategory}
+              onClick={() => setActiveSubcategory(subcategory)} 
+              className={`px-4 py-2 mx-1 text-sm font-medium rounded-md ${
+                activeSubcategory === subcategory 
+                  ? 'bg-white shadow text-blue-600' 
+                  : 'text-gray-600 hover:text-gray-900 hover:bg-gray-200'
+              }`}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Container for component content */}
       <div className="container max-w-6xl mx-auto p-6">
-        {/* Render the active component */}
-        {activeTab === 'comparison' && <DatabaseComparison />}
-        {activeTab === 'glossary' && <DataEngineeringGlossary />}
-        {activeTab === 'aws-vs-azure' && <AwsVsAzureComparison />}
-        {activeTab === 'cloud-storage' && <CloudStorageComparison />}
-        {activeTab === 'data-flows' && <DataProcessingFlows />}
-        {activeTab === 'infra' && <AzureDatabricksInfraDetail />}  {/* new render */}
-        {activeTab === 'storage-pricing' && <StoragePricingComparison />}
+        {navigation[activeCategory].subcategories[activeSubcategory].component}
       </div>
     </div>
   );

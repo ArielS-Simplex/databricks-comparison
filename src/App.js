@@ -6,6 +6,7 @@ import DataProcessingFlows from './components/DataProcessingFlows';
 import CloudStorageComparison from './components/CloudStorageComparison';
 import AzureDatabricksInfraDetail from './components/AzureDatabricksInfra';
 import StoragePricingComparison from './components/StoragePricingComparison';
+import AICapabilityMatrix from './components/AICapabilityMatrix'; // Import the new AI component
 import './App.css';
 import './styles/buttons.css';
 
@@ -41,6 +42,12 @@ function App() {
       label: 'Reference',
       subcategories: {
         'glossary': { label: 'Data Engineering Glossary', component: <DataEngineeringGlossary /> }
+      }
+    },
+    'ai-capabilities': {  // New AI Capabilities category
+      label: 'AI Capabilities',
+      subcategories: {
+        'matrix': { label: 'AI Capability Matrix', component: <AICapabilityMatrix /> }
       }
     }
   };

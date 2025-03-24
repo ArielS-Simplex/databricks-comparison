@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/databricks-comparison/static/css/main.de36eb6d.chunk.css",
-    "main.js": "/databricks-comparison/static/js/main.bfb988f6.chunk.js",
-    "main.js.map": "/databricks-comparison/static/js/main.bfb988f6.chunk.js.map",
+    "main.js": "/databricks-comparison/static/js/main.9f588cdf.chunk.js",
+    "main.js.map": "/databricks-comparison/static/js/main.9f588cdf.chunk.js.map",
     "runtime~main.js": "/databricks-comparison/static/js/runtime~main.590ac9e9.js",
     "runtime~main.js.map": "/databricks-comparison/static/js/runtime~main.590ac9e9.js.map",
     "static/js/2.13dc0c1a.chunk.js": "/databricks-comparison/static/js/2.13dc0c1a.chunk.js",
@@ -10,7 +10,7 @@
     "static/js/3.ba8b7f13.chunk.js": "/databricks-comparison/static/js/3.ba8b7f13.chunk.js",
     "static/js/3.ba8b7f13.chunk.js.map": "/databricks-comparison/static/js/3.ba8b7f13.chunk.js.map",
     "index.html": "/databricks-comparison/index.html",
-    "precache-manifest.7e531af358f3137e236858a48e2f9427.js": "/databricks-comparison/precache-manifest.7e531af358f3137e236858a48e2f9427.js",
+    "precache-manifest.dcf71a3f1d4b1006633eb2cdf0a661bc.js": "/databricks-comparison/precache-manifest.dcf71a3f1d4b1006633eb2cdf0a661bc.js",
     "service-worker.js": "/databricks-comparison/service-worker.js",
     "static/css/main.de36eb6d.chunk.css.map": "/databricks-comparison/static/css/main.de36eb6d.chunk.css.map"
   }

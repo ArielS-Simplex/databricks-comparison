@@ -7,6 +7,7 @@ import CloudStorageComparison from './components/CloudStorageComparison';
 import AzureDatabricksInfraDetail from './components/AzureDatabricksInfra';
 import StoragePricingComparison from './components/StoragePricingComparison';
 import SimplifiedComparison from './components/SimplifiedComparison'; // Import the new component
+import AICapabilityMatrix from './components/AICapabilityMatrix'; // Import the new component
 import './App.css';
 import './styles/buttons.css';
 
@@ -41,7 +42,7 @@ function App() {
       }
     },
     'database-compare': {
-      label: 'Database Technologies',
+      label: 'Database Comparison',
       subcategories: {
         'database': { 
           label: 'SingleStore vs Databricks vs Snowflake',
@@ -51,7 +52,7 @@ function App() {
       }
     },
     'architecture': {
-      label: 'Architecture',
+      label: 'Datacricks Architecture',
       subcategories: {
         'databricks': { 
           label: 'Databricks Architecture', 
@@ -65,6 +66,15 @@ function App() {
         'glossary': { 
           label: 'Data Engineering Glossary', 
           component: <DataEngineeringGlossary />
+        }
+      }
+    },
+    'ai-capability': {
+      label: 'AI Capability Matrix',
+      subcategories: {
+        'matrix': { 
+          label: 'AI Capability Matrix', 
+          component: <AICapabilityMatrix />
         }
       }
     }

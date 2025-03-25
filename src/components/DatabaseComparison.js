@@ -2,7 +2,79 @@ import React, { useState } from 'react';
 import databricksTerminology from '../data/databricksTerminology';
 import databaseComparisonData from '../data/databaseComparisonData';
 import databaseExecutiveSummary from '../data/databaseExecutiveSummary';
+import SimplifiedComparison from './SimplifiedComparison';  
 import '../styles/buttons.css';
+
+// Add the new ACID on S3/ADLS content
+const acidOnS3Content = {
+  title: "ACID on Cloud Storage",
+  description: "A key architectural advantage of Databricks is bringing ACID transactions to cloud object storage",
+  advantages: [
+    {
+      id: "cheap-storage",
+      title: "Cheap, Scalable Storage",
+      databricks: "S3/ADLS is infinitely scalable and low-cost vs. DWH's proprietary storage",
+      advantage: "Massive cost savings over time, especially for raw data or backups"
+    },
+    {
+      id: "open-format",
+      title: "Open Format (Parquet)",
+      databricks: "Data is stored in open formats, not vendor-locked binaries",
+      advantage: "You can query the same data with Spark, Presto, Trino, etc."
+    },
+    {
+      id: "acid-transactions",
+      title: "ACID on Object Storage",
+      databricks: "Delta Lake adds transactions, rollback, concurrency to S3 — which had none",
+      advantage: "Gives DWH-like reliability without moving data or paying DWH prices"
+    },
+    {
+      id: "unified-storage",
+      title: "Unified Storage Tier",
+      databricks: "Store raw, processed, ML-ready, and BI data all in one place",
+      advantage: "Avoids duplication across DWH, lake, and staging areas"
+    },
+    {
+      id: "realtime-writes",
+      title: "Real-Time Writes & Updates",
+      databricks: "Supports streaming writes with MERGE, UPDATE, DELETE on S3",
+      advantage: "Snowflake & SingleStore can't do ACID updates directly on S3"
+    },
+    {
+      id: "etl-overhead",
+      title: "Avoid ETL-to-Warehouse Overhead",
+      databricks: "No need to copy data into DWH for analysis – it's already live & queryable",
+      advantage: "Reduces latency, simplifies pipelines, cuts storage duplication"
+    }
+  ],
+  businessBenefits: [
+    {
+      concern: "Data cost at scale",
+      databricks: "Store petabytes for cheap (S3/ADLS)",
+      competitors: "Costly proprietary storage"
+    },
+    {
+      concern: "Vendor lock-in",
+      databricks: "Open format = freedom",
+      competitors: "Locked to internal format"
+    },
+    {
+      concern: "Analytics on raw data",
+      databricks: "Can query raw, semi-structured, or structured",
+      competitors: "Need to ingest first"
+    },
+    {
+      concern: "Streaming data ops",
+      databricks: "Real-time + ACID on raw data",
+      competitors: "External tables = no ACID"
+    },
+    {
+      concern: "Data science & ML workflows",
+      databricks: "Native notebooks, ML, Delta tables",
+      competitors: "Needs external integration"
+    }
+  ]
+};
 
 const DatabaseComparison = () => {
   // State to track which comparison is expanded
@@ -21,10 +93,17 @@ const DatabaseComparison = () => {
   const [expandedPriority, setExpandedPriority] = useState(null);
   // State for expanded industry
   const [expandedIndustry, setExpandedIndustry] = useState(null);
+  // State for ACID feature section
+  const [showAcidFeature, setShowAcidFeature] = useState(false);
 
   // Toggle expanded state
   const toggleExpand = (id) => {
     setExpandedItem(expandedItem === id ? null : id);
+  };
+
+  // Toggle ACID Feature section
+  const toggleAcidFeature = () => {
+    setShowAcidFeature(!showAcidFeature);
   };
 
   // Toggle expansion of a business priority
@@ -314,6 +393,12 @@ const DatabaseComparison = () => {
               >
                 Databricks Terms
               </button>
+              <button 
+                onClick={() => setViewMode('acid')}
+                className={`btn ${viewMode === 'acid' ? 'btn-gradient' : 'btn-standard'}`}
+              >
+                ACID on Cloud Storage
+              </button>
             </div>
           </div>
           
@@ -366,6 +451,94 @@ const DatabaseComparison = () => {
             </div>
           </div>
           
+          {/* ACID on Cloud Storage Feature Section */}
+          {viewMode === 'acid' && (
+            <div className="mb-8 bg-gradient-to-r from-purple-50 to-purple-100 rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow">
+              <div className="p-6">
+                <h2 className="text-2xl font-semibold mb-2 text-purple-800">Why It's Powerful That Databricks Brings ACID to S3/ADLS</h2>
+                <p className="mb-6 text-gray-700">A key architectural advantage that often gets overlooked when comparing database platforms</p>
+                
+                {/* ACID Advantages */}
+                <div className="mb-8">
+                  <div className="bg-white rounded-lg overflow-hidden shadow-sm">
+                    <table className="min-w-full divide-y divide-gray-200">
+                      <thead className="bg-purple-600">
+                        <tr>
+                          <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Advantage</th>
+                          <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Databricks Implementation</th>
+                          <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Key Differentiator</th>
+                        </tr>
+                      </thead>
+                      <tbody className="bg-white divide-y divide-gray-200">
+                        {acidOnS3Content.advantages.map((advantage) => (
+                          <tr key={advantage.id} className="hover:bg-purple-50">
+                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                              {advantage.title}
+                            </td>
+                            <td className="px-6 py-4 text-sm text-gray-700">
+                              {advantage.databricks}
+                            </td>
+                            <td className="px-6 py-4 text-sm text-purple-700">
+                              ✅ {advantage.advantage}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                
+                {/* Business Benefits */}
+                <h3 className="text-xl font-semibold mb-4 text-gray-800">💰 Real-World Business Benefits</h3>
+                <div className="bg-white rounded-lg overflow-hidden shadow-sm">
+                  <table className="min-w-full divide-y divide-gray-200">
+                    <thead className="bg-gray-50">
+                      <tr>
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Business Concern</th>
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Databricks Lakehouse (ACID on S3)</th>
+                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Snowflake / SingleStore</th>
+                      </tr>
+                    </thead>
+                    <tbody className="bg-white divide-y divide-gray-200">
+                      {acidOnS3Content.businessBenefits.map((benefit, index) => (
+                        <tr key={index} className="hover:bg-gray-50">
+                          <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                            {benefit.concern}
+                          </td>
+                          <td className="px-6 py-4 text-sm text-purple-700 font-medium">
+                            {benefit.databricks}
+                          </td>
+                          <td className="px-6 py-4 text-sm text-gray-700">
+                            {benefit.competitors}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+
+                {/* Technical Notes */}
+                <div className="mt-8 bg-white p-6 rounded-lg shadow-sm">
+                  <h3 className="font-semibold text-gray-800 mb-2">Technical Nuances & Balanced Perspective</h3>
+                  <ul className="list-disc pl-5 space-y-2 text-gray-700">
+                    <li>
+                      <span className="font-medium">Snowflake's external tables</span> can query S3 directly but without the full ACID guarantees that Delta Lake provides
+                    </li>
+                    <li>
+                      <span className="font-medium">SingleStore's in-memory architecture</span> offers superior performance for pure OLTP workloads where low-latency point lookups are critical
+                    </li>
+                    <li>
+                      <span className="font-medium">Compute costs</span> should be considered alongside storage savings - Databricks typically requires right-sizing of compute resources for optimal performance
+                    </li>
+                    <li>
+                      <span className="font-medium">Data migration complexity</span> varies based on source systems and data structure
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          )}
+          
           <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow">
             {viewMode === 'terminology' ? (
               <div className="p-6">
@@ -398,6 +571,8 @@ const DatabaseComparison = () => {
                   ))}
                 </div>
               </div>
+            ) : viewMode === 'acid' ? (
+              null // We've already rendered the ACID content above
             ) : (
               Object.entries(groupedByCategory).map(([category, items]) => (
                 <div key={category} className="border-b last:border-b-0">
@@ -489,6 +664,26 @@ const DatabaseComparison = () => {
               ))
             )}
           </div>
+
+          {/* ACID on Cloud Storage Callout */}
+          {viewMode !== 'acid' && viewMode !== 'terminology' && (
+            <div className="mt-6 bg-gradient-to-r from-purple-50 to-purple-100 p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-40 h-40 -mt-10 -mr-10 bg-purple-200 rounded-full opacity-30"></div>
+              
+              <div className="relative z-10">
+                <h2 className="text-xl font-semibold text-purple-800 mb-2">Key Architectural Advantage: ACID on Cloud Storage</h2>
+                <p className="text-gray-700 mb-3">
+                  Databricks brings ACID transactions to cloud object storage (S3/ADLS) - a fundamental architecture advantage that impacts cost, flexibility, and analytics capabilities.
+                </p>
+                <button 
+                  onClick={() => setViewMode('acid')}
+                  className="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 transition-colors font-medium text-sm"
+                >
+                  See Why This Matters
+                </button>
+              </div>
+            </div>
+          )}
           
           <div className="mt-6 bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow">
             <h2 className="text-lg font-semibold text-gray-800 mb-2">How to Use This Comparison</h2>
@@ -527,6 +722,60 @@ const DatabaseComparison = () => {
                 </button>
               ))}
             </div>
+          </div>
+
+          {/* ACID on Cloud Storage Executive Summary */}
+          <div className="bg-gradient-to-r from-purple-50 to-purple-100 rounded-lg shadow-md p-6 hover:shadow-xl transition-shadow mb-6">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-xl font-semibold text-purple-800">Strategic Advantage: ACID on Cloud Storage</h2>
+              <button
+                onClick={toggleAcidFeature}
+                className="text-purple-700 hover:text-purple-900 focus:outline-none"
+              >
+                <span className="text-sm font-medium flex items-center">
+                  {showAcidFeature ? 'Hide Details' : 'Show Details'}
+                  <svg
+                    className={`ml-1 w-5 h-5 transform transition-transform ${showAcidFeature ? 'rotate-180' : ''}`}
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </span>
+              </button>
+            </div>
+            
+            <p className="text-gray-700 mb-3">
+              Databricks' ability to bring ACID transactions to cloud object storage creates significant business advantages that impact total cost of ownership, data accessibility, and analytics flexibility.
+            </p>
+            
+            {showAcidFeature && (
+              <div className="mt-4 bg-white rounded-lg p-4 shadow-sm">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                  <div className="border-l-4 border-purple-400 pl-3">
+                    <h3 className="font-medium text-gray-900 mb-1">Cost Efficiency</h3>
+                    <p className="text-sm text-gray-700">Store petabytes on low-cost S3/ADLS while maintaining transactional integrity, achieving 50-70% storage cost savings vs. proprietary database storage</p>
+                  </div>
+                  
+                  <div className="border-l-4 border-purple-400 pl-3">
+                    <h3 className="font-medium text-gray-900 mb-1">Analytics Flexibility</h3>
+                    <p className="text-sm text-gray-700">Query raw, semi-processed, or refined data directly with SQL, Python, or R without data duplication or separate analytics systems</p>
+                  </div>
+                  
+                  <div className="border-l-4 border-purple-400 pl-3">
+                    <h3 className="font-medium text-gray-900 mb-1">Future-Proofing</h3>
+                    <p className="text-sm text-gray-700">Open formats prevent vendor lock-in while cloud storage scalability eliminates capacity planning concerns</p>
+                  </div>
+                </div>
+                
+                <div className="mt-3 p-3 bg-yellow-50 rounded-lg text-sm">
+                  <p className="text-yellow-800">
+                    <strong>Executive Consideration:</strong> While Snowflake and SingleStore offer excellent analytical and transactional capabilities respectively, their architectures require data to be copied into proprietary formats. Databricks' approach eliminates this requirement, significantly reducing total storage costs and simplifying data architecture.
+                  </p>
+                </div>
+              </div>
+            )}
           </div>
           
           {/* Executive Dashboard - High Level Platform Comparison */}

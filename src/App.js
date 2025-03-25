@@ -53,7 +53,7 @@ function App() {
       }
     },
     'architecture': {
-      label: 'Datacricks Architecture',
+      label: 'Databricks Architecture',
       subcategories: {
         'databricks': { 
           label: 'Databricks Architecture', 

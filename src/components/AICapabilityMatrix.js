@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
+import PageHeader from './common/PageHeader';
 import aiCapabilityData from '../data/aiCapabilityData';
-import executiveSummaryData from '../data/executiveSummaryData'; // New data file for executive summaries
+import executiveSummaryData from '../data/executiveSummaryData';
 import '../styles/buttons.css';
+import '../styles/common.css';
 
 const AICapabilityMatrix = () => {
   // State to track which comparison is expanded
@@ -9,7 +11,7 @@ const AICapabilityMatrix = () => {
   // State for viewing mode (capability filter)
   const [viewMode, setViewMode] = useState('all');
   // State for audience view type (technical vs executive)
-  const [audienceView, setAudienceView] = useState('technical');
+  const [audienceView, setAudienceView] = useState('executive');
   // State for showing the quick metrics column
   const [showQuickMetrics, setShowQuickMetrics] = useState(true);
 
@@ -184,31 +186,16 @@ const AICapabilityMatrix = () => {
 
   return (
     <div>
-      {/* Header with blue-to-purple gradient */}
-      <div 
-        className="bg-gradient-to-r from-blue-600 to-purple-600 p-6 rounded-xl shadow-lg mb-4 text-center"
-      >
-        <h1 className="text-3xl font-bold text-white mb-2">
-          AI Capability Matrix
-        </h1>
-        <p className="text-white/80">Databricks vs Snowflake for Machine Learning and AI Workloads</p>
-      </div>
+      <PageHeader 
+        title="AI Capability Matrix" 
+        subtitle="Databricks vs Snowflake for Machine Learning and AI Workloads" 
+      />
       
       {/* Audience View Toggle - New component for executive/technical view switch */}
       <div className="bg-white rounded-lg shadow-md p-4 hover:shadow-xl transition-shadow mb-4">
         <h3 className="text-center text-sm font-medium text-gray-700 mb-3">Audience View</h3>
         <div className="flex justify-center">
           <div className="bg-gray-100 p-1 rounded-lg inline-flex">
-            <button
-              onClick={() => setAudienceView('technical')}
-              className={`px-4 py-2 text-sm font-medium rounded-md transition-colors ${
-                audienceView === 'technical'
-                  ? 'bg-blue-600 text-white'
-                  : 'text-gray-700 hover:bg-gray-200'
-              }`}
-            >
-              Technical Details
-            </button>
             <button
               onClick={() => setAudienceView('executive')}
               className={`px-4 py-2 text-sm font-medium rounded-md transition-colors ${
@@ -218,6 +205,16 @@ const AICapabilityMatrix = () => {
               }`}
             >
               Executive Summary
+            </button>
+            <button
+              onClick={() => setAudienceView('technical')}
+              className={`px-4 py-2 text-sm font-medium rounded-md transition-colors ${
+                audienceView === 'technical'
+                  ? 'bg-blue-600 text-white'
+                  : 'text-gray-700 hover:bg-gray-200'
+              }`}
+            >
+              Technical Details
             </button>
           </div>
         </div>

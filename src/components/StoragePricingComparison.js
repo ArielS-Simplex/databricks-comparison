@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PageHeader from './common/PageHeader';
 
 const StoragePricingComparison = () => {
   // State for data volume selector
@@ -283,11 +284,11 @@ const StoragePricingComparison = () => {
 
   return (
     <div>
-      {/* Header with blue-to-purple gradient */}
-      <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-6 rounded-xl shadow-lg mb-4 text-center">
-        <h1 className="text-3xl font-bold text-white mb-2">Cloud Storage Pricing Analysis</h1>
-        <p className="text-white/80">3-Year Total Cost of Ownership Comparison</p>
-      </div>
+      {/* Replace custom header with PageHeader component */}
+      <PageHeader 
+        title="Cloud Storage Pricing Analysis"
+        subtitle="3-Year Total Cost of Ownership Comparison"
+      />
 
       {/* Basic pricing table */}
       <div className="bg-white rounded-lg shadow-md p-6 hover:shadow-xl transition-shadow mb-6">

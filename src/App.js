@@ -9,14 +9,15 @@ import StoragePricingComparison from './components/StoragePricingComparison';
 import SimplifiedComparison from './components/SimplifiedComparison'; // Import the new component
 import AICapabilityMatrix from './components/AICapabilityMatrix'; // Import the new component
 import './App.css';
-import './styles/buttons.css';
+import './styles/common.css'; // Import common styles
+import './styles/buttons.css'; // Import button styles
 
 function App() {
   // State to track active primary category and subcategory
   const [activeCategory, setActiveCategory] = useState('cloud-compare');
   const [activeSubcategory, setActiveSubcategory] = useState('overview');
   // View mode for database section only
-  const [databaseViewMode, setDatabaseViewMode] = useState('technical');
+  const [databaseViewMode, setDatabaseViewMode] = useState('executive');
 
   // Navigation structure with categories and subcategories
   const navigation = {
@@ -60,8 +61,8 @@ function App() {
         }
       }
     },
-    'reference': {
-      label: 'Reference',
+    'Data Engineering Glossary': {
+      label: 'Data Engineering Glossary',
       subcategories: {
         'glossary': { 
           label: 'Data Engineering Glossary', 
@@ -112,7 +113,7 @@ function App() {
   return (
     <div className="App bg-gray-50 min-h-screen">
       {/* Primary navigation - Categories */}
-      <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-6 shadow-md">
+      <div className="header-gradient">
         <div className="flex justify-center w-full max-w-6xl mx-auto flex-wrap">
           {Object.entries(navigation).map(([category, { label }]) => (
             <button 

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import '../styles/buttons.css';
+import PageHeader from './common/PageHeader';
 
 // Enhanced flow step explanations with more technical details
 const flowExplanations = {
@@ -98,13 +99,11 @@ const DataProcessingFlows = () => {
 
   return (
     <div>
-      {/* Header with purple-to-blue gradient */}
-      <div 
-        className="bg-gradient-to-r from-blue-600 to-purple-600 p-6 rounded-xl shadow-lg mb-4 text-center"
-      >
-        <h1 className="text-3xl font-bold text-white mb-2">Data Processing Flows</h1>
-        <p className="text-white/80">Compare cloud data processing pipelines across AWS and Azure</p>
-      </div>
+      {/* Replace custom header with PageHeader component */}
+      <PageHeader 
+        title="Data Processing Flows"
+        subtitle="Compare cloud data processing pipelines across AWS and Azure"
+      />
 
       {/* Tab navigation */}
       <div className="flex mb-4 border-b">

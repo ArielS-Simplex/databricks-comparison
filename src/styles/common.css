@@ -1,0 +1,92 @@
+/* Common header styles */
+.header-gradient {
+  background: linear-gradient(to right, var(--color-primary, #2563eb), var(--color-primary-light, #3b82f6));
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.header-gradient h1 {
+  color: white;
+  font-size: 1.875rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.header-gradient p {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* Card styles */
+.card {
+  background-color: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
+  overflow: hidden;
+}
+
+.card:hover {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+  padding: 1rem;
+  background-color: #f9fafb;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.card-body {
+  padding: 1.5rem;
+}
+
+/* Theme CSS variables for consistent colors */
+:root {
+  /* Primary colors */
+  --color-primary: #2563eb; /* blue-600 */
+  --color-primary-light: #3b82f6; /* blue-500 */
+  --color-primary-dark: #1d4ed8; /* blue-700 */
+  
+  /* Secondary colors */
+  --color-secondary: #7c3aed; /* violet-600 */
+  --color-secondary-light: #8b5cf6; /* violet-500 */
+  
+  /* Databricks colors */
+  --color-databricks: #7c3aed; /* violet-600 */
+  --color-databricks-light: #ddd6fe; /* violet-200 */
+  
+  /* Snowflake colors */
+  --color-snowflake: #0ea5e9; /* sky-500 */
+  --color-snowflake-light: #bae6fd; /* sky-200 */
+  
+  /* AWS colors */
+  --color-aws: #f59e0b; /* amber-500 */
+  --color-aws-light: #fde68a; /* amber-200 */
+  
+  /* Azure colors */
+  --color-azure: #2563eb; /* blue-600 */
+  --color-azure-light: #bfdbfe; /* blue-200 */
+  
+  /* UI colors */
+  --color-success: #10b981; /* emerald-500 */
+  --color-warning: #f59e0b; /* amber-500 */
+  --color-error: #ef4444; /* red-500 */
+  --color-gray: #6b7280; /* gray-500 */
+}
+
+/* Utility classes for text colors */
+.text-primary { color: var(--color-primary); }
+.text-databricks { color: var(--color-databricks); }
+.text-snowflake { color: var(--color-snowflake); }
+.text-aws { color: var(--color-aws); }
+.text-azure { color: var(--color-azure); }
+
+/* Utility classes for backgrounds */
+.bg-primary-light { background-color: var(--color-primary-light); }
+.bg-databricks-light { background-color: var(--color-databricks-light); }
+.bg-snowflake-light { background-color: var(--color-snowflake-light); }
+.bg-aws-light { background-color: var(--color-aws-light); }
+.bg-azure-light { background-color: var(--color-azure-light); }

@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
+import PageHeader from './common/PageHeader';
 
 const DatabricksArchitecture = () => {
   const [activeTooltip, setActiveTooltip] = useState(null);
   const [activeTab, setActiveTab] = useState('architecture');
+    const [audienceView, setAudienceView] = useState('executive');
   
   const handleMouseEnter = (id) => {
     setActiveTooltip(id);
@@ -915,34 +917,66 @@ const DatabricksArchitecture = () => {
   };
 
   return (
-    <div className="p-6 bg-white rounded-lg shadow-lg">
-      {/* Tab navigation */}
-      <div className="flex border-b mb-6">
-        <button
-          className={`px-4 py-2 font-medium ${activeTab === 'architecture' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-500 hover:text-gray-700'}`}
-          onClick={() => setActiveTab('architecture')}
-        >
-          Architecture Overview
-        </button>
-        <button
-          className={`px-4 py-2 font-medium ${activeTab === 'cost' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-500 hover:text-gray-700'}`}
-          onClick={() => setActiveTab('cost')}
-        >
-          Cost & Scaling
-        </button>
-        <button
-          className={`px-4 py-2 font-medium ${activeTab === 'implementation' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-500 hover:text-gray-700'}`}
-          onClick={() => setActiveTab('implementation')}
-        >
-          Implementation Guide
-        </button>
+    <>
+      {/* Header with blue-to-purple gradient */}
+      <div>
+        <PageHeader 
+          title="Databricks Architecture" 
+          subtitle={audienceView === 'technical' ? 
+            'Databricks Architecture Overview for Technical Teams' : 
+            'Databricks Architecture Overview'} 
+        />
       </div>
-      
-      {/* Tab content */}
-      {activeTab === 'architecture' && <ArchitectureDiagram />}
-      {activeTab === 'cost' && <CostScalingComponent />}
-      {activeTab === 'implementation' && <ImplementationComponent />}
-    </div>
+
+      {/* Content container */}
+      <div className="bg-white rounded-lg shadow-lg p-6">
+        {/* Tab navigation */}
+        <div className="bg-white rounded-lg shadow-md p-4 hover:shadow-xl transition-shadow mb-4">
+          <h3 className="text-center text-sm font-medium text-gray-700 mb-3">View Options</h3>
+          <div className="flex justify-center">
+            <div className="bg-gray-100 p-1 rounded-lg inline-flex">
+              <button
+                onClick={() => setActiveTab('architecture')}
+                className={`px-4 py-2 text-sm font-medium rounded-md transition-colors ${
+                  activeTab === 'architecture'
+                    ? 'bg-blue-600 text-white'
+                    : 'text-gray-700 hover:bg-gray-200'
+                }`}
+              >
+                Architecture Overview
+              </button>
+              <button
+                onClick={() => setActiveTab('cost')}
+                className={`px-4 py-2 text-sm font-medium rounded-md transition-colors ${
+                  activeTab === 'cost'
+                    ? 'bg-blue-600 text-white'
+                    : 'text-gray-700 hover:bg-gray-200'
+                }`}
+              >
+                Cost & Scaling
+              </button>
+              <button
+                onClick={() => setActiveTab('implementation')}
+                className={`px-4 py-2 text-sm font-medium rounded-md transition-colors ${
+                  activeTab === 'implementation'
+                    ? 'bg-blue-600 text-white'
+                    : 'text-gray-700 hover:bg-gray-200'
+                }`}
+              >
+                Implementation Guide
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        {/* Tab content container */}
+        <div className="bg-white rounded-lg shadow-md p-6 hover:shadow-xl transition-shadow">
+          {activeTab === 'architecture' && <ArchitectureDiagram />}
+          {activeTab === 'cost' && <CostScalingComponent />}
+          {activeTab === 'implementation' && <ImplementationComponent />}
+        </div>
+      </div>
+    </>
   );
 };
 

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import glossaryData from '../data/glossaryData';
+import PageHeader from './common/PageHeader';
 
 const DataEngineeringGlossary = () => {
   const [categoryFilter, setCategoryFilter] = useState('all');
@@ -39,13 +40,11 @@ const DataEngineeringGlossary = () => {
 
   return (
     <div>
-      {/* Simplified gradient header with blue-to-purple gradient */}
-      <div 
-        className="bg-gradient-to-r from-blue-600 to-purple-600 p-6 rounded-xl shadow-lg mb-4 text-center"
-      >
-        <h1 className="text-3xl font-bold text-white mb-2">Data Engineering Glossary</h1>
-        <p className="text-white/80">From Bits to Big Data: Interactive Guide to Data Engineering Terms</p>
-      </div>
+      {/* Replace custom header with PageHeader component */}
+      <PageHeader 
+        title="Data Engineering Glossary" 
+        subtitle="From Bits to Big Data: Interactive Guide to Data Engineering Terms"
+      />
       
       {/* Search and filter controls with improved alignment */}
       <div className="bg-white p-6 rounded-t-lg shadow-md hover:shadow-xl transition-shadow mb-0">
@@ -66,8 +65,8 @@ const DataEngineeringGlossary = () => {
                 onClick={() => setCategoryFilter(category.id)}
                 className={`px-4 py-2 mx-2 my-1 rounded-lg transition-all duration-200 ${
                   categoryFilter === category.id 
-                    ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-sm' 
-                    : 'border border-gray-200 hover:bg-gradient-to-r hover:from-blue-600/80 hover:to-purple-600/80 hover:text-white'
+                    ? 'bg-blue-600 text-white shadow-sm' 
+                    : 'border border-gray-200 hover:bg-blue-600 hover:text-white'
                 }`}
               >
                 {category.name}

@@ -933,8 +933,33 @@ const DatabricksArchitecture = () => {
         {/* Tab navigation */}
         <div className="bg-white rounded-lg shadow-md p-4 hover:shadow-xl transition-shadow mb-4">
           <h3 className="text-center text-sm font-medium text-gray-700 mb-3">View Options</h3>
-          <div className="flex justify-center">
-            <div className="bg-gray-100 p-1 rounded-lg inline-flex">
+          <div className="flex justify-center flex-col space-y-3 sm:flex-row sm:space-y-0 sm:space-x-4">
+            {/* Audience view selector */}
+            <div className="bg-gray-100 p-1 rounded-lg inline-flex self-center">
+              <button
+                onClick={() => setAudienceView('executive')}
+                className={`px-4 py-2 text-sm font-medium rounded-md transition-colors ${
+                  audienceView === 'executive'
+                    ? 'bg-green-600 text-white'
+                    : 'text-gray-700 hover:bg-gray-200'
+                }`}
+              >
+                Executive View
+              </button>
+              <button
+                onClick={() => setAudienceView('technical')}
+                className={`px-4 py-2 text-sm font-medium rounded-md transition-colors ${
+                  audienceView === 'technical'
+                    ? 'bg-green-600 text-white'
+                    : 'text-gray-700 hover:bg-gray-200'
+                }`}
+              >
+                Technical View
+              </button>
+            </div>
+            
+            {/* Tab selector */}
+            <div className="bg-gray-100 p-1 rounded-lg inline-flex self-center">
               <button
                 onClick={() => setActiveTab('architecture')}
                 className={`px-4 py-2 text-sm font-medium rounded-md transition-colors ${

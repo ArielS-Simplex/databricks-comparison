@@ -261,9 +261,9 @@ const SimplifiedComparison = () => {
             <div className="mt-6 bg-yellow-50 p-4 rounded-lg">
               <h3 className="font-medium mb-2 text-yellow-800">Quick Decision Guide</h3>
               <ul className="space-y-2 text-gray-700">
-                <li>💡 <span className="font-medium">If you're processing transactions in real-time</span> → SingleStore</li>
-                <li>💡 <span className="font-medium">If you're building AI/ML models</span> → Databricks</li>
-                <li>💡 <span className="font-medium">If you need simple analytics with minimal management</span> → Snowflake</li>
+                <li><span role="img" aria-label="Light bulb">💡</span> <span className="font-medium">If you're processing transactions in real-time</span> → SingleStore</li>
+                <li><span role="img" aria-label="Light bulb">💡</span> <span className="font-medium">If you're building AI/ML models</span> → Databricks</li>
+                <li><span role="img" aria-label="Light bulb">💡</span> <span className="font-medium">If you need simple analytics with minimal management</span> → Snowflake</li>
               </ul>
             </div>
           </div>

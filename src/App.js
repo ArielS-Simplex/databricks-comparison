@@ -6,8 +6,8 @@ import DataProcessingFlows from './components/DataProcessingFlows';
 import CloudStorageComparison from './components/CloudStorageComparison';
 import AzureDatabricksInfraDetail from './components/AzureDatabricksInfra';
 import StoragePricingComparison from './components/StoragePricingComparison';
-import SimplifiedComparison from './components/SimplifiedComparison'; // Import the new component
-import AICapabilityMatrix from './components/AICapabilityMatrix'; // Import the new component
+import SimplifiedComparison from './components/SimplifiedComparison';
+import AICapabilityMatrix from './components/AICapabilityMatrix';
 import './App.css';
 import './styles/common.css'; // Import common styles
 import './styles/buttons.css'; // Import button styles
@@ -40,6 +40,7 @@ function App() {
           label: 'Data Processing Flows', 
           component: <DataProcessingFlows />
         }
+        // The 'integrations' subcategory has been removed
       }
     },
     'database-compare': {
@@ -149,6 +150,47 @@ function App() {
           ))}
         </div>
       </div>
+
+      {/* View mode selector (only for sections with multiple views) */}
+      {hasMultipleViews() && (
+        <div className="bg-white py-2 px-6 shadow-sm">
+          <div className="flex justify-center w-full max-w-6xl mx-auto">
+            <div className="flex space-x-2">
+              <button
+                onClick={() => setDatabaseViewMode('executive')}
+                className={`px-3 py-1 text-sm font-medium rounded ${
+                  databaseViewMode === 'executive' 
+                    ? 'bg-blue-100 text-blue-700' 
+                    : 'text-gray-600 hover:bg-gray-100'
+                }`}
+              >
+                Executive View
+              </button>
+              <button
+                onClick={() => setDatabaseViewMode('technical')}
+                className={`px-3 py-1 text-sm font-medium rounded ${
+                  databaseViewMode === 'technical' 
+                    ? 'bg-blue-100 text-blue-700' 
+                    : 'text-gray-600 hover:bg-gray-100'
+                }`}
+              >
+                Technical View
+              </button>
+              <button
+                onClick={() => setDatabaseViewMode('simplified')}
+                className={`px-3 py-1 text-sm font-medium rounded ${
+                  databaseViewMode === 'simplified' 
+                    ? 'bg-blue-100 text-blue-700' 
+                    : 'text-gray-600 hover:bg-gray-100'
+                }`}
+              >
+                Simplified View
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+      
       {/* Container for component content */}
       <div className="container max-w-6xl mx-auto p-6">
         {getCurrentComponent()}

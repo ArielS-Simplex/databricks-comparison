@@ -26,20 +26,51 @@ const InfoTooltip = ({ text, children }) => {
 
 const ROICalculator = () => {
   const [inputs, setInputs] = useState({
-    currentInfrastructureCost: 50000,
     dataVolumeGB: 2000,
     monthlyTransactions: 20000000, // 20M monthly transactions
     monthlyMovements: 10000000, // 10M monthly movements
-    teamSize: 6,
-    currentMaintainanceHours: 50,
-    averageHourlyRate: 150,
-    currentSystemDowntime: 3,
-    revenuePerHour: 25000,
-    projectDurationMonths: 12
+    projectDurationMonths: 12,
+    expectedQueryWorkload: 'medium' // light, medium, heavy
   });
 
   const [results, setResults] = useState({});
   const [selectedPlatform, setSelectedPlatform] = useState('databricks');
+  const [showVolumeEstimator, setShowVolumeEstimator] = useState(false);
+  const [volumeInputs, setVolumeInputs] = useState({
+    dailyActiveUsers: 10000,
+    transactionsPerUser: 50,
+    dataRetentionMonths: 24,
+    avgRecordSizeKB: 2
+  });
+
+  // Volume-based estimation functions
+  const calculateFromVolumes = () => {
+    // Calculate monthly transactions from daily users
+    const monthlyTransactions = volumeInputs.dailyActiveUsers * volumeInputs.transactionsPerUser * 30;
+    
+    // Estimate movements as 50% of transactions (industry average for data pipelines)
+    const monthlyMovements = monthlyTransactions * 0.5;
+    
+    // Calculate storage needed
+    const dataVolumeGB = (monthlyTransactions * volumeInputs.avgRecordSizeKB * volumeInputs.dataRetentionMonths) / (1024 * 1024);
+    
+    // Auto-fill the main form
+    setInputs(prev => ({
+      ...prev,
+      monthlyTransactions: Math.round(monthlyTransactions),
+      monthlyMovements: Math.round(monthlyMovements),
+      dataVolumeGB: Math.round(dataVolumeGB)
+    }));
+    
+    setShowVolumeEstimator(false);
+  };
+
+  const handleVolumeInputChange = (field, value) => {
+    setVolumeInputs(prev => ({
+      ...prev,
+      [field]: parseFloat(value) || 0
+    }));
+  };
 
   const platformConfigs = {
     databricks: {
@@ -74,68 +105,47 @@ const ROICalculator = () => {
     }
   };
 
-  const calculateROI = () => {
+  const calculateCosts = () => {
     const platform = platformConfigs[selectedPlatform];
-    const monthlyCurrentCost = inputs.currentInfrastructureCost;
     
-    // Calculate new platform costs
+    // Base storage cost
     const storageGB = inputs.dataVolumeGB;
-    const storageCostPerGB = 0.023; // $0.023 per GB base (industry standard)*
-    const newStorageCost = storageGB * storageCostPerGB * (1 - platform.storageEfficiency);
+    const storageCostPerGB = 0.023; // $0.023 per GB base*
+    const storageCost = storageGB * storageCostPerGB * (1 - platform.storageEfficiency);
     
     // Compute cost based on transactions and movements*
     const transactionCost = (inputs.monthlyTransactions / 1000000) * 300; // $300 per million transactions*
     const movementCost = (inputs.monthlyMovements / 1000000) * 200; // $200 per million movements*
     const computeBaseCost = transactionCost + movementCost;
-    const newComputeCost = computeBaseCost * platform.computeMultiplier;
+    const computeCost = computeBaseCost * platform.computeMultiplier;
     
-    const newPlatformCost = newStorageCost + newComputeCost;
+    // Workload multiplier
+    const workloadMultipliers = { light: 0.7, medium: 1.0, heavy: 1.5 };
+    const workloadMultiplier = workloadMultipliers[inputs.expectedQueryWorkload] || 1.0;
     
-    // Maintenance savings
-    const currentMaintenanceCost = inputs.currentMaintainanceHours * inputs.averageHourlyRate;
-    const newMaintenanceCost = currentMaintenanceCost * (1 - platform.maintenanceReduction);
-    const monthlyMaintenanceSavings = currentMaintenanceCost - newMaintenanceCost;
+    const totalMonthlyCost = (storageCost + computeCost) * workloadMultiplier;
     
-    // Downtime reduction benefits
-    const currentDowntimeCost = inputs.currentSystemDowntime * inputs.revenuePerHour;
-    const newDowntimeCost = currentDowntimeCost * (1 - platform.performanceImprovement);
-    const monthlyDowntimeSavings = currentDowntimeCost - newDowntimeCost;
+    // Setup costs (one-time) - simplified without training costs
+    const setupCost = totalMonthlyCost * platform.migrationComplexity; // Setup complexity as % of monthly cost
+    const oneTimeCosts = setupCost;
     
-    // Migration and training costs (one-time)
-    const migrationCost = inputs.currentInfrastructureCost * platform.migrationComplexity;
-    const trainingCost = inputs.teamSize * platform.learningCurveWeeks * 40 * inputs.averageHourlyRate;
-    const oneTimeCosts = migrationCost + trainingCost;
-    
-    // Monthly costs
-    const monthlyOldTotal = monthlyCurrentCost + currentMaintenanceCost + currentDowntimeCost;
-    const monthlyNewTotal = newPlatformCost + newMaintenanceCost + newDowntimeCost;
-    const monthlySavings = monthlyOldTotal - monthlyNewTotal;
-    
-    // ROI Calculations
-    const totalSavingsOverPeriod = monthlySavings * inputs.projectDurationMonths;
-    const netBenefit = totalSavingsOverPeriod - oneTimeCosts;
-    const roiPercentage = ((netBenefit / oneTimeCosts) * 100).toFixed(1);
-    const paybackPeriodMonths = (oneTimeCosts / Math.max(monthlySavings, 1)).toFixed(1);
+    // Total cost over project duration
+    const totalProjectCost = (totalMonthlyCost * inputs.projectDurationMonths) + oneTimeCosts;
     
     setResults({
-      currentMonthlyCost: monthlyCurrentCost,
-      newMonthlyCost: newPlatformCost,
-      monthlySavings: monthlySavings,
-      maintenanceSavings: monthlyMaintenanceSavings,
-      downtimeSavings: monthlyDowntimeSavings,
+      storageCost: storageCost,
+      computeCost: computeCost,
+      monthlyPlatformCost: totalMonthlyCost,
+      setupCost: setupCost,
       oneTimeCosts: oneTimeCosts,
-      migrationCost: migrationCost,
-      trainingCost: trainingCost,
-      totalSavingsOverPeriod: totalSavingsOverPeriod,
-      netBenefit: netBenefit,
-      roiPercentage: roiPercentage,
-      paybackPeriodMonths: paybackPeriodMonths,
-      platform: platform
+      totalProjectCost: totalProjectCost,
+      platform: platform,
+      workloadMultiplier: workloadMultiplier
     });
   };
 
   useEffect(() => {
-    calculateROI();
+    calculateCosts();
   }, [inputs, selectedPlatform]);
 
   const handleInputChange = (field, value) => {
@@ -165,17 +175,107 @@ const ROICalculator = () => {
       {/* Header */}
       <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-6 rounded-xl shadow-lg mb-6 text-center">
         <h1 className="text-3xl font-bold text-white mb-2">
-          ROI Calculator
+          Cloud Platform Cost Comparison
         </h1>
-        <p className="text-white/80">Calculate return on investment for migrating to modern analytics platforms*</p>
-        <p className="text-xs text-white/60 mt-1">*Estimates based on industry data and may vary by use case</p>
+        <p className="text-white/80">Compare costs across modern cloud data warehouse platforms*</p>
+        <p className="text-xs text-white/60 mt-1">*Estimates based on industry pricing models and may vary by actual usage</p>
+      </div>
+
+      {/* Volume-Based Estimator */}
+      <div className="mb-6">
+        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+          <div className="flex items-center justify-between mb-4">
+            <div>
+              <h3 className="text-lg font-semibold text-gray-800">Need to estimate your data volumes?</h3>
+              <p className="text-sm text-gray-600">Calculate storage and transaction requirements from business metrics</p>
+            </div>
+            <button
+              onClick={() => setShowVolumeEstimator(!showVolumeEstimator)}
+              className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors text-sm font-medium"
+            >
+              {showVolumeEstimator ? 'Hide' : 'Estimate from Volume'}
+            </button>
+          </div>
+          
+          {showVolumeEstimator && (
+            <div className="bg-white p-4 rounded border">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+                <div>
+                  <label className="block text-xs font-medium text-gray-700 mb-1">
+                    Daily Active Users
+                  </label>
+                  <input
+                    type="number"
+                    value={volumeInputs.dailyActiveUsers}
+                    onChange={(e) => handleVolumeInputChange('dailyActiveUsers', e.target.value)}
+                    className="w-full px-2 py-1 text-sm border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-500"
+                    placeholder="10000"
+                  />
+                </div>
+                
+                <div>
+                  <label className="block text-xs font-medium text-gray-700 mb-1">
+                    Transactions per User/Day
+                  </label>
+                  <input
+                    type="number"
+                    value={volumeInputs.transactionsPerUser}
+                    onChange={(e) => handleVolumeInputChange('transactionsPerUser', e.target.value)}
+                    className="w-full px-2 py-1 text-sm border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-500"
+                    placeholder="50"
+                  />
+                </div>
+                
+                <div>
+                  <label className="block text-xs font-medium text-gray-700 mb-1">
+                    Data Retention (Months)
+                  </label>
+                  <input
+                    type="number"
+                    value={volumeInputs.dataRetentionMonths}
+                    onChange={(e) => handleVolumeInputChange('dataRetentionMonths', e.target.value)}
+                    className="w-full px-2 py-1 text-sm border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-500"
+                    placeholder="24"
+                  />
+                </div>
+                
+                <div>
+                  <label className="block text-xs font-medium text-gray-700 mb-1">
+                    Avg Record Size (KB)
+                  </label>
+                  <input
+                    type="number"
+                    step="0.1"
+                    value={volumeInputs.avgRecordSizeKB}
+                    onChange={(e) => handleVolumeInputChange('avgRecordSizeKB', e.target.value)}
+                    className="w-full px-2 py-1 text-sm border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-500"
+                    placeholder="2.0"
+                  />
+                </div>
+              </div>
+              
+              <div className="flex items-center justify-between">
+                <div className="text-xs text-gray-600">
+                  Estimated: {(volumeInputs.dailyActiveUsers * volumeInputs.transactionsPerUser * 30 / 1000000).toFixed(1)}M transactions/month
+                  , {((volumeInputs.dailyActiveUsers * volumeInputs.transactionsPerUser * 30 * volumeInputs.avgRecordSizeKB * volumeInputs.dataRetentionMonths) / (1024 * 1024)).toFixed(0)} GB storage
+                </div>
+                <button
+                  onClick={calculateFromVolumes}
+                  className="px-3 py-1 bg-green-600 text-white text-xs rounded hover:bg-green-700 transition-colors font-medium"
+                >
+                  Auto-Fill Form
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         
         {/* Input Section */}
         <div className="bg-white p-6 rounded-lg shadow-lg">
-          <h2 className="text-xl font-bold text-gray-800 mb-6">Current Infrastructure</h2>
+          <h2 className="text-xl font-bold text-gray-800 mb-6">Data Requirements</h2>
           
           <div className="space-y-4">
             {/* Platform Selection */}
@@ -198,26 +298,28 @@ const ROICalculator = () => {
               </div>
             </div>
 
-            {/* Cost Inputs */}
+            {/* Query Workload */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Current Monthly Infrastructure Cost
-              </label>
-              <div className="space-y-2">
-                <input
-                  type="range"
-                  min="10000"
-                  max="500000"
-                  step="5000"
-                  value={inputs.currentInfrastructureCost}
-                  onChange={(e) => handleInputChange('currentInfrastructureCost', e.target.value)}
-                  className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider"
-                />
-                <div className="flex justify-between text-xs text-gray-500">
-                  <span>$10K</span>
-                  <span className="font-medium text-gray-700">{formatCurrency(inputs.currentInfrastructureCost)}</span>
-                  <span>$500K</span>
-                </div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Expected Query Workload</label>
+              <div className="grid grid-cols-3 gap-2">
+                {[
+                  { key: 'light', label: 'Light', desc: 'Basic reporting' },
+                  { key: 'medium', label: 'Medium', desc: 'Regular analytics' },
+                  { key: 'heavy', label: 'Heavy', desc: 'Complex queries' }
+                ].map(({ key, label, desc }) => (
+                  <button
+                    key={key}
+                    onClick={() => handleInputChange('expectedQueryWorkload', key)}
+                    className={`p-2 rounded text-sm font-medium transition-colors border ${
+                      inputs.expectedQueryWorkload === key
+                        ? 'bg-blue-600 text-white border-transparent'
+                        : 'bg-white text-gray-800 border-gray-300 hover:bg-blue-50 hover:border-blue-400 hover:text-blue-700'
+                    }`}
+                  >
+                    <div>{label}</div>
+                    <div className="text-xs opacity-75">{desc}</div>
+                  </button>
+                ))}
               </div>
             </div>
 
@@ -278,79 +380,6 @@ const ROICalculator = () => {
               </div>
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Team Size
-              </label>
-              <input
-                type="number"
-                value={inputs.teamSize}
-                onChange={(e) => handleInputChange('teamSize', e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="6"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Monthly Maintenance Hours
-              </label>
-              <input
-                type="number"
-                value={inputs.currentMaintainanceHours}
-                onChange={(e) => handleInputChange('currentMaintainanceHours', e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="50"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Average Hourly Rate ($)
-              </label>
-              <input
-                type="number"
-                value={inputs.averageHourlyRate}
-                onChange={(e) => handleInputChange('averageHourlyRate', e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="150"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Current System Downtime (hours/month)
-              </label>
-              <input
-                type="number"
-                value={inputs.currentSystemDowntime}
-                onChange={(e) => handleInputChange('currentSystemDowntime', e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="3"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Revenue Impact per Hour of Downtime ($)
-              </label>
-              <div className="space-y-2">
-                <input
-                  type="range"
-                  min="1000"
-                  max="100000"
-                  step="1000"
-                  value={inputs.revenuePerHour}
-                  onChange={(e) => handleInputChange('revenuePerHour', e.target.value)}
-                  className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider"
-                />
-                <div className="flex justify-between text-xs text-gray-500">
-                  <span>$1K</span>
-                  <span className="font-medium text-gray-700">{formatCurrency(inputs.revenuePerHour)}/hr</span>
-                  <span>$100K</span>
-                </div>
-              </div>
-            </div>
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -370,101 +399,73 @@ const ROICalculator = () => {
         {/* Results Section */}
         <div className="space-y-6">
           
-          {/* ROI Summary */}
+          {/* Cost Summary */}
           <div className={`p-6 rounded-lg shadow-lg ${getColorClasses(results.platform?.color || 'blue').bg} ${getColorClasses(results.platform?.color || 'blue').border} border`}>
             <h2 className={`text-xl font-bold mb-4 ${getColorClasses(results.platform?.color || 'blue').text}`}>
-              {results.platform?.name} ROI Summary
+              {results.platform?.name} Cost Estimate
             </h2>
             
             <div className="grid grid-cols-2 gap-4">
               <div className="bg-white p-4 rounded border">
-                <div className="text-2xl font-bold text-green-600">{results.roiPercentage}%</div>
-                <div className="text-sm text-gray-600">ROI over {inputs.projectDurationMonths} months</div>
+                <div className="text-2xl font-bold text-blue-600">{formatCurrency(results.monthlyPlatformCost || 0)}</div>
+                <div className="text-sm text-gray-600">Monthly platform cost</div>
               </div>
               
               <div className="bg-white p-4 rounded border">
-                <div className="text-2xl font-bold text-blue-600">{results.paybackPeriodMonths}</div>
-                <div className="text-sm text-gray-600">Payback period (months)</div>
+                <div className="text-2xl font-bold text-orange-600">{formatCurrency(results.oneTimeCosts || 0)}</div>
+                <div className="text-sm text-gray-600">One-time setup cost</div>
               </div>
             </div>
 
             <div className="mt-4 bg-white p-4 rounded border">
-              <div className="text-xl font-bold text-gray-800">{formatCurrency(results.netBenefit || 0)}</div>
-              <div className="text-sm text-gray-600">Net benefit over {inputs.projectDurationMonths} months</div>
+              <div className="text-xl font-bold text-gray-800">{formatCurrency(results.totalProjectCost || 0)}</div>
+              <div className="text-sm text-gray-600">Total cost over {inputs.projectDurationMonths} months</div>
             </div>
           </div>
 
           {/* Cost Breakdown */}
           <div className="bg-white p-6 rounded-lg shadow-lg">
-            <h3 className="text-lg font-bold text-gray-800 mb-4">Cost Breakdown*</h3>
+            <h3 className="text-lg font-bold text-gray-800 mb-4">Monthly Cost Breakdown*</h3>
             
             <div className="space-y-3">
               <div className="flex justify-between items-center py-2 border-b">
-                <InfoTooltip text="Your current infrastructure spending including storage, compute, and operational costs">
-                  <span className="text-gray-700">Current Monthly Cost</span>
+                <InfoTooltip text="Storage cost: $0.023/GB base rate × data volume × platform efficiency factor. Each platform has different storage optimization capabilities.">
+                  <span className="text-gray-700">Storage Cost</span>
                 </InfoTooltip>
-                <span className="font-medium">{formatCurrency(results.currentMonthlyCost || 0)}</span>
+                <span className="font-medium">{formatCurrency(results.storageCost || 0)}</span>
               </div>
               
               <div className="flex justify-between items-center py-2 border-b">
-                <InfoTooltip text="Estimated monthly cost on the new platform including: Storage ($0.023/GB × data volume × efficiency factor) + Compute (Transactions: $300 per million + Movements: $200 per million) × platform multiplier. Efficiency and multipliers vary by platform based on their pricing models (DBU/Credits/CU).">
-                  <span className="text-gray-700">New Platform Monthly Cost</span>
+                <InfoTooltip text="Compute cost: (Transactions: $300/million + Movements: $200/million) × platform pricing multiplier based on their compute models (DBUs for Databricks, Credits for Snowflake, CUs for Fabric).">
+                  <span className="text-gray-700">Compute Cost</span>
                 </InfoTooltip>
-                <span className="font-medium">{formatCurrency(results.newMonthlyCost || 0)}</span>
+                <span className="font-medium">{formatCurrency(results.computeCost || 0)}</span>
               </div>
               
-              <div className="flex justify-between items-center py-2 border-b bg-green-50">
-                <InfoTooltip text="Total monthly savings vs. current system including: Infrastructure cost difference + Maintenance time savings (reduced admin work) + Downtime cost savings (from better reliability). This represents the net benefit per month after migrating to the new platform.">
-                  <span className="text-gray-700">Net Monthly Savings vs. Current System</span>
+              <div className="flex justify-between items-center py-2 border-b bg-blue-50">
+                <InfoTooltip text={`Total monthly cost including workload multiplier (${inputs.expectedQueryWorkload}: ${results.workloadMultiplier || 1}x). Light workloads cost less, heavy analytical workloads cost more.`}>
+                  <span className="text-gray-700">Total Monthly Cost ({inputs.expectedQueryWorkload} workload)</span>
                 </InfoTooltip>
-                <span className="font-medium text-green-600">{formatCurrency(results.monthlySavings || 0)}</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Savings Breakdown */}
-          <div className="bg-white p-6 rounded-lg shadow-lg">
-            <h3 className="text-lg font-bold text-gray-800 mb-4">Savings Sources</h3>
-            
-            <div className="space-y-3">
-              <div className="flex justify-between items-center">
-                <InfoTooltip text="Savings from reduced system administration, monitoring, and maintenance tasks. Calculated as: Current maintenance hours × hourly rate × platform reduction percentage">
-                  <span className="text-gray-700">Maintenance Reduction</span>
-                </InfoTooltip>
-                <span className="text-green-600 font-medium">{formatCurrency(results.maintenanceSavings || 0)}/month</span>
-              </div>
-              
-              <div className="flex justify-between items-center">
-                <InfoTooltip text="Value recovered from reduced system downtime due to improved platform reliability and performance. Calculated as: Current downtime hours × revenue per hour × performance improvement percentage">
-                  <span className="text-gray-700">Downtime Reduction</span>
-                </InfoTooltip>
-                <span className="text-green-600 font-medium">{formatCurrency(results.downtimeSavings || 0)}/month</span>
+                <span className="font-medium text-blue-600">{formatCurrency(results.monthlyPlatformCost || 0)}</span>
               </div>
             </div>
           </div>
 
           {/* One-time Costs */}
           <div className="bg-white p-6 rounded-lg shadow-lg">
-            <h3 className="text-lg font-bold text-gray-800 mb-4">One-time Investment</h3>
+            <h3 className="text-lg font-bold text-gray-800 mb-4">One-time Setup Costs</h3>
             
             <div className="space-y-3">
               <div className="flex justify-between items-center">
-                <InfoTooltip text="Cost to migrate existing data, applications, and processes to the new platform. Calculated as: Current infrastructure cost × migration complexity factor (varies by platform difficulty)">
-                  <span className="text-gray-700">Migration Cost</span>
+                <InfoTooltip text="Initial setup and configuration costs based on platform complexity. More complex platforms require more setup effort.">
+                  <span className="text-gray-700">Setup & Configuration</span>
                 </InfoTooltip>
-                <span className="font-medium">{formatCurrency(results.migrationCost || 0)}</span>
-              </div>
-              
-              <div className="flex justify-between items-center">
-                <InfoTooltip text="Team training and onboarding costs for the new platform. Calculated as: Team size × learning curve weeks × 40 hours × hourly rate">
-                  <span className="text-gray-700">Training Cost</span>
-                </InfoTooltip>
-                <span className="font-medium">{formatCurrency(results.trainingCost || 0)}</span>
+                <span className="font-medium">{formatCurrency(results.setupCost || 0)}</span>
               </div>
               
               <div className="flex justify-between items-center py-2 border-t font-bold">
-                <span className="text-gray-800">Total One-time Cost</span>
-                <span className="text-red-600">{formatCurrency(results.oneTimeCosts || 0)}</span>
+                <span className="text-gray-800">Total One-time Costs</span>
+                <span className="text-orange-600">{formatCurrency(results.oneTimeCosts || 0)}</span>
               </div>
             </div>
           </div>
@@ -474,9 +475,10 @@ const ROICalculator = () => {
       {/* Disclaimer */}
       <div className="mt-6 bg-yellow-50 border border-yellow-200 rounded-lg p-4">
         <p className="text-sm text-yellow-800">
-          <strong>Disclaimer:</strong> This calculator provides estimates for planning purposes. Actual costs vary significantly 
-          based on specific usage patterns, contract negotiations, optimization strategies, and implementation details. 
-          Always obtain official vendor quotes and conduct proof-of-concept testing for accurate projections.
+          <strong>Disclaimer:</strong> This calculator provides comparative cost estimates for planning purposes. Actual 
+          costs vary significantly based on specific usage patterns, contract negotiations, optimization strategies, 
+          regional pricing, and implementation details. Always obtain official vendor quotes and conduct proof-of-concept 
+          testing for accurate projections. This tool compares cloud platforms only and is not a migration ROI calculator.
         </p>
       </div>
     </div>

@@ -272,7 +272,6 @@ const NuveiDecisionGuide = () => {
                   <ul className="space-y-1 text-gray-700">
                     <li>• $1.19B annual revenue (2023)</li>
                     <li>• $95B+ transaction volume annually</li>
-                    <li>• 2,200+ employees globally</li>
                     <li>• 200+ markets, 700+ payment methods</li>
                   </ul>
                 </div>
@@ -294,7 +293,7 @@ const NuveiDecisionGuide = () => {
                 <p>• <strong>Enterprise Transaction Processing:</strong> 260M+ monthly payments ($95B+ annual volume) requiring real-time analytics and regulatory compliance</p>
                 <p>• <strong>Risk & Fraud Detection:</strong> ML models scoring millions of transactions/hour across 700+ payment methods with sub-second response times</p>
                 <p>• <strong>Multi-Company Data Integration:</strong> Complex ETL pipelines consolidating data from 6+ major acquisitions (SafeCharge, Paya, etc.) via existing Airflow + dbt stack</p>
-                <p>• <strong>Global Business Intelligence:</strong> Interactive dashboards serving 2,200+ employees across 200+ global markets</p>
+                <p>• <strong>Global Business Intelligence:</strong> Interactive dashboards serving 200+ global markets</p>
                 <p>• <strong>Advanced Analytics:</strong> Customer behavior analysis across enterprise merchant portfolio and payment optimization</p>
                 <p>• <strong>Regulatory & Compliance:</strong> PCI DSS, AML, transaction monitoring across multiple jurisdictions with full audit trails</p>
               </div>
@@ -316,8 +315,8 @@ const NuveiDecisionGuide = () => {
                     <div className="text-gray-600">~8.5M transactions</div>
                   </div>
                   <div>
-                    <div className="font-medium">Enterprise Scale</div>
-                    <div className="text-gray-600">2,200+ employees</div>
+                    <div className="font-medium">Global Reach</div>
+                    <div className="text-gray-600">200+ markets</div>
                   </div>
                 </div>
               </div>
@@ -349,7 +348,7 @@ const NuveiDecisionGuide = () => {
                 <div>
                   <div className="font-medium text-blue-700">Company Profile</div>
                   <div className="text-gray-600">Founded 2003 (Montreal)</div>
-                  <div className="text-gray-600">~2,200 employees globally</div>
+                  <div className="text-gray-600">200+ markets, 700+ payment methods</div>
                   <div className="text-gray-600">Enterprise-scale payment processor</div>
                 </div>
                 <div>
@@ -384,7 +383,7 @@ const NuveiDecisionGuide = () => {
                 </h3>
                 <p className="text-sm text-gray-600 mb-2">Consolidate acquisition data (SafeCharge, Paya, etc.), optimize current analytics infrastructure</p>
                 <div className="text-xs text-blue-600 mb-4 bg-blue-50 p-2 rounded">
-                  📊 Enterprise Scale: 260M monthly transactions | $95B+ annual volume | 2,200+ employees | Multiple acquisition integrations
+                  📊 Enterprise Scale: 260M monthly transactions | $95B+ annual volume | 200+ markets | Multiple acquisition integrations
                 </div>
                 
                 <div className="overflow-x-auto">
@@ -621,7 +620,7 @@ const NuveiDecisionGuide = () => {
               <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mt-4">
                 <h4 className="font-medium text-blue-800 mb-2">📊 Cost Estimation Data Sources:</h4>
                 <div className="text-sm text-gray-700 space-y-1">
-                  <p>• <strong>Nuvei scale data:</strong> Based on public financials ($95B+ annual volume, $1.19B revenue, 2,200+ employees)</p>
+                  <p>• <strong>Nuvei scale data:</strong> Based on public financials ($95B+ annual volume, $1.19B revenue, 200+ markets)</p>
                   <p>• <strong>Platform pricing:</strong> Extrapolated from public pricing tiers and enterprise case studies</p>
                   <p>• <strong>Transaction volume:</strong> 260M monthly transactions (~8.5M daily) scaled to growth projections</p>
                   <p>• <strong>Industry benchmarks:</strong> Compared to similar fintech companies (Stripe, PayPal, Adyen)</p>

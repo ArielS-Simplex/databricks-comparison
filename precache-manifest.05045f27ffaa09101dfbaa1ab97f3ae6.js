@@ -1,23 +1,23 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "5e7235e13c7194e53b686cd39e589352",
+    "revision": "3225203c2330240a339cacacf23b83a9",
     "url": "/databricks-comparison/index.html"
   },
   {
-    "revision": "aa85e2166028ef1bc287",
-    "url": "/databricks-comparison/static/css/main.0360c429.chunk.css"
+    "revision": "a07eb53bf99f95627ca2",
+    "url": "/databricks-comparison/static/css/main.6bf20678.chunk.css"
   },
   {
-    "revision": "4c9d76ec301c660b28ee",
-    "url": "/databricks-comparison/static/js/2.8c7abad2.chunk.js"
+    "revision": "d7ce00cca846ff8d021f",
+    "url": "/databricks-comparison/static/js/2.19b0f17f.chunk.js"
   },
   {
     "revision": "6c4bfe61775909bc4616",
     "url": "/databricks-comparison/static/js/3.68d536b4.chunk.js"
   },
   {
-    "revision": "aa85e2166028ef1bc287",
-    "url": "/databricks-comparison/static/js/main.abe1d04b.chunk.js"
+    "revision": "a07eb53bf99f95627ca2",
+    "url": "/databricks-comparison/static/js/main.f7a7c85c.chunk.js"
   },
   {
     "revision": "ef854cbc5eee68bf184d",

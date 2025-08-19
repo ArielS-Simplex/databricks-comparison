@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/databricks-comparison/precache-manifest.2a1f67ea07073e73e0baaf6f08673fff.js"
+  "/databricks-comparison/precache-manifest.05045f27ffaa09101dfbaa1ab97f3ae6.js"
 );
 
 self.addEventListener('message', (event) => {

@@ -5,6 +5,8 @@ import NuveiDecisionGuide from './components/NuveiDecisionGuide';
 import ArchitectureOverview from './components/ArchitectureOverview';
 import SnowflakeArchitecture from './components/SnowflakeArchitecture';
 import FabricArchitecture from './components/FabricArchitecture';
+import ROICalculator from './components/ROICalculator';
+import PerformanceBenchmarks from './components/PerformanceBenchmarks';
 import './App.css';
 import './styles/common.css'; // Import common styles
 import './styles/buttons.css'; // Import button styles
@@ -33,6 +35,14 @@ function App() {
           label: 'Databricks vs Snowflake vs Microsoft Fabric',
           // Everything is now in SimplifiedComparison with tabs
           hasMutipleViews: false
+        },
+        'roi-calculator': {
+          label: 'ROI Calculator',
+          component: <ROICalculator />
+        },
+        'performance': {
+          label: 'Performance Benchmarks',
+          component: <PerformanceBenchmarks />
         }
       }
     },
@@ -85,6 +95,63 @@ function App() {
 
   return (
     <div className="App bg-gray-50 min-h-screen">
+      {/* Quick Navigation Menu */}
+      <div className="bg-white shadow-sm border-b">
+        <div className="max-w-7xl mx-auto px-6 py-2">
+          <div className="flex items-center justify-between">
+            <h1 className="text-lg font-semibold text-gray-800">Analytics Platform Guide</h1>
+            <div className="flex flex-wrap items-center gap-2 text-xs">
+              <span className="text-gray-500">Quick Access:</span>
+              {/* Migration Guide */}
+              <button 
+                onClick={() => {setActiveCategory('nuvei-migration'); setActiveSubcategory('guide');}}
+                className={`px-2 py-1 rounded text-xs hover:bg-blue-50 hover:text-blue-700 ${
+                  activeCategory === 'nuvei-migration' ? 'bg-blue-100 text-blue-700' : 'text-gray-600'
+                }`}
+              >
+                Migration Guide
+              </button>
+              {/* Platform Comparison */}
+              <button 
+                onClick={() => {setActiveCategory('platform-compare'); setActiveSubcategory('platforms');}}
+                className={`px-2 py-1 rounded text-xs hover:bg-blue-50 hover:text-blue-700 ${
+                  activeCategory === 'platform-compare' && activeSubcategory === 'platforms' ? 'bg-blue-100 text-blue-700' : 'text-gray-600'
+                }`}
+              >
+                Platform Comparison
+              </button>
+              {/* ROI Calculator */}
+              <button 
+                onClick={() => {setActiveCategory('platform-compare'); setActiveSubcategory('roi-calculator');}}
+                className={`px-2 py-1 rounded text-xs hover:bg-blue-50 hover:text-blue-700 ${
+                  activeCategory === 'platform-compare' && activeSubcategory === 'roi-calculator' ? 'bg-blue-100 text-blue-700' : 'text-gray-600'
+                }`}
+              >
+                ROI Calculator
+              </button>
+              {/* Performance Benchmarks */}
+              <button 
+                onClick={() => {setActiveCategory('platform-compare'); setActiveSubcategory('performance');}}
+                className={`px-2 py-1 rounded text-xs hover:bg-blue-50 hover:text-blue-700 ${
+                  activeCategory === 'platform-compare' && activeSubcategory === 'performance' ? 'bg-blue-100 text-blue-700' : 'text-gray-600'
+                }`}
+              >
+                Performance Benchmarks
+              </button>
+              {/* Architecture */}
+              <button 
+                onClick={() => {setActiveCategory('architecture'); setActiveSubcategory('overview');}}
+                className={`px-2 py-1 rounded text-xs hover:bg-blue-50 hover:text-blue-700 ${
+                  activeCategory === 'architecture' ? 'bg-blue-100 text-blue-700' : 'text-gray-600'
+                }`}
+              >
+                Architecture
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* Primary navigation - Categories */}
       <div className="header-gradient">
         <div className="flex justify-center w-full max-w-6xl mx-auto flex-wrap">
@@ -111,10 +178,10 @@ function App() {
             <button 
               key={subcategory}
               onClick={() => setActiveSubcategory(subcategory)} 
-              className={`px-4 py-2 mx-1 text-sm font-medium rounded-md ${
+              className={`px-4 py-2 mx-1 text-sm font-medium rounded-md transition-all duration-200 border ${
                 activeSubcategory === subcategory 
-                  ? 'bg-white shadow text-blue-600' 
-                  : 'text-gray-600 hover:text-gray-900 hover:bg-gray-200'
+                  ? 'bg-white shadow text-blue-600 border-blue-200' 
+                  : 'text-gray-800 hover:text-blue-700 hover:bg-blue-50 border-transparent hover:border-blue-200'
               }`}
             >
               {label}

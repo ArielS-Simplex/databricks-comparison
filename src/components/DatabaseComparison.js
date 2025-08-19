@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import databricksTerminology from '../data/databricksTerminology';
 import databaseComparisonData from '../data/databaseComparisonData';
+import platformComparisonData from '../data/platformComparisonData';
 import databaseExecutiveSummary from '../data/databaseExecutiveSummary';
 import SimplifiedComparison from './SimplifiedComparison';  
 import PageHeader from './common/PageHeader';
@@ -78,7 +79,7 @@ const acidOnS3Content = {
   ]
 };
 
-const DatabaseComparison = () => {
+const DatabaseComparison = ({ audienceView: propAudienceView = 'simplified', hideViewSelector = false }) => {
   // State to track which comparison is expanded
   const [expandedItem, setExpandedItem] = useState(null);
   // State for viewing mode
@@ -87,8 +88,10 @@ const DatabaseComparison = () => {
   const [platformFilter, setPlatformFilter] = useState('all');
   // State for showing the quick metrics column
   const [showQuickMetrics, setShowQuickMetrics] = useState(true);
-  // New state for audience view type (technical vs executive)
-  const [audienceView, setAudienceView] = useState('executive');
+  // Use prop audienceView if provided, otherwise use internal state
+  const [internalAudienceView, setInternalAudienceView] = useState('simplified');
+  const audienceView = propAudienceView || internalAudienceView;
+  const setAudienceView = hideViewSelector ? () => {} : setInternalAudienceView;
   // State for selected business priority in executive view
   const [selectedPriority, setSelectedPriority] = useState('all');
   // State for expanded business priority
@@ -310,55 +313,57 @@ const DatabaseComparison = () => {
         <PageHeader 
           title="Database Technology Comparison" 
           subtitle={audienceView === 'technical' ? 
-            'Interactive comparison of SingleStore vs Databricks vs Snowflake' : 
-            'SingleStore vs Databricks vs Snowflake for Data Engineering Teams'} 
+            'Interactive comparison of Databricks vs Snowflake vs Microsoft Fabric' : 
+            'Databricks vs Snowflake vs Microsoft Fabric for Data Engineering Teams'} 
         />
       </div>
       
-      {/* Audience View Toggle - Technical vs Executive */}
-      <div className="bg-white rounded-lg shadow-md p-4 hover:shadow-xl transition-shadow mb-4">
-        <h3 className="text-center text-sm font-medium text-gray-700 mb-3">Audience View</h3>
-        <div className="flex justify-center">
-          <div className="bg-gray-100 p-1 rounded-lg inline-flex">
-            <button
-              onClick={() => setAudienceView('executive')}
-              className={`px-4 py-2 text-sm font-medium rounded-md transition-colors ${
-                audienceView === 'executive'
-                  ? 'bg-blue-600 text-white'
-                  : 'text-gray-700 hover:bg-gray-200'
-              }`}
-            >
-              Executive Summary
-            </button>
-            <button
-              onClick={() => setAudienceView('technical')}
-              className={`px-4 py-2 text-sm font-medium rounded-md transition-colors ${
-                audienceView === 'technical'
-                  ? 'bg-blue-600 text-white'
-                  : 'text-gray-700 hover:bg-gray-200'
-              }`}
-            >
-              Technical Details
-            </button>
-            <button
-              onClick={() => setAudienceView('simplified')}
-              className={`px-4 py-2 text-sm font-medium rounded-md transition-colors ${
-                audienceView === 'simplified'
-                  ? 'bg-blue-600 text-white'
-                  : 'text-gray-700 hover:bg-gray-200'
-              }`}
-            >
-              Simplified View
-            </button>
+      {/* Audience View Toggle - Technical vs Executive - Only show if not hidden */}
+      {!hideViewSelector && (
+        <div className="bg-white rounded-lg shadow-md p-4 hover:shadow-xl transition-shadow mb-4">
+          <h3 className="text-center text-sm font-medium text-gray-700 mb-3">Audience View</h3>
+          <div className="flex justify-center">
+            <div className="bg-gray-100 p-1 rounded-lg inline-flex">
+              <button
+                onClick={() => setAudienceView('executive')}
+                className={`px-4 py-2 text-sm font-medium rounded-md transition-colors ${
+                  audienceView === 'executive'
+                    ? 'bg-blue-600 text-white'
+                    : 'text-gray-700 hover:bg-gray-200'
+                }`}
+              >
+                Executive Summary
+              </button>
+              <button
+                onClick={() => setAudienceView('technical')}
+                className={`px-4 py-2 text-sm font-medium rounded-md transition-colors ${
+                  audienceView === 'technical'
+                    ? 'bg-blue-600 text-white'
+                    : 'text-gray-700 hover:bg-gray-200'
+                }`}
+              >
+                Technical Details
+              </button>
+              <button
+                onClick={() => setAudienceView('simplified')}
+                className={`px-4 py-2 text-sm font-medium rounded-md transition-colors ${
+                  audienceView === 'simplified'
+                    ? 'bg-blue-600 text-white'
+                    : 'text-gray-700 hover:bg-gray-200'
+                }`}
+              >
+                Simplified View
+              </button>
+            </div>
           </div>
         </div>
-      </div>
+      )}
 
       {/* Conditional content based on selected view */}
       {audienceView === 'technical' ? (
         // TECHNICAL VIEW CONTENT
         <>
-          {/* Filter buttons */}
+          {/* Simplified filter buttons - focus on what matters */}
           <div className="bg-white rounded-lg shadow-md p-6 hover:shadow-xl transition-shadow mb-4">
             <div className="flex justify-center flex-wrap">
               <button 
@@ -371,62 +376,19 @@ const DatabaseComparison = () => {
                 onClick={() => setViewMode('performance')}
                 className={`btn ${viewMode === 'performance' ? 'btn-gradient' : 'btn-standard'}`}
               >
-                Performance
-              </button>
-              <button 
-                onClick={() => setViewMode('cost')}
-                className={`btn ${viewMode === 'cost' ? 'btn-gradient' : 'btn-standard'}`}
-              >
-                Cost Efficiency
+                Performance & Cost
               </button>
               <button 
                 onClick={() => setViewMode('efficiency')}
                 className={`btn ${viewMode === 'efficiency' ? 'btn-gradient' : 'btn-standard'}`}
               >
-                Development Efficiency
-              </button>
-              <button 
-                onClick={() => setViewMode('terminology')}
-                className={`btn ${viewMode === 'terminology' ? 'btn-gradient' : 'btn-standard'}`}
-              >
-                Databricks Terms
+                Development & Operations
               </button>
               <button 
                 onClick={() => setViewMode('acid')}
                 className={`btn ${viewMode === 'acid' ? 'btn-gradient' : 'btn-standard'}`}
               >
-                ACID on Cloud Storage
-              </button>
-            </div>
-          </div>
-          
-          {/* Platform filter */}
-          <div className="bg-white rounded-lg shadow-md p-4 hover:shadow-xl transition-shadow mb-4">
-            <h3 className="text-center text-sm font-medium text-gray-700 mb-3">Compare Platforms</h3>
-            <div className="flex justify-center flex-wrap gap-2">
-              <button 
-                onClick={() => setPlatformFilter('all')}
-                className={`px-4 py-2 text-sm font-medium rounded-md ${platformFilter === 'all' ? 'bg-gray-800 text-white' : 'bg-gray-100 text-gray-800 hover:bg-gray-200'}`}
-              >
-                All
-              </button>
-              <button 
-                onClick={() => setPlatformFilter('singlestore-databricks')}
-                className={`px-4 py-2 text-sm font-medium rounded-md ${platformFilter === 'singlestore-databricks' ? 'bg-indigo-600 text-white' : 'bg-indigo-50 text-indigo-600 hover:bg-indigo-100'}`}
-              >
-                SingleStore vs Databricks
-              </button>
-              <button 
-                onClick={() => setPlatformFilter('databricks-snowflake')}
-                className={`px-4 py-2 text-sm font-medium rounded-md ${platformFilter === 'databricks-snowflake' ? 'bg-purple-600 text-white' : 'bg-purple-50 text-purple-600 hover:bg-purple-100'}`}
-              >
-                Databricks vs Snowflake
-              </button>
-              <button 
-                onClick={() => setPlatformFilter('singlestore-snowflake')}
-                className={`px-4 py-2 text-sm font-medium rounded-md ${platformFilter === 'singlestore-snowflake' ? 'bg-cyan-600 text-white' : 'bg-cyan-50 text-cyan-600 hover:bg-cyan-100'}`}
-              >
-                SingleStore vs Snowflake
+                Architecture Deep Dive
               </button>
             </div>
           </div>
@@ -696,32 +658,6 @@ const DatabaseComparison = () => {
       ) : (
         // EXECUTIVE VIEW CONTENT
         <>
-          {/* Business Priority Filter */}
-          <div className="bg-white rounded-lg shadow-md p-4 hover:shadow-xl transition-shadow mb-4">
-            <h3 className="text-center text-sm font-medium text-gray-700 mb-3">Business Priority</h3>
-            <div className="flex justify-center flex-wrap gap-2">
-              <button 
-                onClick={() => setSelectedPriority('all')}
-                className={`px-4 py-2 text-sm font-medium rounded-md ${selectedPriority === 'all' ? 'bg-gray-800 text-white' : 'bg-gray-100 text-gray-800 hover:bg-gray-200'}`}
-              >
-                All Priorities
-              </button>
-              {databaseExecutiveSummary.businessPriorities.map(priority => (
-                <button 
-                  key={priority.id}
-                  onClick={() => setSelectedPriority(priority.id)}
-                  className={`px-4 py-2 text-sm font-medium rounded-md flex items-center ${
-                    selectedPriority === priority.id 
-                      ? 'bg-blue-600 text-white' 
-                      : 'bg-blue-50 text-blue-600 hover:bg-blue-100'
-                  }`}
-                >
-                  <span className="mr-1">{priority.icon}</span> {priority.title}
-                </button>
-              ))}
-            </div>
-          </div>
-
           {/* ACID on Cloud Storage Executive Summary */}
           <div className="bg-gradient-to-r from-purple-50 to-purple-100 rounded-lg shadow-md p-6 hover:shadow-xl transition-shadow mb-6">
             <div className="flex items-center justify-between mb-4">
@@ -769,7 +705,7 @@ const DatabaseComparison = () => {
                 
                 <div className="mt-3 p-3 bg-yellow-50 rounded-lg text-sm">
                   <p className="text-yellow-800">
-                    <strong>Executive Consideration:</strong> While Snowflake and SingleStore offer excellent analytical and transactional capabilities respectively, their architectures require data to be copied into proprietary formats. Databricks' approach eliminates this requirement, significantly reducing total storage costs and simplifying data architecture.
+                    <strong>Executive Consideration:</strong> While Snowflake and Microsoft Fabric offer excellent analytical capabilities, their architectures require data to be copied into proprietary formats. Databricks' approach eliminates this requirement, significantly reducing total storage costs and simplifying data architecture.
                   </p>
                 </div>
               </div>
@@ -780,37 +716,6 @@ const DatabaseComparison = () => {
           <div className="bg-white rounded-lg shadow-md p-6 hover:shadow-xl transition-shadow mb-6">
             <h2 className="text-xl font-semibold mb-4 text-center">Strategic Platform Fit</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-              {/* SingleStore */}
-              <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
-                <h3 className="text-lg font-medium text-blue-800 mb-2">SingleStore</h3>
-                <p className="text-gray-700 mb-3">Best for organizations requiring high-performance transactional systems with some analytics capabilities.</p>
-                <div className="space-y-2">
-                  <div className="flex items-center">
-                    <span className="bg-blue-100 rounded-full p-1 mr-2">
-                      <svg className="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                      </svg>
-                    </span>
-                    <span className="text-gray-700 text-sm">Fastest implementation for transaction-heavy applications</span>
-                  </div>
-                  <div className="flex items-center">
-                    <span className="bg-blue-100 rounded-full p-1 mr-2">
-                      <svg className="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                      </svg>
-                    </span>
-                    <span className="text-gray-700 text-sm">Predictable pricing model for consistent workloads</span>
-                  </div>
-                  <div className="flex items-center">
-                    <span className="bg-blue-100 rounded-full p-1 mr-2">
-                      <svg className="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                      </svg>
-                    </span>
-                    <span className="text-gray-700 text-sm">Flexible deployment options (cloud, on-premises, hybrid)</span>
-                  </div>
-                </div>
-              </div>
               
               {/* Databricks */}
               <div className="bg-purple-50 p-4 rounded-lg border border-purple-200">
@@ -872,6 +777,38 @@ const DatabaseComparison = () => {
                       </svg>
                     </span>
                     <span className="text-gray-700 text-sm">Superior data sharing and marketplace capabilities</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Microsoft Fabric */}
+              <div className="bg-orange-50 p-4 rounded-lg border border-orange-200">
+                <h3 className="text-lg font-medium text-orange-800 mb-2">Microsoft Fabric</h3>
+                <p className="text-gray-700 mb-3">Best for organizations already invested in Microsoft ecosystem seeking integrated analytics platform.</p>
+                <div className="space-y-2">
+                  <div className="flex items-center">
+                    <span className="bg-orange-100 rounded-full p-1 mr-2">
+                      <svg className="w-4 h-4 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                    </span>
+                    <span className="text-gray-700 text-sm">Seamless integration with Microsoft 365 and Power BI</span>
+                  </div>
+                  <div className="flex items-center">
+                    <span className="bg-orange-100 rounded-full p-1 mr-2">
+                      <svg className="w-4 h-4 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                    </span>
+                    <span className="text-gray-700 text-sm">Unified licensing and familiar Microsoft tooling</span>
+                  </div>
+                  <div className="flex items-center">
+                    <span className="bg-orange-100 rounded-full p-1 mr-2">
+                      <svg className="w-4 h-4 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                    </span>
+                    <span className="text-gray-700 text-sm">Lower learning curve for Microsoft-centric teams</span>
                   </div>
                 </div>
               </div>

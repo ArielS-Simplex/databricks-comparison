@@ -1,4 +1,4 @@
-// AI Capability Matrix data comparing ML and AI features between Databricks and Snowflake
+// AI Capability Matrix data (concise, qualitative)
 const aiCapabilityData = [
     {
       id: 'ml-frameworks',
@@ -6,12 +6,12 @@ const aiCapabilityData = [
       title: 'Built-in ML Frameworks',
       databricks: 'MLflow, Spark ML, TensorFlow, PyTorch, XGBoost, scikit-learn, auto ML with direct integration',
       snowflake: 'Snowpark ML for model development, external framework integration via Snowpark (Python, Java, Scala)',
-      details: 'The range of natively supported ML frameworks affects development speed, maintenance costs, and performance. Databricks offers the widest range of integrated ML tools, while Snowflake relies more on a connector approach.',
+      details: 'Broader native framework support generally reduces integration effort. Databricks is more integrated; Snowflake focuses on Snowpark + connectors.',
       metrics: {
         type: 'efficiency',
         winner: 'databricks',
-        description: 'Databricks: 30-40% less code for ML pipelines | Snowflake: Growing capabilities but requires more integration code',
-        source: 'Comparative analysis of development time for standard ML pipelines across platforms'
+        description: 'Databricks: broader built-in coverage | Snowflake: improving via Snowpark',
+        source: 'Varies by workload and team skills'
       }
     },
     {
@@ -20,12 +20,12 @@ const aiCapabilityData = [
       title: 'Inference & Model Serving',
       databricks: 'End-to-end MLOps with managed model serving, batch & real-time inference, feature store integration',
       snowflake: 'Snowpark Container Services, Native App Framework for deployment, Cortex inference services',
-      details: 'The model serving architecture impacts production deployment complexity, latency, and operational overhead. Databricks provides unified MLOps capabilities, while Snowflake focuses on container-based deployment.',
+      details: 'Unified MLOps vs. container-centric deployment. Choose based on operational model and team ownership.',
       metrics: {
         type: 'performance',
-        winner: 'databricks',
-        description: 'Databricks: End-to-end serving with 30% faster deployment time | Snowflake: Strong serverless auto-scaling but higher integration complexity',
-        source: 'Benchmark tests on standard ML inference workloads across platforms'
+        winner: 'conditional',
+        description: 'Databricks: integrated pipeline advantages | Snowflake: simple scale via serverless patterns',
+        source: 'Architecture- and use-case-dependent'
       }
     },
     {
@@ -34,12 +34,12 @@ const aiCapabilityData = [
       title: 'Vector Search & Embeddings',
       databricks: 'Vector Search API (in preview), embeddings storage in Delta tables, integrated with ML workflow',
       snowflake: 'Vector Search API (in preview), vector types up to 16K dimensions, similarity scoring functions',
-      details: 'Vector operations are critical for modern AI applications including semantic search, RAG, and generative AI applications. These capabilities determine how efficiently platforms can handle embeddings-based workflows and ML model interactions.',
+      details: 'Both support vector workloads; Databricks integrates with ML pipelines, Snowflake aligns with SQL-first patterns.',
       metrics: {
         type: 'performance',
         winner: 'conditional',
-        description: 'Databricks: Better integration with ML workflows | Snowflake: Competitive performance for standard similarity search',
-        source: 'Performance tests on 1M vector embeddings with 1536 dimensions'
+        description: 'Databricks: better ML workflow fit | Snowflake: solid for SQL-centric similarity search',
+        source: 'Platform updates evolve rapidly'
       }
     },
     {
@@ -48,12 +48,12 @@ const aiCapabilityData = [
       title: 'LLM Integration & Fine-tuning',
       databricks: 'MosaicML integration, fine-tuning frameworks, DTLR for LLM training, Foundation Model API',
       snowflake: 'Cortex integration with major models, Arctic (in preview) for fine-tuning, Snowpark containers',
-      details: 'The ease of integrating, fine-tuning and deploying Large Language Models affects the complexity of building GenAI applications. Databricks offers more comprehensive LLM capabilities, while Snowflake focuses on integration with existing models.',
+      details: 'Databricks focuses on end-to-end LLM workflows; Snowflake emphasizes integration with managed models.',
       metrics: {
         type: 'efficiency',
         winner: 'databricks',
-        description: 'Databricks: End-to-end LLM workflow with 60-70% less integration code | Snowflake: Growing capabilities with Cortex but less comprehensive',
-        source: 'Development effort comparison for RAG applications across platforms'
+        description: 'Databricks: more complete in-platform LLM workflow | Snowflake: simpler integrations for common use',
+        source: 'Product documentation and release notes'
       }
     },
     {
@@ -62,12 +62,12 @@ const aiCapabilityData = [
       title: 'Model Monitoring & Governance',
       databricks: 'MLflow tracking, model registry, Unity Catalog for governance, feature store, experiment tracking',
       snowflake: 'Snowsight dashboards, governance via Data Cloud, external monitoring tools required',
-      details: 'ML governance and monitoring capabilities determine how effectively organizations can maintain regulatory compliance, track model performance, and manage the ML lifecycle. This area covers model versioning, experiment tracking, and performance monitoring.',
+      details: 'Governance depth differs: Databricks offers ML-centric governance; Snowflake relies more on external tooling for ML specifics.',
       metrics: {
         type: 'efficiency',
         winner: 'databricks',
-        description: 'Databricks: Unified governance with 80% reduction in compliance overhead | Snowflake: Strong data governance, weaker ML-specific features',
-        source: 'Analysis of governance workflows for regulated industries across platforms'
+        description: 'Databricks: unified ML governance | Snowflake: strong data governance, lighter ML-specifics',
+        source: 'Qualitative comparison'
       }
     },
     {
@@ -76,12 +76,12 @@ const aiCapabilityData = [
       title: 'Feature Engineering Capabilities',
       databricks: 'Feature Store, comprehensive transformations library, extensive preprocessing options',
       snowflake: 'SQL transformations, Snowpark for custom logic, moderate preprocessing capabilities',
-      details: 'Feature engineering is often the most time-consuming aspect of ML development. The native capabilities for data transformation, feature creation, and preprocessing directly impact development efficiency and model quality.',
+      details: 'Native feature tooling improves reuse and consistency across models.',
       metrics: {
         type: 'efficiency',
         winner: 'databricks',
-        description: 'Databricks: Feature Store with 50-60% reduction in feature engineering time | Snowflake: Good SQL-based features, less ML-specific',
-        source: 'Time tracking across data science teams for feature preparation tasks'
+        description: 'Databricks: native feature store | Snowflake: SQL-first approach',
+        source: 'Product capabilities'
       }
     },
     {
@@ -90,12 +90,12 @@ const aiCapabilityData = [
       title: 'Streaming ML & Real-time Inference',
       databricks: 'Structured Streaming, Delta Live Tables, real-time feature computation, moderate latency (50-100ms)',
       snowflake: 'Snowpipe Streaming, moderate latency (100-200ms), external streaming processing often required',
-      details: 'Streaming ML capabilities determine how effectively platforms can handle real-time inferencing, online learning, and continuous model updating with fresh data. This increasingly important area affects applications requiring low latency responses.',
+      details: 'Both support streaming patterns; Databricks provides richer transformation options.',
       metrics: {
         type: 'performance',
         winner: 'databricks',
-        description: 'Databricks: 2-5x higher throughput for complex streaming pipelines | Snowflake: Good operational simplicity but higher latency',
-        source: 'Benchmarks on common streaming ML patterns across financial services applications'
+        description: 'Databricks: stronger for complex streaming transforms | Snowflake: simpler ingestion focus',
+        source: 'Feature comparison'
       }
     },
     {
@@ -104,12 +104,12 @@ const aiCapabilityData = [
       title: 'ML Infrastructure Cost',
       databricks: 'Optimized for large-scale training, photon engine reduces costs, higher up-front investment',
       snowflake: 'Serverless scaling, consumption-based pricing, separated compute and storage costs',
-      details: 'The total cost of ownership for ML initiatives includes infrastructure costs, development efficiency, operational overhead, and scaling considerations as models grow in size and complexity.',
+      details: 'TCO depends on workload stability, scale, and governance needs.',
       metrics: {
         type: 'cost',
         winner: 'conditional',
-        description: 'Development phase: Databricks (30-40% lower dev costs) | Unpredictable workloads: Snowflake (20-30% savings with serverless)',
-        source: 'TCO analysis for ML workloads across typical enterprise deployment patterns'
+        description: 'Stable, ML-heavy: Databricks often economical | Variable, analytics-heavy: Snowflake simpler to control',
+        source: 'Usage patterns and pricing models'
       }
     },
     {
@@ -118,12 +118,12 @@ const aiCapabilityData = [
       title: 'GenAI Solutions & Frameworks',
       databricks: 'Mosaic AI platform, DTLR for fine-tuning, retrieval-augmented generation APIs, LLM lifecycle management',
       snowflake: 'Cortex LLM functions, Document AI, no native fine-tuning, Arctic in early preview',
-      details: 'Pre-built generative AI solutions determine how quickly organizations can deploy production applications using LLMs, RAG architectures, and other generative AI patterns. This comparison evaluates the completeness of each platform\'s generative AI ecosystem.',
+      details: 'Pre-built GenAI capabilities accelerate time to first value; depth differs by platform focus.',
       metrics: {
         type: 'efficiency',
         winner: 'databricks',
-        description: 'Databricks: End-to-end Gen AI platform cutting development time by 50-60% | Snowflake: Growing ecosystem with 30-40% less development than pure custom',
-        source: 'Time-to-market comparison for GenAI applications across financial services cases'
+        description: 'Databricks: end-to-end GenAI tooling | Snowflake: pragmatic built-ins for common use',
+        source: 'Product capabilities'
       }
     },
     {
@@ -132,12 +132,12 @@ const aiCapabilityData = [
       title: 'GPU Optimization & Scaling',
       databricks: 'Native GPU cluster management, GPU-optimized libraries, GPU instance autoscaling',
       snowflake: 'Snowpark Container Services for GPU workloads, less integrated management',
-      details: 'GPU acceleration is critical for deep learning, LLM fine-tuning, and high-performance AI workloads. The native GPU capabilities impact performance, cost-effectiveness, and development complexity for advanced AI applications.',
+      details: 'GPU support is available on both; Databricks integrates cluster/GPU management more tightly.',
       metrics: {
         type: 'performance',
         winner: 'databricks',
-        description: 'Databricks: 40-50% better GPU utilization | Snowflake: Good containerized support but higher overhead',
-        source: 'GPU utilization benchmarks across model training workloads'
+        description: 'Databricks: tighter GPU integration | Snowflake: containerized option via Snowpark',
+        source: 'Product docs'
       }
     }
   ];

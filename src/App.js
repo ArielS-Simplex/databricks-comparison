@@ -1,82 +1,59 @@
 import React, { useState } from 'react';
-import DatabaseComparison from './components/DatabaseComparison';
-import DataEngineeringGlossary from './components/DataEngineeringGlossary';
-import AwsVsAzureComparison from './components/AwsVsAzureComparison';
-import DataProcessingFlows from './components/DataProcessingFlows';
-import CloudStorageComparison from './components/CloudStorageComparison';
 import AzureDatabricksInfraDetail from './components/AzureDatabricksInfra';
-import StoragePricingComparison from './components/StoragePricingComparison';
 import SimplifiedComparison from './components/SimplifiedComparison';
-import AICapabilityMatrix from './components/AICapabilityMatrix';
+import NuveiDecisionGuide from './components/NuveiDecisionGuide';
+import ArchitectureOverview from './components/ArchitectureOverview';
+import SnowflakeArchitecture from './components/SnowflakeArchitecture';
+import FabricArchitecture from './components/FabricArchitecture';
 import './App.css';
 import './styles/common.css'; // Import common styles
 import './styles/buttons.css'; // Import button styles
 
 function App() {
   // State to track active primary category and subcategory
-  const [activeCategory, setActiveCategory] = useState('cloud-compare');
-  const [activeSubcategory, setActiveSubcategory] = useState('overview');
-  // View mode for database section only
-  const [databaseViewMode, setDatabaseViewMode] = useState('executive');
+  const [activeCategory, setActiveCategory] = useState('nuvei-migration');
+  const [activeSubcategory, setActiveSubcategory] = useState('guide');
+  const [databaseViewMode, setDatabaseViewMode] = useState('simplified');
 
   // Navigation structure with categories and subcategories
   const navigation = {
-    'cloud-compare': {
-      label: 'AWS vs Azure',
+    'nuvei-migration': {
+      label: 'Nuvei Migration Guide',
       subcategories: {
-        'overview': { 
-          label: 'Services Overview', 
-          component: <AwsVsAzureComparison />
-        },
-        'storage': { 
-          label: 'Storage Services', 
-          component: <CloudStorageComparison />
-        },
-        'storage-pricing': { 
-          label: 'Storage Pricing', 
-          component: <StoragePricingComparison />
-        },
-        'data-flows': { 
-          label: 'Data Processing Flows', 
-          component: <DataProcessingFlows />
+        'guide': {
+          label: 'Data Platform Migration Guide',
+          component: <NuveiDecisionGuide />
         }
-        // The 'integrations' subcategory has been removed
       }
     },
-    'database-compare': {
-      label: 'Database Comparison',
+    'platform-compare': {
+      label: 'Analytics Platform Comparison',
       subcategories: {
-        'database': { 
-          label: 'SingleStore vs Databricks vs Snowflake',
-          // For database section, we'll use the view mode to determine which component to show
-          hasMutipleViews: true
+        'platforms': { 
+          label: 'Databricks vs Snowflake vs Microsoft Fabric',
+          // Everything is now in SimplifiedComparison with tabs
+          hasMutipleViews: false
         }
       }
     },
     'architecture': {
-      label: 'Databricks Architecture',
+      label: 'Technical Architecture',
       subcategories: {
+        'overview': {
+          label: 'Architecture Overview',
+          component: <ArchitectureOverview />
+        },
+        'snowflake': {
+          label: 'Snowflake Architecture',
+          component: <SnowflakeArchitecture />
+        },
         'databricks': { 
           label: 'Databricks Architecture', 
           component: <AzureDatabricksInfraDetail />
-        }
-      }
-    },
-    'Data Engineering Glossary': {
-      label: 'Data Engineering Glossary',
-      subcategories: {
-        'glossary': { 
-          label: 'Data Engineering Glossary', 
-          component: <DataEngineeringGlossary />
-        }
-      }
-    },
-    'ai-capability': {
-      label: 'AI Capability Matrix',
-      subcategories: {
-        'matrix': { 
-          label: 'AI Capability Matrix', 
-          component: <AICapabilityMatrix />
+        },
+        'fabric': {
+          label: 'Microsoft Fabric Architecture',
+          component: <FabricArchitecture />
         }
       }
     }
@@ -92,14 +69,9 @@ function App() {
   const getCurrentComponent = () => {
     const subcategory = navigation[activeCategory].subcategories[activeSubcategory];
     
-    // Special handling for database section which has multiple view modes
-    if (activeCategory === 'database-compare' && activeSubcategory === 'database') {
-      if (databaseViewMode === 'simplified') {
-        return <SimplifiedComparison />;
-      } else {
-        // Pass hideViewSelector=true to prevent showing duplicate view selectors
-        return <DatabaseComparison audienceView={databaseViewMode} hideViewSelector={true} />;
-      }
+    // Special handling for platform section - always use SimplifiedComparison
+    if (activeCategory === 'platform-compare' && activeSubcategory === 'platforms') {
+      return <SimplifiedComparison />;
     }
     
     // For other sections, just return the regular component

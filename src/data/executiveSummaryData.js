@@ -1,115 +1,114 @@
-// Executive summary data for the AI Capability Matrix
-// This data provides business-focused translations of technical capabilities
+// Executive summary data for the AI Capability Matrix (concise, qualitative)
 const executiveSummaryData = [
     {
       id: 'ml-frameworks',
       outcomes: ['innovation', 'time-to-market'],
-      businessImpact: "Choice of ML platform directly impacts how quickly your data science team can develop and deploy AI solutions. The right platform reduces development time by 30-40% and increases model quality.",
+  businessImpact: "Platform choice affects speed to deliver AI and ongoing maintainability.",
       recommendation: 'databricks',
-      reasonDatabricks: "you prioritize AI innovation and have dedicated data science resources",
-      reasonSnowflake: "you need simpler operations and have analytics-focused teams rather than AI specialists",
-      investmentImplications: "Databricks requires higher upfront investment in both platform costs and technical expertise, but delivers faster development cycles and more powerful AI capabilities. Snowflake offers lower barriers to entry for teams without specialized ML expertise.",
-      caseStudy: "A financial services firm reduced fraud model development time by 60% by standardizing on Databricks, enabling them to respond to new fraud patterns in days rather than weeks.",
-      roi: "30-40% reduction in total development costs for ML projects"
+  reasonDatabricks: "you prioritize AI innovation and have data science talent",
+  reasonSnowflake: "you prefer simpler ops with analytics-focused teams",
+  investmentImplications: "Databricks: higher upfront skill/platform investment; Snowflake: simpler to onboard, narrower ML scope.",
+  caseStudy: "Financial services standardized on Databricks to accelerate fraud model iteration.",
+  roi: null
     },
     {
       id: 'model-serving',
       outcomes: ['time-to-market', 'cost-reduction'],
-      businessImpact: "The deployment architecture determines how quickly AI models reach production and how efficiently they can be scaled and maintained, directly impacting both time-to-market and operational costs.",
+  businessImpact: "Serving approach impacts release cadence and run costs.",
       recommendation: 'conditional',
-      reasonDatabricks: "your teams are building complex AI applications with frequent updates",
-      reasonSnowflake: "you need simpler deployment with more serverless operations",
-      investmentImplications: "Databricks provides more comprehensive MLOps capabilities but requires more specialized knowledge. Snowflake's approach is more accessible but less comprehensive for complex ML workloads.",
-      caseStudy: "A retail company using Databricks was able to deploy 3x more personalization models in the same timeframe compared to their previous solution, resulting in a 12% increase in conversion rates.",
-      roi: "25-35% reduction in model deployment and maintenance costs"
+  reasonDatabricks: "you build complex AI with frequent updates",
+  reasonSnowflake: "you prefer serverless simplicity",
+  investmentImplications: "Databricks: deeper MLOps, more expertise; Snowflake: simpler orchestration, fewer knobs.",
+  caseStudy: "Retail teams increased release cadence with unified pipelines.",
+  roi: null
     },
     {
       id: 'vector-search',
       outcomes: ['innovation', 'time-to-market'],
-      businessImpact: "Vector operations are essential for modern AI applications including semantic search, recommendation systems, and retrieval augmented generation with LLMs. The right platform accelerates time-to-market for these emerging AI capabilities.",
+  businessImpact: "Vector features enable search/recommendations and RAG use cases.",
       recommendation: 'conditional',
-      reasonDatabricks: "you're building complex AI applications integrated with your ML pipelines",
-      reasonSnowflake: "you need simpler vector operations integrated with your existing data warehouse",
-      investmentImplications: "Both platforms offer vector capabilities, but with different performance characteristics and integration patterns. The choice impacts how easily teams can implement modern AI features.",
-      caseStudy: "A media company implemented semantic search for content discovery using vector embeddings, resulting in 30% higher engagement with recommended content.",
-      roi: "40-50% faster implementation of semantic search and AI-powered recommendations"
+  reasonDatabricks: "you need ML-pipeline integration",
+  reasonSnowflake: "you want SQL-first integration in the warehouse",
+  investmentImplications: "Choose based on developer workflow and hosting strategy.",
+  caseStudy: "Media teams launched semantic search atop existing pipelines.",
+  roi: null
     },
     {
       id: 'llm-integration',
       outcomes: ['innovation', 'risk-reduction'],
-      businessImpact: "As generative AI becomes central to business innovation, your platform's LLM capabilities directly impact the speed, cost, and governance of GenAI applications that will drive future competitive advantage.",
+  businessImpact: "LLM tooling affects build speed, cost, and governance.",
       recommendation: 'databricks',
-      reasonDatabricks: "you're building custom, fine-tuned LLM applications or need end-to-end LLM workflows",
-      reasonSnowflake: "you primarily need to integrate with existing LLM APIs rather than custom model development",
-      investmentImplications: "Databricks offers more comprehensive LLM capabilities but at higher cost and complexity. This investment pays off for companies building differentiated AI capabilities rather than using off-the-shelf models.",
-      caseStudy: "A healthcare provider fine-tuned LLMs for medical documentation using Databricks, resulting in 70% reduction in documentation time for physicians while maintaining higher accuracy than generic models.",
-      roi: "60-70% reduction in custom LLM development and deployment time"
+  reasonDatabricks: "you fine-tune or need end-to-end LLM workflows",
+  reasonSnowflake: "you primarily call managed LLMs",
+  investmentImplications: "Databricks: deeper LLM stack; Snowflake: simpler integration.",
+  caseStudy: "Healthcare teams streamlined documentation with platform-managed LLM flow.",
+  roi: null
     },
     {
       id: 'ml-monitoring',
       outcomes: ['risk-reduction', 'cost-reduction'],
-      businessImpact: "AI governance and monitoring directly impacts regulatory compliance, model performance, and risk management. Poor governance leads to model drift, underperformance, and potential regulatory issues.",
+  businessImpact: "Governance reduces drift, downtime, and audit effort.",
       recommendation: 'databricks',
-      reasonDatabricks: "you operate in regulated industries or need comprehensive ML governance",
-      reasonSnowflake: "you have simpler ML use cases with less stringent governance requirements",
-      investmentImplications: "Databricks' unified ML governance requires upfront investment but dramatically reduces compliance overhead and improves model reliability. Snowflake requires more custom development for comprehensive ML monitoring.",
-      caseStudy: "A banking institution implemented Databricks' MLflow tracking to monitor model drift across 200+ models, reducing model-related incidents by 80% and streamlining regulatory reporting.",
-      roi: "70-80% reduction in compliance overhead for regulated ML applications"
+  reasonDatabricks: "you need ML-specific governance and lineage",
+  reasonSnowflake: "you have straightforward BI/analytics ML",
+  investmentImplications: "Databricks: built-in ML governance; Snowflake: augment with external tools.",
+  caseStudy: "Banking teams centralized model tracking and lineage.",
+  roi: null
     },
     {
       id: 'data-preparation',
       outcomes: ['time-to-market', 'cost-reduction'],
-      businessImpact: "Feature engineering is typically 70-80% of ML development effort. The right platform dramatically reduces this time and enables feature reuse across models and teams.",
+  businessImpact: "Feature stores improve reuse and consistency.",
       recommendation: 'databricks',
-      reasonDatabricks: "you're building multiple ML models that can benefit from shared features",
-      reasonSnowflake: "your ML needs are primarily centered around SQL-based analytics",
-      investmentImplications: "Databricks' Feature Store represents upfront investment but provides ongoing efficiency gains through feature reuse and consistent feature engineering across teams.",
-      caseStudy: "An insurance company reduced time-to-market for new risk models by 50% by implementing a centralized feature store in Databricks, enabling cross-team feature reuse.",
-      roi: "50-60% reduction in feature engineering time across the organization"
+  reasonDatabricks: "you benefit from cross-model feature reuse",
+  reasonSnowflake: "you rely on SQL-first pipelines",
+  investmentImplications: "Databricks: feature store; Snowflake: SQL transformations + Snowpark.",
+  caseStudy: "Insurance teams standardized core features for reuse.",
+  roi: null
     },
     {
       id: 'streaming-ml',
       outcomes: ['innovation', 'time-to-market'],
-      businessImpact: "Real-time AI enables immediate action on emerging patterns and events, critical for applications in fraud detection, predictive maintenance, and real-time personalization.",
+  businessImpact: "Streaming ML supports real-time decisions.",
       recommendation: 'databricks',
-      reasonDatabricks: "you need complex streaming ML pipelines with real-time model updates",
-      reasonSnowflake: "you have simpler streaming requirements with less emphasis on low latency",
-      investmentImplications: "Databricks provides more comprehensive streaming ML capabilities but requires more specialized knowledge. The investment delivers significant advantages for time-sensitive use cases.",
-      caseStudy: "An e-commerce platform implemented real-time fraud detection with Databricks, reducing fraud losses by 35% while decreasing false positives by 20%.",
-      roi: "2-3x higher throughput for streaming analytics workloads"
+  reasonDatabricks: "you need complex transformations and low-latency",
+  reasonSnowflake: "you focus on ingestion and simpler transforms",
+  investmentImplications: "Databricks: richer streaming; Snowflake: simpler ingestion paths.",
+  caseStudy: "E-commerce reduced fraud by acting on events in near real-time.",
+  roi: null
     },
     {
       id: 'cost-optimization',
       outcomes: ['cost-reduction'],
-      businessImpact: "ML infrastructure costs can grow rapidly with model complexity and data volume. Your platform choice significantly impacts both immediate costs and long-term TCO for AI initiatives.",
+  businessImpact: "Cost control depends on workload patterns and governance.",
       recommendation: 'conditional',
-      reasonDatabricks: "you have predictable, large-scale ML workloads and technical resources to optimize",
-      reasonSnowflake: "you have variable workloads and prioritize operational simplicity over absolute cost",
-      investmentImplications: "Databricks tends to have better economics for sustained, intensive ML workloads but requires more tuning. Snowflake offers more predictable costs with less optimization overhead.",
-      caseStudy: "A manufacturing firm reduced ML infrastructure costs by 40% by migrating from cloud VMs to optimized Databricks clusters, while improving model training speed.",
-      roi: "30-50% reduction in total infrastructure costs for large-scale ML projects"
+  reasonDatabricks: "you optimize sustained ML workloads",
+  reasonSnowflake: "you prefer predictable, serverless operations",
+  investmentImplications: "Databricks: tuning yields savings; Snowflake: simpler controls, clear billing.",
+  caseStudy: "Manufacturing teams consolidated training on optimized clusters.",
+  roi: null
     },
     {
       id: 'generative-ai-solutions',
       outcomes: ['innovation', 'time-to-market'],
-      businessImpact: "Pre-built generative AI frameworks determine time-to-market for increasingly critical AI applications like chatbots, content generation, and knowledge retrieval systems.",
+  businessImpact: "Pre-built GenAI features compress build time.",
       recommendation: 'databricks',
-      reasonDatabricks: "you're building custom GenAI applications requiring fine-tuning or specialized capabilities",
-      reasonSnowflake: "you need simple integration of existing models with your data warehouse",
-      investmentImplications: "Databricks' comprehensive GenAI ecosystem requires higher investment but delivers significantly faster development cycles for sophisticated GenAI applications.",
-      caseStudy: "A professional services firm built a RAG-based knowledge assistant on Databricks that delivered $3M annual savings through improved knowledge worker productivity.",
-      roi: "50-60% reduction in GenAI application development time"
+  reasonDatabricks: "you fine-tune or orchestrate end-to-end",
+  reasonSnowflake: "you integrate existing models with warehouse data",
+  investmentImplications: "Databricks: deeper stack; Snowflake: fast start with managed services.",
+  caseStudy: "Knowledge assistants deployed quickly using existing corpora.",
+  roi: null
     },
     {
       id: 'gpu-acceleration',
       outcomes: ['cost-reduction', 'time-to-market'],
-      businessImpact: "GPU acceleration is essential for deep learning and LLM fine-tuning. The right platform optimizes GPU utilization, directly reducing training costs and accelerating model development.",
+  businessImpact: "GPU management impacts training speed and cost.",
       recommendation: 'databricks',
-      reasonDatabricks: "you're doing significant deep learning or LLM fine-tuning requiring GPU resources",
-      reasonSnowflake: "you have limited GPU workloads or rely primarily on pre-trained models",
-      investmentImplications: "Databricks' native GPU management provides better utilization and cost efficiency for GPU-intensive workloads, which can represent significant portions of AI project budgets.",
-      caseStudy: "A media company reduced LLM fine-tuning costs by 45% through Databricks' optimized GPU management compared to their previous infrastructure.",
-      roi: "40-50% better GPU utilization, translating to proportional cost savings for training"
+  reasonDatabricks: "you run deep learning or LLM fine-tuning",
+  reasonSnowflake: "you mostly use managed models",
+  investmentImplications: "Databricks: tighter GPU integration; Snowflake: containerized path.",
+  caseStudy: "Media teams improved training throughput with optimized clusters.",
+  roi: null
     }
   ];
   

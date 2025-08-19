@@ -25,7 +25,7 @@ const databaseComparisonData = [
       metrics: {
         type: 'performance',
         winner: 'conditional',
-        description: 'SingleStore: Up to 10x faster for point lookups and small queries | Databricks: More cost-effective for large datasets (50-80% lower storage costs) | Snowflake: Best balance of performance and storage efficiency for medium to large datasets',
+        description: 'SingleStore: Fastest for point lookups and small queries | Databricks: Cost-effective for large datasets | Snowflake: Good balance of performance and storage efficiency',
         source: 'Published benchmarks from all vendors'
       }
     },
@@ -100,7 +100,7 @@ const databaseComparisonData = [
       metrics: {
         type: 'cost',
         winner: 'conditional',
-        description: 'Databricks: 30-50% cost savings for variable workloads | Snowflake: Most elastic scaling with 20-40% lower operational overhead | SingleStore: Requires more planning but predictable scaling',
+        description: 'Databricks: Cost-effective for variable workloads | Snowflake: Elastic scaling with lower operational overhead | SingleStore: Predictable scaling with planning',
         source: 'Cloud cost optimization studies'
       }
     },
@@ -145,7 +145,7 @@ const databaseComparisonData = [
       metrics: {
         type: 'cost',
         winner: 'conditional',
-        description: 'Databricks: 20-40% cost savings for variable workloads | Snowflake: Most transparent pay-as-you-go model with 30-50% better cost predictability | SingleStore: Most economical for consistent, predictable workloads',
+        description: 'Databricks: Good value for variable workloads | Snowflake: Transparent pay-as-you-go model with predictable costs | SingleStore: Economical for consistent workloads',
         source: 'Cloud cost optimization analyses'
       }
     },

@@ -12,10 +12,6 @@ const AwsVsAzureComparison = () => {
   const [audienceView, setAudienceView] = useState('executive');
   // State for selected business priority in executive view
   const [selectedPriority, setSelectedPriority] = useState('all');
-  // State for expanded business priority
-  const [expandedPriority, setExpandedPriority] = useState(null);
-  // State for expanded industry
-  const [expandedIndustry, setExpandedIndustry] = useState(null);
 
   // Toggle expansion of a service category
   const toggleServiceExpansion = (categoryIndex, cloud) => {
@@ -30,16 +26,6 @@ const AwsVsAzureComparison = () => {
   const isServiceExpanded = (categoryIndex, cloud) => {
     const key = `${cloud}-${categoryIndex}`;
     return !!expandedServices[key];
-  };
-
-  // Toggle expansion of a business priority
-  const togglePriorityExpansion = (priorityId) => {
-    setExpandedPriority(expandedPriority === priorityId ? null : priorityId);
-  };
-
-  // Toggle expansion of an industry guidance
-  const toggleIndustryExpansion = (industryIndex) => {
-    setExpandedIndustry(expandedIndustry === industryIndex ? null : industryIndex);
   };
 
   // Helper for hover animations
@@ -96,185 +82,70 @@ const AwsVsAzureComparison = () => {
 
       {/* Conditional content based on selected view */}
       {audienceView === 'technical' ? (
-        // TECHNICAL VIEW CONTENT
+        // STREAMLINED TECHNICAL VIEW - Focused on Key Differences Only
         <>
-          {/* Services Comparison Table */}
+          {/* Core Platform Comparison - Most Important */}
           <div className="bg-white rounded-lg shadow-md p-6 hover:shadow-xl transition-shadow mb-4">
-            <h2 className="text-2xl font-semibold mb-4 text-center">Cloud Services Comparison</h2>
-            <div className="overflow-x-auto">
-              <table className="min-w-full">
-                <thead>
-                  <tr>
-                    <th className="px-4 py-2 border-b-2 text-left">Category</th>
-                    <th className="px-4 py-2 border-b-2 text-left bg-amber-50">AWS Services</th>
-                    <th className="px-4 py-2 border-b-2 text-left bg-blue-50">Azure Services</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {serviceCategories.map((category, idx) => (
-                    <React.Fragment key={`category-${idx}`}>
-                      {/* Category row */}
-                      <tr className="border-b hover:bg-gray-50">
-                        <td className="px-4 py-3 font-medium">{category.category}</td>
-                        
-                        {/* AWS Service */}
-                        <td className="px-4 py-3 bg-amber-50/30">
-                          {category.aws.parent ? (
-                            <div 
-                              className="cursor-pointer flex justify-between items-center"
-                              onClick={() => category.aws.children.length > 0 && toggleServiceExpansion(idx, 'aws')}
-                            >
-                              <div>
-                                <div className="font-semibold text-amber-800">{category.aws.parent.service}</div>
-                                <div className="text-xs text-gray-600">{category.aws.parent.description}</div>
-                              </div>
-                              {category.aws.children.length > 0 && (
-                                <span className="text-amber-600">
-                                  {isServiceExpanded(idx, 'aws') ? '▼' : '▶'}
-                                </span>
-                              )}
-                            </div>
-                          ) : (
-                            <div className="text-gray-400 italic">No equivalent service</div>
-                          )}
-                        </td>
-                        
-                        {/* Azure Service */}
-                        <td className="px-4 py-3 bg-blue-50/30">
-                          {category.azure.parent ? (
-                            <div 
-                              className="cursor-pointer flex justify-between items-center"
-                              onClick={() => category.azure.children.length > 0 && toggleServiceExpansion(idx, 'azure')}
-                            >
-                              <div>
-                                <div className="font-semibold text-blue-800">{category.azure.parent.service}</div>
-                                <div className="text-xs text-gray-600">{category.azure.parent.description}</div>
-                              </div>
-                              {category.azure.children.length > 0 && (
-                                <span className="text-blue-600">
-                                  {isServiceExpanded(idx, 'azure') ? '▼' : '▶'}
-                                </span>
-                              )}
-                            </div>
-                          ) : (
-                            <div className="text-gray-400 italic">No equivalent service</div>
-                          )}
-                        </td>
-                      </tr>
-
-                      {/* FIXED: Render child services in aligned pairs */}
-                      {(isServiceExpanded(idx, 'aws') || isServiceExpanded(idx, 'azure')) && 
-                        Array.from({ length: Math.max(
-                          isServiceExpanded(idx, 'aws') ? category.aws.children.length : 0,
-                          isServiceExpanded(idx, 'azure') ? category.azure.children.length : 0
-                        )}).map((_, childIdx) => (
-                          <tr key={`child-row-${idx}-${childIdx}`} className="border-b">
-                            <td className="px-4 py-2"></td>
-                            
-                            {/* AWS Child */}
-                            <td className={`px-4 py-2 ${isServiceExpanded(idx, 'aws') ? 'bg-amber-50/10' : ''}`}>
-                              {isServiceExpanded(idx, 'aws') && childIdx < category.aws.children.length ? (
-                                <div className="pl-8">
-                                  <div className="font-medium text-sm">{category.aws.children[childIdx].service}</div>
-                                  <div className="text-xs text-gray-600">{category.aws.children[childIdx].description}</div>
-                                </div>
-                              ) : null}
-                            </td>
-                            
-                            {/* Azure Child */}
-                            <td className={`px-4 py-2 ${isServiceExpanded(idx, 'azure') ? 'bg-blue-50/10' : ''}`}>
-                              {isServiceExpanded(idx, 'azure') && childIdx < category.azure.children.length ? (
-                                <div className="pl-8">
-                                  <div className="font-medium text-sm">{category.azure.children[childIdx].service}</div>
-                                  <div className="text-xs text-gray-600">{category.azure.children[childIdx].description}</div>
-                                </div>
-                              ) : null}
-                            </td>
-                          </tr>
-                        ))
-                      }
-                    </React.Fragment>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-          {/* Service Categories Summary Cards */}
-          <div className="bg-white rounded-lg shadow-md p-6 hover:shadow-xl transition-shadow mb-4">
-            <h2 className="text-xl font-semibold mb-4 text-center">Platform Strengths</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <h2 className="text-2xl font-semibold mb-4 text-center">Key Technical Differences</h2>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <div className="bg-amber-50 p-4 rounded-lg border border-amber-200">
-                <h3 className="text-lg font-medium text-amber-800 mb-2">AWS Advantages</h3>
+                <h3 className="text-lg font-medium text-amber-800 mb-3">🔶 AWS Strengths</h3>
                 <ul className="list-disc pl-5 space-y-2 text-gray-700">
-                  <li>Greater market share and longer history in cloud services</li>
-                  <li>More granular services with specialized capabilities</li>
-                  <li>Extremely broad global infrastructure</li>
-                  <li>Deep integration with data lake technologies</li>
-                  <li>Strong serverless computing options (Lambda, Step Functions)</li>
+                  <li><strong>Market leadership:</strong> Most mature cloud platform with broadest service portfolio</li>
+                  <li><strong>Data lakes:</strong> Superior S3 integration, Lake Formation, and Glue ecosystem</li>
+                  <li><strong>Serverless:</strong> Advanced Lambda, Step Functions for event-driven architectures</li>
+                  <li><strong>Global reach:</strong> Most regions and availability zones worldwide</li>
                 </ul>
               </div>
               
               <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
-                <h3 className="text-lg font-medium text-blue-800 mb-2">Azure Advantages</h3>
+                <h3 className="text-lg font-medium text-blue-800 mb-3">🔷 Azure Strengths</h3>
                 <ul className="list-disc pl-5 space-y-2 text-gray-700">
-                  <li>Tighter integration with Microsoft ecosystem</li>
-                  <li>Native Databricks integration and optimization</li>
-                  <li>Stronger enterprise identity management with Entra ID</li>
-                  <li>More comprehensive hybrid cloud options</li>
-                  <li>Power BI integration for business analytics</li>
+                  <li><strong>Microsoft ecosystem:</strong> Native integration with Office 365, Power BI, Teams</li>
+                  <li><strong>Databricks optimization:</strong> Co-engineered platform with better performance</li>
+                  <li><strong>Enterprise identity:</strong> Seamless Active Directory and hybrid cloud integration</li>
+                  <li><strong>Cost efficiency:</strong> Often 20-30% lower costs for equivalent workloads</li>
                 </ul>
               </div>
             </div>
           </div>
 
-          {/* Selection guidance */}
+          {/* Decision Framework for Technical Teams */}
           <div className="bg-white rounded-lg shadow-md p-6 hover:shadow-xl transition-shadow">
-            <h2 className="text-xl font-semibold mb-4 text-center">Selection Guidance</h2>
-            <div className="bg-gradient-to-r from-purple-50 to-blue-50 p-4 rounded-lg border border-blue-100">
-              <h3 className="font-medium mb-2">How to Choose Between AWS and Azure</h3>
-              <p className="text-gray-700 mb-3">When selecting between AWS and Azure for data engineering workloads, consider these factors:</p>
-              <ul className="list-disc pl-5 space-y-1 text-gray-700">
-                <li>Existing organizational expertise and investments</li>
-                <li>Integration requirements with other systems</li>
-                <li>Specific features needed for your data pipeline</li>
-                <li>Geographic availability in your target regions</li>
-                <li>Cost structure and pricing models</li>
-                <li>Compliance and governance requirements</li>
-              </ul>
-              <p className="mt-3 text-gray-700">For Databricks-centric workflows, Azure offers more seamless integration, while AWS provides greater flexibility with third-party tools and services.</p>
+            <h2 className="text-xl font-semibold mb-4 text-center">Technical Decision Framework</h2>
+            <div className="bg-gradient-to-r from-purple-50 to-blue-50 p-6 rounded-lg border border-blue-100">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <h3 className="font-medium mb-3 text-amber-700">Choose AWS when:</h3>
+                  <ul className="list-disc pl-5 space-y-1 text-gray-700 text-sm">
+                    <li>Building complex, multi-cloud data architectures</li>
+                    <li>Need specialized ML/AI services (SageMaker ecosystem)</li>
+                    <li>Heavy use of serverless and event-driven patterns</li>
+                    <li>Existing AWS infrastructure and team expertise</li>
+                    <li>Require maximum service flexibility and vendor choice</li>
+                  </ul>
+                </div>
+                <div>
+                  <h3 className="font-medium mb-3 text-blue-700">Choose Azure when:</h3>
+                  <ul className="list-disc pl-5 space-y-1 text-gray-700 text-sm">
+                    <li>Heavy Microsoft ecosystem integration (Office, Teams, etc.)</li>
+                    <li>Databricks is your primary analytics platform</li>
+                    <li>Enterprise with existing Active Directory infrastructure</li>
+                    <li>Cost optimization is a primary concern</li>
+                    <li>Need strong hybrid cloud capabilities</li>
+                  </ul>
+                </div>
+              </div>
+              
+              <div className="mt-4 bg-white p-4 rounded border border-gray-200">
+                <p className="text-sm text-gray-600"><strong>For Nuvei specifically:</strong> Azure likely optimal due to existing Databricks usage, Microsoft ecosystem integration needs, and cost efficiency requirements for payment processing scale.</p>
+              </div>
             </div>
           </div>
         </>
       ) : (
         // EXECUTIVE VIEW CONTENT
         <>
-          {/* Business Priority Filter */}
-          <div className="bg-white rounded-lg shadow-md p-4 hover:shadow-xl transition-shadow mb-4">
-            <h3 className="text-center text-sm font-medium text-gray-700 mb-3">Business Priority</h3>
-            <div className="flex justify-center flex-wrap gap-2">
-              <button 
-                onClick={() => setSelectedPriority('all')}
-                className={`px-4 py-2 text-sm font-medium rounded-md ${selectedPriority === 'all' ? 'bg-gray-800 text-white' : 'bg-gray-100 text-gray-800 hover:bg-gray-200'}`}
-              >
-                All Priorities
-              </button>
-              {cloudExecutiveSummary.businessPriorities.map(priority => (
-                <button 
-                  key={priority.id}
-                  onClick={() => setSelectedPriority(priority.id)}
-                  className={`px-4 py-2 text-sm font-medium rounded-md flex items-center ${
-                    selectedPriority === priority.id 
-                      ? 'bg-blue-600 text-white' 
-                      : 'bg-blue-50 text-blue-600 hover:bg-blue-100'
-                  }`}
-                >
-                  <span className="mr-1">{priority.icon}</span> {priority.title}
-                </button>
-              ))}
-            </div>
-          </div>
-          
           {/* Executive Dashboard - High Level Comparison */}
           <div className="bg-white rounded-lg shadow-md p-6 hover:shadow-xl transition-shadow mb-4">
             <h2 className="text-xl font-semibold mb-4 text-center">Executive Decision Framework</h2>
@@ -385,123 +256,9 @@ const AwsVsAzureComparison = () => {
             </div>
           </div>
 
-          {/* Business Priorities Section */}
-          <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow mb-4">
-            <h2 className="bg-gray-100 font-semibold p-3 text-gray-700">Business Priorities Comparison</h2>
-            
-            {filteredPriorities.map((priority) => (
-              <div key={priority.id} className="border-t border-gray-200">
-                <div 
-                  className={`flex cursor-pointer hover:bg-gray-50 transition-colors ${expandedPriority === priority.id ? 'bg-blue-50' : ''}`}
-                  onClick={() => togglePriorityExpansion(priority.id)}
-                >
-                  <div className="w-1/4 p-4 font-medium flex items-center">
-                    <div className="flex items-center">
-                      <span className="text-2xl mr-2">{priority.icon}</span>
-                      <span>{priority.title}</span>
-                    </div>
-                  </div>
-                  
-                  <div className="w-1/3 p-4 border-l border-r border-gray-200">
-                    <div className="text-sm text-amber-800 font-semibold">AWS</div>
-                    <div className="mt-1 text-sm">{priority.aws.summary}</div>
-                  </div>
-                  
-                  <div className="w-1/3 p-4">
-                    <div className="text-sm text-blue-800 font-semibold">Azure</div>
-                    <div className="mt-1 text-sm">{priority.azure.summary}</div>
-                  </div>
-                  
-                  <div className="flex items-center px-4">
-                    <svg 
-                      className={`w-5 h-5 text-gray-500 transition-transform ${expandedPriority === priority.id ? 'transform rotate-180' : ''}`} 
-                      fill="none" 
-                      viewBox="0 0 24 24" 
-                      stroke="currentColor"
-                    >
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                    </svg>
-                  </div>
-                </div>
-                
-                {expandedPriority === priority.id && (
-                  <div className="p-4 bg-gray-50 border-t border-gray-200">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div>
-                        <h3 className="font-medium mb-2 text-amber-800">AWS Strengths</h3>
-                        <ul className="list-disc pl-5 space-y-1 text-gray-700">
-                          {priority.aws.strengths.map((strength, idx) => (
-                            <li key={`aws-strength-${idx}`}>{strength}</li>
-                          ))}
-                        </ul>
-                        <div className="mt-3 p-3 bg-amber-50 rounded-lg">
-                          <h4 className="font-medium text-amber-800 text-sm">Business Case</h4>
-                          <p className="text-sm text-gray-700 mt-1">{priority.aws.businessCase}</p>
-                        </div>
-                      </div>
-                      
-                      <div>
-                        <h3 className="font-medium mb-2 text-blue-800">Azure Strengths</h3>
-                        <ul className="list-disc pl-5 space-y-1 text-gray-700">
-                          {priority.azure.strengths.map((strength, idx) => (
-                            <li key={`azure-strength-${idx}`}>{strength}</li>
-                          ))}
-                        </ul>
-                        <div className="mt-3 p-3 bg-blue-50 rounded-lg">
-                          <h4 className="font-medium text-blue-800 text-sm">Business Case</h4>
-                          <p className="text-sm text-gray-700 mt-1">{priority.azure.businessCase}</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
+
           
-          {/* Industry Guidance Section */}
-          <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow mb-4">
-            <h2 className="bg-gray-100 font-semibold p-3 text-gray-700">Industry-Specific Guidance</h2>
-            
-            {cloudExecutiveSummary.industryGuidance.map((industry, idx) => (
-              <div key={`industry-${idx}`} className="border-t border-gray-200">
-                <div 
-                  className={`flex cursor-pointer hover:bg-gray-50 transition-colors ${expandedIndustry === idx ? 'bg-purple-50' : ''}`}
-                  onClick={() => toggleIndustryExpansion(idx)}
-                >
-                  <div className="w-1/4 p-4 font-medium">
-                    {industry.industry}
-                  </div>
-                  
-                  <div className="w-2/3 p-4 border-l border-gray-200">
-                    <div className="text-sm text-gray-700">{industry.recommendation}</div>
-                  </div>
-                  
-                  <div className="flex items-center px-4">
-                    <svg 
-                      className={`w-5 h-5 text-gray-500 transition-transform ${expandedIndustry === idx ? 'transform rotate-180' : ''}`} 
-                      fill="none" 
-                      viewBox="0 0 24 24" 
-                      stroke="currentColor"
-                    >
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                    </svg>
-                  </div>
-                </div>
-                
-                {expandedIndustry === idx && (
-                  <div className="p-4 bg-gray-50 border-t border-gray-200">
-                    <h3 className="font-medium mb-2">Key Considerations</h3>
-                    <ul className="list-disc pl-5 space-y-1 text-gray-700">
-                      {industry.keyConsiderations.map((consideration, cidx) => (
-                        <li key={`consideration-${idx}-${cidx}`}>{consideration}</li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
+
           
           {/* Cost Structure & Migration Section */}
           <div className="bg-white rounded-lg shadow-md p-6 hover:shadow-xl transition-shadow mb-4">

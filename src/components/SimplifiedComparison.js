@@ -15,14 +15,12 @@ const SimplifiedComparison = () => {
 
   return (
     <div>
-      {/* Header with blue-to-purple gradient */}
-      <div 
-        className="bg-gradient-to-r from-blue-600 to-purple-600 p-6 rounded-xl shadow-lg mb-4 text-center"
-      >
-        <h1 className="text-3xl font-bold text-white mb-2">
-          Analytics Platform Comparison: Simplified
+      {/* Executive Header */}
+      <div className="text-center mb-6">
+        <h1 className="text-3xl font-bold text-gray-800 mb-2">
+          Enterprise Analytics Platform Comparison
         </h1>
-        <p className="text-white/80">Databricks vs Snowflake vs Microsoft Fabric - without the technical complexity</p>
+        <p className="text-gray-600 text-lg">Strategic assessment of leading data platform solutions</p>
       </div>
 
       {/* Simple tabs */}
@@ -70,7 +68,7 @@ const SimplifiedComparison = () => {
                 <div className="bg-white p-3 rounded border border-purple-100">
                   <p className="text-sm font-medium text-purple-800 mb-1">In one sentence:</p>
                   <p className="text-sm text-gray-700">
-                    "A platform for analyzing massive datasets and building AI/ML models with a unified approach to data."
+                    "Best for organizations prioritizing AI/ML capabilities and advanced analytics."
                   </p>
                 </div>
               </div>
@@ -94,7 +92,7 @@ const SimplifiedComparison = () => {
                 <div className="bg-white p-3 rounded border border-cyan-100">
                   <p className="text-sm font-medium text-cyan-800 mb-1">In one sentence:</p>
                   <p className="text-sm text-gray-700">
-                    "A cloud data warehouse that automatically scales and makes it easy to share and analyze data."
+                    "Ideal for organizations needing scalable data warehousing with minimal administration."
                   </p>
                 </div>
               </div>
@@ -118,7 +116,7 @@ const SimplifiedComparison = () => {
                 <div className="bg-white p-3 rounded border border-green-100">
                   <p className="text-sm font-medium text-green-800 mb-1">In one sentence:</p>
                   <p className="text-sm text-gray-700">
-                    "Microsoft's all-in-one data platform that connects seamlessly with Office 365 and Power BI."
+                    "Optimal for enterprises already invested in the Microsoft ecosystem."
                   </p>
                 </div>
               </div>

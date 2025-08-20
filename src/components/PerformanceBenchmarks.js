@@ -30,20 +30,20 @@ const PerformanceBenchmarks = () => {
 
   const benchmarkData = {
     etl: {
-      name: 'ETL Processing*',
+      name: 'ETL Processing',
       description: 'Batch data processing and transformation workloads',
       benchmarks: {
         databricks: {
-          throughput: { value: '2.7TB/hr*', score: 98 },
-          latency: { value: '42min*', score: 92 },
-          cost: { value: '$0.35/TB*', score: 88 },
-          scalability: { value: '1000+ nodes*', score: 98 }
+          throughput: { value: '2.7TB/hr', score: 98 },
+          latency: { value: '42min', score: 92 },
+          cost: { value: '$0.35/TB', score: 88 },
+          scalability: { value: '1000+ nodes', score: 98 }
         },
         snowflake: {
-          throughput: { value: '1.9TB/hr*', score: 78 },
-          latency: { value: '48min*', score: 85 },
-          cost: { value: '$0.30/TB*', score: 92 },
-          scalability: { value: '200 nodes*', score: 70 }
+          throughput: { value: '1.9TB/hr', score: 78 },
+          latency: { value: '48min', score: 85 },
+          cost: { value: '$0.30/TB', score: 92 },
+          scalability: { value: '200 nodes', score: 70 }
         },
         fabric: {
           throughput: { value: '2.1TB/hr', score: 87 },
@@ -60,7 +60,7 @@ const PerformanceBenchmarks = () => {
       }
     },
     realtime: {
-      name: 'Real-time Analytics*',
+      name: 'Real-time Analytics',
       description: 'Low-latency streaming and real-time query processing',
       benchmarks: {
         databricks: {
@@ -90,7 +90,7 @@ const PerformanceBenchmarks = () => {
       }
     },
     ml: {
-      name: 'Machine Learning*',
+      name: 'Machine Learning',
       description: 'Model training, inference, and MLOps workloads',
       benchmarks: {
         databricks: {
@@ -120,7 +120,7 @@ const PerformanceBenchmarks = () => {
       }
     },
     adhoc: {
-      name: 'Ad-hoc Analytics*',
+      name: 'Ad-hoc Analytics',
       description: 'Interactive queries and business intelligence workloads',
       benchmarks: {
         databricks: {

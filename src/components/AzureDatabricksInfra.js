@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import PageHeader from './common/PageHeader';
+import SnowflakeArchitecture from './SnowflakeArchitecture';
+import FabricArchitecture from './FabricArchitecture';
 
 const DatabricksArchitecture = () => {
   const [activeTooltip, setActiveTooltip] = useState(null);
-  const [activeTab, setActiveTab] = useState('architecture');
-    const [audienceView, setAudienceView] = useState('executive');
+  const [selectedPlatform, setSelectedPlatform] = useState('databricks');
   
   const handleMouseEnter = (id) => {
     setActiveTooltip(id);
@@ -912,59 +913,58 @@ const DatabricksArchitecture = () => {
     );
   };
 
+  const platforms = [
+    { id: 'databricks', name: 'Databricks', color: 'bg-red-500' },
+    { id: 'snowflake', name: 'Snowflake', color: 'bg-blue-500' },
+    { id: 'fabric', name: 'Microsoft Fabric', color: 'bg-purple-500' }
+  ];
+
+  const renderArchitecture = () => {
+    switch(selectedPlatform) {
+      case 'snowflake':
+        return <SnowflakeArchitecture />;
+      case 'fabric':
+        return <FabricArchitecture />;
+      default:
+        return <ArchitectureDiagram />;
+    }
+  };
+
   return (
-    <>
-      {/* Content container */}
-      <div className="bg-white rounded-lg shadow-lg p-6">
-        {/* Tab navigation */}
-        <div className="bg-white rounded-lg shadow-md p-4 hover:shadow-xl transition-shadow mb-4">
-          <h3 className="text-center text-sm font-medium text-gray-700 mb-3">View Options</h3>
-          <div className="flex justify-center flex-col space-y-3 sm:flex-row sm:space-y-0 sm:space-x-4">
-          
-            {/* Tab selector */}
-            <div className="bg-gray-100 p-1 rounded-lg inline-flex self-center">
+    <div className="bg-gradient-to-br from-blue-50 to-indigo-100 p-8 min-h-screen">
+      <div className="max-w-7xl mx-auto">
+        <h1 className="text-4xl font-bold text-center mb-8 text-gray-800">
+          Technical Architecture Details
+        </h1>
+        
+        {/* Platform Selector */}
+        <div className="flex justify-center mb-8">
+          <div className="bg-white rounded-lg shadow-lg p-2 flex space-x-2">
+            {platforms.map(platform => (
               <button
-                onClick={() => setActiveTab('architecture')}
-                className={`px-4 py-2 text-sm font-medium rounded-md transition-colors ${
-                  activeTab === 'architecture'
-                    ? 'bg-blue-600 text-white'
-                    : 'text-gray-700 hover:bg-gray-200'
+                key={platform.id}
+                onClick={() => setSelectedPlatform(platform.id)}
+                className={`px-6 py-3 rounded-md font-medium transition-all ${
+                  selectedPlatform === platform.id
+                    ? `${platform.color} text-white shadow-lg`
+                    : 'text-gray-600 hover:bg-gray-100'
                 }`}
               >
-                Architecture Overview
+                {platform.name}
               </button>
-              <button
-                onClick={() => setActiveTab('cost')}
-                className={`px-4 py-2 text-sm font-medium rounded-md transition-colors ${
-                  activeTab === 'cost'
-                    ? 'bg-blue-600 text-white'
-                    : 'text-gray-700 hover:bg-gray-200'
-                }`}
-              >
-                Cost & Scaling
-              </button>
-              <button
-                onClick={() => setActiveTab('implementation')}
-                className={`px-4 py-2 text-sm font-medium rounded-md transition-colors ${
-                  activeTab === 'implementation'
-                    ? 'bg-blue-600 text-white'
-                    : 'text-gray-700 hover:bg-gray-200'
-                }`}
-              >
-                Implementation Guide
-              </button>
-            </div>
+            ))}
           </div>
         </div>
-        
-        {/* Tab content container */}
-        <div className="bg-white rounded-lg shadow-md p-6 hover:shadow-xl transition-shadow">
-          {activeTab === 'architecture' && <ArchitectureDiagram />}
-          {activeTab === 'cost' && <CostScalingComponent />}
-          {activeTab === 'implementation' && <ImplementationComponent />}
+
+        {/* Content container */}
+        <div className="bg-white rounded-lg shadow-lg p-6">
+          {/* Architecture content */}
+          <div className="bg-white rounded-lg shadow-md p-6 hover:shadow-xl transition-shadow">
+            {renderArchitecture()}
+          </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

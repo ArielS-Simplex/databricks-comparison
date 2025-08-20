@@ -1,17 +1,17 @@
 {
   "files": {
-    "main.css": "/databricks-comparison/static/css/main.fca5d52a.chunk.css",
-    "main.js": "/databricks-comparison/static/js/main.33c2631f.chunk.js",
-    "main.js.map": "/databricks-comparison/static/js/main.33c2631f.chunk.js.map",
-    "runtime~main.js": "/databricks-comparison/static/js/runtime~main.a93241a4.js",
-    "runtime~main.js.map": "/databricks-comparison/static/js/runtime~main.a93241a4.js.map",
-    "static/js/2.19b0f17f.chunk.js": "/databricks-comparison/static/js/2.19b0f17f.chunk.js",
-    "static/js/2.19b0f17f.chunk.js.map": "/databricks-comparison/static/js/2.19b0f17f.chunk.js.map",
-    "static/js/3.68d536b4.chunk.js": "/databricks-comparison/static/js/3.68d536b4.chunk.js",
-    "static/js/3.68d536b4.chunk.js.map": "/databricks-comparison/static/js/3.68d536b4.chunk.js.map",
-    "index.html": "/databricks-comparison/index.html",
-    "precache-manifest.0b5c23353e017cb316bba588b7440613.js": "/databricks-comparison/precache-manifest.0b5c23353e017cb316bba588b7440613.js",
-    "service-worker.js": "/databricks-comparison/service-worker.js",
-    "static/css/main.fca5d52a.chunk.css.map": "/databricks-comparison/static/css/main.fca5d52a.chunk.css.map"
+    "main.css": "/dwh-comparison/static/css/main.fca5d52a.chunk.css",
+    "main.js": "/dwh-comparison/static/js/main.eae63935.chunk.js",
+    "main.js.map": "/dwh-comparison/static/js/main.eae63935.chunk.js.map",
+    "runtime~main.js": "/dwh-comparison/static/js/runtime~main.06f55b7c.js",
+    "runtime~main.js.map": "/dwh-comparison/static/js/runtime~main.06f55b7c.js.map",
+    "static/js/2.19b0f17f.chunk.js": "/dwh-comparison/static/js/2.19b0f17f.chunk.js",
+    "static/js/2.19b0f17f.chunk.js.map": "/dwh-comparison/static/js/2.19b0f17f.chunk.js.map",
+    "static/js/3.68d536b4.chunk.js": "/dwh-comparison/static/js/3.68d536b4.chunk.js",
+    "static/js/3.68d536b4.chunk.js.map": "/dwh-comparison/static/js/3.68d536b4.chunk.js.map",
+    "index.html": "/dwh-comparison/index.html",
+    "precache-manifest.6c1313c58b4650941b2b94dead45ee6b.js": "/dwh-comparison/precache-manifest.6c1313c58b4650941b2b94dead45ee6b.js",
+    "service-worker.js": "/dwh-comparison/service-worker.js",
+    "static/css/main.fca5d52a.chunk.css.map": "/dwh-comparison/static/css/main.fca5d52a.chunk.css.map"
   }
 }

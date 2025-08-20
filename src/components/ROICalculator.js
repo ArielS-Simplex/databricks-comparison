@@ -87,7 +87,7 @@ const ROICalculator = () => {
       name: pricingConfig.platforms.snowflake.name,
       color: 'cyan',
       baseCreditRate: pricingConfig.platforms.snowflake.pricing.credits.default,
-      storageRate: pricingConfig.platforms.snowflake.pricing.storage.default / 1000, // Convert TB to GB
+      storageRate: pricingConfig.platforms.snowflake.pricing.storage.default / 1000, // $23/TB converted to $/GB
       storageEfficiency: 0.05,
       computeEfficiencyFactor: pricingConfig.platforms.snowflake.pricing.compute.efficiencyFactor,
       creditsPerMillionTransactions: pricingConfig.platforms.snowflake.pricing.compute.creditsPerMillionTransactions,
@@ -124,10 +124,11 @@ const ROICalculator = () => {
       const totalDBUs = transactionDBUs + movementDBUs;
       computeCost = totalDBUs * platform.baseDBURate * platform.computeEfficiencyFactor * 730; // 730 hours per month
     } else if (selectedPlatform === 'snowflake') {
-      // Credit-based pricing using config values
+      // Credit-based pricing - credits are consumed per query/workload, not per hour
       const transactionCredits = (inputs.monthlyTransactions / 1000000) * platform.creditsPerMillionTransactions;
       const movementCredits = (inputs.monthlyMovements / 1000000) * platform.creditsPerMillionMovements;
       const totalCredits = transactionCredits + movementCredits;
+      // Snowflake credits are already monthly consumption, not hourly like DBUs/CUs
       computeCost = totalCredits * platform.baseCreditRate * platform.computeEfficiencyFactor;
     } else if (selectedPlatform === 'fabric') {
       // CU-based pricing using config values

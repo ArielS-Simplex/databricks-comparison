@@ -32,9 +32,9 @@ const pricingConfig = {
         },
         // Compute estimates
         compute: {
-          dbusPerMillionTransactions: 12, // Research-based estimate
-          dbusPerMillionMovements: 8,     // ETL/movement operations
-          efficiencyFactor: 0.85          // 15% better efficiency with optimization
+          dbusPerMillionTransactions: 150, // Adjusted for enterprise payment processing workloads
+          dbusPerMillionMovements: 100,    // Heavy ETL/movement operations
+          efficiencyFactor: 0.85           // 15% better efficiency with optimization
         }
       },
       contractDiscounts: {
@@ -67,9 +67,9 @@ const pricingConfig = {
         },
         // Compute estimates
         compute: {
-          creditsPerMillionTransactions: 10, // Research-based estimate
-          creditsPerMillionMovements: 6,     // ETL operations
-          efficiencyFactor: 1.0              // Baseline efficiency
+          creditsPerMillionTransactions: 120, // Adjusted for enterprise payment processing workloads
+          creditsPerMillionMovements: 80,     // Heavy ETL operations for financial data
+          efficiencyFactor: 1.0               // Baseline efficiency
         }
       },
       contractDiscounts: {
@@ -102,9 +102,9 @@ const pricingConfig = {
         },
         // Compute estimates
         compute: {
-          cusPerMillionTransactions: 8,  // Research-based estimate
-          cusPerMillionMovements: 5,     // ETL operations
-          efficiencyFactor: 0.90         // 10% better with Microsoft integration
+          cusPerMillionTransactions: 100, // Adjusted for enterprise payment processing workloads
+          cusPerMillionMovements: 65,     // ETL operations
+          efficiencyFactor: 0.90          // 10% better with Microsoft integration
         }
       },
       contractDiscounts: {

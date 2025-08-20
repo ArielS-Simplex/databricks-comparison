@@ -1,4 +1,4 @@
-# Enterprise Analytics Platform Comparison - Executive Presentation
+# Enterprise Data Warehouse Comparison - Executive Presentation
 
 ## Project Status: PRODUCTION-READY FOR EXECUTIVE REVIEW
 
@@ -40,7 +40,7 @@ Professional enterprise-grade comparison platform for evaluating Databricks, Sno
 - Implementation considerations
 
 ## Removed Components (Cleanup)
-- ❌ NuveiDecisionGuide.js - Too specific, not executive-appropriate
+- ❌ Company-specific decision guides - Too specific, not executive-appropriate
 - ❌ CaseStudyLibrary.js - Placeholder data, no real case studies
 - ❌ GlobalSearch.js - Over-engineered for 5-page site
 - ❌ 11 other redundant components with duplicate/irrelevant content
@@ -65,9 +65,9 @@ Professional enterprise-grade comparison platform for evaluating Databricks, Sno
 - **Target Audience**: C-level executives and senior management
 - **Workload Profile**: Medium/Enterprise scale
 - **Realistic Monthly Costs**: 
-  - Fabric: $4,666/month ($56k/year) - 72% savings vs SingleStore
-  - Snowflake: $5,850/month ($70k/year) - 65% savings vs SingleStore
-  - Databricks: $6,630/month ($80k/year) - 60% savings vs SingleStore
+  - Fabric: $4,666/month ($56k/year) - 72% savings vs Legacy System
+  - Snowflake: $5,850/month ($70k/year) - 65% savings vs Legacy System
+  - Databricks: $6,630/month ($80k/year) - 60% savings vs Legacy System
 
 ## What Was Fixed in This Update
 - ✅ **Simplified Navigation** - From 8+ confusing sections to 5 clear tabs

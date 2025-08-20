@@ -3,13 +3,13 @@
 // Sources: Official vendor pricing, enterprise contracts, industry analysis
 
 const pricingConfig = {
-  // Current Nuvei baseline
+  // Current enterprise baseline
   currentSystem: {
-    name: 'SingleStore (On-Premise)',
-    annualLicense: 200000, // $200k/year
+    name: 'Legacy System (On-Premise)',
+    annualLicense: 200000, // Example: $150k-250k/year range
     monthlyTransactions: 600000000, // 20M daily * 30
     monthlyMovements: 300000000, // 10M daily * 30
-    notes: 'Current on-premise deployment with fixed annual licensing'
+    notes: 'Legacy on-premise deployment with annual licensing'
   },
 
   // Platform-specific pricing configurations
@@ -170,7 +170,7 @@ const pricingConfig = {
     'Prices shown are for US regions; other regions may vary by 10-20%'
   ],
 
-  // Nuvei-specific considerations
+  // Enterprise-specific considerations
   nuveiFactors: {
     peakMultiplier: 2.5,        // Black Friday, Cyber Monday peaks
     globalRegions: 5,            // Multi-region deployment needs
@@ -179,9 +179,9 @@ const pricingConfig = {
       sox: true,
       gdpr: true
     },
-    dataRetentionMonths: 84,    // 7 years for financial compliance
-    realTimeRequirement: true,   // Sub-100ms payment processing
-    fraudDetectionML: true       // ML models for fraud scoring
+    dataRetentionMonths: 84,    // 7 years for regulatory compliance
+    realTimeRequirement: true,   // Low-latency processing requirements
+    advancedAnalytics: true      // ML models for business intelligence
   }
 };
 

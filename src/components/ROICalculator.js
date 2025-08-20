@@ -27,7 +27,7 @@ const InfoTooltip = ({ text, children }) => {
 
 const ROICalculator = () => {
   const [inputs, setInputs] = useState({
-    dataVolumeGB: 5000, // Estimated for Nuvei volumes
+    dataVolumeGB: 5000, // Estimated for enterprise volumes
     monthlyTransactions: 600000000, // 20M daily * 30 days
     monthlyMovements: 300000000, // 10M daily * 30 days
     projectDurationMonths: 12,
@@ -45,7 +45,7 @@ const ROICalculator = () => {
 
   // Volume-based estimation functions
   const calculateFromVolumes = () => {
-    // Use Nuvei's actual daily volumes
+    // Use enterprise-scale daily volumes
     const monthlyTransactions = 600000000; // 20M daily * 30
     const monthlyMovements = 300000000; // 10M daily * 30
     
@@ -202,10 +202,10 @@ const ROICalculator = () => {
       {/* Header */}
       <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-6 rounded-xl shadow-lg mb-6 text-center">
         <h1 className="text-3xl font-bold text-white mb-2">
-          Nuvei DWH Migration Cost Analysis
+          Enterprise DWH Migration Cost Analysis
         </h1>
-        <p className="text-white/80">Compare migration costs from SingleStore to cloud platforms</p>
-        <p className="text-xs text-white/60 mt-1">Current: SingleStore On-Premise ($200k/year) | Target: Cloud DWH Solutions</p>
+        <p className="text-white/80">Compare migration costs from legacy systems to cloud platforms</p>
+        <p className="text-xs text-white/60 mt-1">Current: Legacy On-Premise System | Target: Cloud DWH Solutions</p>
       </div>
 
       {/* Volume-Based Estimator */}
@@ -227,7 +227,7 @@ const ROICalculator = () => {
           {showVolumeEstimator && (
             <div className="bg-white p-4 rounded border">
               <div className="bg-blue-50 p-3 rounded mb-4">
-                <h4 className="font-medium text-blue-800 mb-2">Nuvei Volume Profile</h4>
+                <h4 className="font-medium text-blue-800 mb-2">Enterprise Volume Profile</h4>
                 <div className="text-sm text-blue-700 space-y-1">
                   <div>• Daily Transactions: 20 million</div>
                   <div>• Daily Movements: 10 million</div>
@@ -240,14 +240,14 @@ const ROICalculator = () => {
               
               <div className="flex items-center justify-between">
                 <div className="text-xs text-gray-600">
-                  <strong>Nuvei Defaults:</strong> 600M transactions/month, 300M movements/month<br/>
-                  Using: 20M daily transactions, 7-year retention, financial compliance requirements
+                  <strong>Enterprise Defaults:</strong> 600M transactions/month, 300M movements/month<br/>
+                  Using: High-volume enterprise scale, 7-year retention, financial compliance requirements
                 </div>
                 <button
                   onClick={calculateFromVolumes}
                   className="px-4 py-2 bg-green-600 text-white text-sm rounded hover:bg-green-700 transition-colors font-medium"
                 >
-                  Apply Nuvei Defaults
+                  Apply Enterprise Defaults
                 </button>
               </div>
             </div>
@@ -405,7 +405,7 @@ const ROICalculator = () => {
               <div className="text-xl font-bold text-gray-800">{formatCurrency(results.totalProjectCost || 0)}</div>
               <div className="text-sm text-gray-600">Total cost over {inputs.projectDurationMonths} months</div>
               <div className="mt-2 text-xs text-gray-500">
-                Current SingleStore: {formatCurrency(200000)} annually
+                Current Legacy System: ~$150k-250k annually
                 <br />Annual projection: {formatCurrency((results.monthlyPlatformCost || 0) * 12)}
               </div>
             </div>
@@ -449,7 +449,7 @@ const ROICalculator = () => {
             
             <div className="space-y-3">
               <div className="flex justify-between items-center">
-                <InfoTooltip text="One-time migration cost from SingleStore to new platform">
+                <InfoTooltip text="One-time migration cost from legacy system to new platform">
                   <span className="text-gray-700">Migration Services</span>
                 </InfoTooltip>
                 <span className="font-medium">{formatCurrency(results.migrationCost || 0)}</span>
@@ -471,15 +471,15 @@ const ROICalculator = () => {
         </div>
       </div>
 
-      {/* Nuvei-Specific Context */}
+      {/* Enterprise Context */}
       <div className="mt-6 bg-green-50 border border-green-200 rounded-lg p-4">
-        <h4 className="font-medium text-green-800 mb-3">🏢 Nuvei Current State & Migration Context</h4>
+        <h4 className="font-medium text-green-800 mb-3">🏢 Enterprise Current State & Migration Context</h4>
         <div className="space-y-2 text-sm text-green-700">
-          <div><strong>Current System:</strong> SingleStore On-Premise - $200,000/year fixed license</div>
-          <div><strong>Daily Volumes:</strong> 20M transactions, 10M movements (600M/300M monthly)</div>
-          <div><strong>Peak Periods:</strong> 2.5x volume during Black Friday/Cyber Monday</div>
-          <div><strong>Compliance:</strong> PCI-DSS, SOX, GDPR requirements with 7-year retention</div>
-          <div><strong>Global Operations:</strong> 5 regions requiring multi-region deployment</div>
+          <div><strong>Current System:</strong> Legacy On-Premise DWH - ~$150k-250k/year licensing</div>
+          <div><strong>Daily Volumes:</strong> High-volume enterprise scale (600M/300M monthly)</div>
+          <div><strong>Peak Periods:</strong> 2.5x volume during high-traffic periods</div>
+          <div><strong>Compliance:</strong> Financial & regulatory requirements with 7-year retention</div>
+          <div><strong>Global Operations:</strong> Multi-region deployment requirements</div>
         </div>
       </div>
 
@@ -500,7 +500,7 @@ const ROICalculator = () => {
           <li>• Pricing based on January 2025 public rates and may vary with enterprise agreements</li>
           <li>• Actual costs depend on negotiated contracts, usage patterns, and optimizations</li>
           <li>• Does not include network egress, backup, or disaster recovery costs</li>
-          <li>• Peak period scaling (2.5x for Black Friday) may require additional capacity</li>
+          <li>• Peak period scaling (2.5x for high-traffic periods) may require additional capacity</li>
           <li>• Multi-region deployment costs not fully reflected in estimates</li>
           <li>• Always obtain official vendor quotes for accurate budget planning</li>
         </ul>

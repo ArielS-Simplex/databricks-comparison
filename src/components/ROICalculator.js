@@ -122,7 +122,7 @@ const ROICalculator = () => {
       const transactionDBUs = (inputs.monthlyTransactions / 1000000) * platform.dbusPerMillionTransactions;
       const movementDBUs = (inputs.monthlyMovements / 1000000) * platform.dbusPerMillionMovements;
       const totalDBUs = transactionDBUs + movementDBUs;
-      computeCost = totalDBUs * platform.baseDBURate * platform.computeEfficiencyFactor * 730; // 730 hours per month
+      computeCost = totalDBUs * platform.baseDBURate * platform.computeEfficiencyFactor; // DBUs are consumption units, not hourly
     } else if (selectedPlatform === 'snowflake') {
       // Credit-based pricing - credits are consumed per query/workload, not per hour
       const transactionCredits = (inputs.monthlyTransactions / 1000000) * platform.creditsPerMillionTransactions;
@@ -135,7 +135,7 @@ const ROICalculator = () => {
       const transactionCUs = (inputs.monthlyTransactions / 1000000) * platform.cusPerMillionTransactions;
       const movementCUs = (inputs.monthlyMovements / 1000000) * platform.cusPerMillionMovements;
       const totalCUs = transactionCUs + movementCUs;
-      computeCost = totalCUs * platform.baseCURate * platform.computeEfficiencyFactor * 730; // 730 hours per month
+      computeCost = totalCUs * platform.baseCURate * platform.computeEfficiencyFactor; // CUs are consumption units, not hourly
     }
     
     // Workload multiplier from config

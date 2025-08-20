@@ -32,8 +32,8 @@ const pricingConfig = {
         },
         // Compute estimates
         compute: {
-          dbusPerMillionTransactions: 150, // Adjusted for enterprise payment processing workloads
-          dbusPerMillionMovements: 100,    // Heavy ETL/movement operations
+          dbusPerMillionTransactions: 2.5, // Realistic DBU consumption for transaction processing
+          dbusPerMillionMovements: 1.8,    // ETL/movement operations
           efficiencyFactor: 0.85           // 15% better efficiency with optimization
         }
       },
@@ -67,8 +67,8 @@ const pricingConfig = {
         },
         // Compute estimates
         compute: {
-          creditsPerMillionTransactions: 120, // Adjusted for enterprise payment processing workloads
-          creditsPerMillionMovements: 80,     // Heavy ETL operations for financial data
+          creditsPerMillionTransactions: 3.5, // Realistic credit consumption for transaction processing
+          creditsPerMillionMovements: 2.2,    // ETL operations for financial data
           efficiencyFactor: 1.0               // Baseline efficiency
         }
       },
@@ -102,8 +102,8 @@ const pricingConfig = {
         },
         // Compute estimates
         compute: {
-          cusPerMillionTransactions: 100, // Adjusted for enterprise payment processing workloads
-          cusPerMillionMovements: 65,     // ETL operations
+          cusPerMillionTransactions: 1.8, // Realistic CU consumption for transaction processing
+          cusPerMillionMovements: 1.2,    // ETL operations
           efficiencyFactor: 0.90          // 10% better with Microsoft integration
         }
       },

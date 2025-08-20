@@ -17,11 +17,11 @@ const pricingConfig = {
     databricks: {
       name: 'Databricks',
       pricing: {
-        // DBU (Databricks Unit) pricing per hour
+        // DBU (Databricks Unit) pricing per hour - Azure official rates
         dbu: {
-          standard: 0.15,  // Basic workloads
-          premium: 0.40,   // Most common tier
-          enterprise: 0.55, // Advanced features
+          standard: 0.15,  // Jobs compute (being phased out)
+          premium: 0.40,   // All-purpose compute (most common)
+          enterprise: 0.65, // Enterprise features
           default: 0.40     // Use Premium as default
         },
         // Storage pricing per GB per month
@@ -43,9 +43,9 @@ const pricingConfig = {
         enterprise: 0.10  // 10% enterprise agreement discount
       },
       sources: [
-        'Databricks official pricing guide 2025',
-        'Azure Databricks pricing calculator',
-        'Enterprise contract benchmarks'
+        'Azure Databricks pricing - azure.microsoft.com/pricing/details/databricks/',
+        'Official Azure pricing calculator 2025',
+        'Enterprise contract benchmarks with 37% commitment discounts'
       ]
     },
 
@@ -87,12 +87,12 @@ const pricingConfig = {
     fabric: {
       name: 'Microsoft Fabric',
       pricing: {
-        // Capacity Unit (CU) pricing per hour
+        // Capacity Unit (CU) pricing per hour - Azure official rates
         capacityUnits: {
-          F2: 0.18,    // Small capacity
-          F64: 0.36,   // Medium capacity  
-          F256: 0.48,  // Large capacity
-          default: 0.36 // Use F64 as default
+          F2: 0.18,    // Small capacity (2 CUs)
+          F64: 0.21,   // Medium capacity (64 CUs) - corrected from official pricing  
+          F256: 0.21,  // Large capacity (256 CUs) - same per-CU rate
+          default: 0.21 // Use official Azure rate
         },
         // OneLake storage included in capacity
         storage: {
@@ -113,9 +113,9 @@ const pricingConfig = {
         enterprise: 0.10   // 10% EA discount
       },
       sources: [
-        'Microsoft Fabric pricing documentation',
-        'Azure pricing calculator',
-        'Microsoft EA pricing tiers'
+        'Microsoft Fabric pricing - azure.microsoft.com/pricing/details/microsoft-fabric/',
+        'Official Azure pricing calculator 2025',
+        'Microsoft EA pricing tiers with 40% reserved discounts'
       ]
     }
   },
@@ -161,13 +161,47 @@ const pricingConfig = {
     }
   },
 
+  // Official Azure pricing details (January 2025)
+  azurePricingDetails: {
+    databricks: {
+      officialRates: {
+        standard: '$0.15/DBU-hour (Jobs compute, being phased out)',
+        premium: '$0.40/DBU-hour (All-purpose compute, most common)',
+        enterprise: '$0.65/DBU-hour (Enterprise features)'
+      },
+      commitmentDiscounts: 'Up to 37% savings with 1-3 year DBCU pre-purchase',
+      promotionalPricing: '16.7% reduction until September 31, 2025',
+      notes: [
+        'Standard tier being phased out by Oct 1, 2025 on AWS/GCP',
+        'Azure is typically most expensive among cloud providers',
+        'Costs vary by region, VM series, and spot pricing'
+      ]
+    },
+    fabric: {
+      officialRates: {
+        F2: '$0.18/CU-hour (2 CUs) = ~$262/month reserved',
+        F64: '$0.21/CU-hour (64 CUs) = ~$5,003/month reserved', 
+        F256: '$0.21/CU-hour (256 CUs) = ~$33k/month PAYG'
+      },
+      billing: 'Per-second billing with 1-minute minimum',
+      reservedDiscounts: '~40% discount vs pay-as-you-go rates',
+      licensing: 'F64+ includes user licenses, smaller SKUs require Power BI Pro/PPU',
+      notes: [
+        'West Europe: €0.2115 per CU-hour official rate',
+        'Linear scaling: ~$0.18 per additional CU',
+        'Reserved instances require full-year payment upfront'
+      ]
+    }
+  },
+
   // Disclaimers and notes
   disclaimers: [
-    'Pricing based on January 2025 public pricing and industry benchmarks',
+    'Pricing based on January 2025 official Azure pricing pages',
     'Actual costs may vary based on negotiated contracts and specific usage patterns',
     'Does not include network egress, backup, or disaster recovery costs',
     'Volume discounts typically available for commitments over $500k/year',
-    'Prices shown are for US regions; other regions may vary by 10-20%'
+    'Prices shown are for US regions; other regions may vary by 10-20%',
+    'All platforms deployed on Azure for consistent comparison'
   ],
 
   // Enterprise-specific considerations

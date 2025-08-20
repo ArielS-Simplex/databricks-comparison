@@ -30,11 +30,11 @@ const pricingConfig = {
           standard: 0.026,  // Standard blob storage
           default: 0.023
         },
-        // Compute estimates
+        // Compute estimates  
         compute: {
-          dbusPerMillionTransactions: 2.5, // Realistic DBU consumption for transaction processing
-          dbusPerMillionMovements: 1.8,    // ETL/movement operations
-          efficiencyFactor: 0.85           // 15% better efficiency with optimization
+          dbusPerMillionTransactions: 25, // Enterprise payment processing with fraud detection, ML
+          dbusPerMillionMovements: 15,    // Complex ETL/movement operations with analytics
+          efficiencyFactor: 0.85          // 15% better efficiency with optimization
         }
       },
       contractDiscounts: {
@@ -67,9 +67,9 @@ const pricingConfig = {
         },
         // Compute estimates
         compute: {
-          creditsPerMillionTransactions: 3.5, // Realistic credit consumption for transaction processing
-          creditsPerMillionMovements: 2.2,    // ETL operations for financial data
-          efficiencyFactor: 1.0               // Baseline efficiency
+          creditsPerMillionTransactions: 20, // Enterprise payment processing with complex analytics
+          creditsPerMillionMovements: 12,   // Heavy ETL operations for financial compliance
+          efficiencyFactor: 1.0             // Baseline efficiency
         }
       },
       contractDiscounts: {
@@ -102,9 +102,9 @@ const pricingConfig = {
         },
         // Compute estimates
         compute: {
-          cusPerMillionTransactions: 1.8, // Realistic CU consumption for transaction processing
-          cusPerMillionMovements: 1.2,    // ETL operations
-          efficiencyFactor: 0.90          // 10% better with Microsoft integration
+          cusPerMillionTransactions: 18, // Enterprise payment processing workloads
+          cusPerMillionMovements: 12,   // Complex ETL operations with analytics
+          efficiencyFactor: 0.90        // 10% better with Microsoft integration
         }
       },
       contractDiscounts: {

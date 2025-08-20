@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "6c653e12d58ceee0d44b2982e8a29f6b",
+    "revision": "9c6f2f8d2965fc0b3732b6a7aa899b4c",
     "url": "/databricks-comparison/index.html"
   },
   {

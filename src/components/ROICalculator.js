@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import pricingConfig from '../data/pricingConfig';
 
 // Tooltip component for metric explanations
 const InfoTooltip = ({ text, children }) => {
@@ -26,9 +27,9 @@ const InfoTooltip = ({ text, children }) => {
 
 const ROICalculator = () => {
   const [inputs, setInputs] = useState({
-    dataVolumeGB: 2000,
-    monthlyTransactions: 20000000, // 20M monthly transactions
-    monthlyMovements: 10000000, // 10M monthly movements
+    dataVolumeGB: 5000, // Estimated for Nuvei volumes
+    monthlyTransactions: 600000000, // 20M daily * 30 days
+    monthlyMovements: 300000000, // 10M daily * 30 days
     projectDurationMonths: 12,
     expectedQueryWorkload: 'medium' // light, medium, heavy
   });
@@ -72,46 +73,40 @@ const ROICalculator = () => {
     }));
   };
 
-  // Platform configurations with 2025 research-based pricing
+  // Platform configurations from pricing config
   const platformConfigs = {
     databricks: {
-      name: 'Databricks',
+      name: pricingConfig.platforms.databricks.name,
       color: 'purple',
-      // Research: DBU rates $0.15-0.65 (Standard $0.15-0.20, Premium $0.30-0.55, Enterprise $0.55-0.65)
-      baseDBURate: 0.40, // Average DBU rate across tiers and regions
-      storageRate: 0.023, // Standard cloud storage rate
-      storageEfficiency: 0.25, // 25% Delta Lake optimization
-      computeEfficiencyFactor: 0.85, // 15% better compute efficiency
-      maintenanceReduction: 0.55,
-      performanceImprovement: 0.35,
-      migrationComplexity: 0.15,
-      sources: ["Databricks official pricing", "Industry analysis 2025", "DBU consumption patterns"]
+      baseDBURate: pricingConfig.platforms.databricks.pricing.dbu.default,
+      storageRate: pricingConfig.platforms.databricks.pricing.storage.default,
+      storageEfficiency: 0.25,
+      computeEfficiencyFactor: pricingConfig.platforms.databricks.pricing.compute.efficiencyFactor,
+      dbusPerMillionTransactions: pricingConfig.platforms.databricks.pricing.compute.dbusPerMillionTransactions,
+      dbusPerMillionMovements: pricingConfig.platforms.databricks.pricing.compute.dbusPerMillionMovements,
+      sources: pricingConfig.platforms.databricks.sources
     },
     snowflake: {
-      name: 'Snowflake',
+      name: pricingConfig.platforms.snowflake.name,
       color: 'cyan',
-      // Research: Credits $2-4 on-demand, $1.50-2.50 with annual commitment
-      baseCreditRate: 2.75, // Average credit rate (Standard ~$2, Enterprise ~$2.50, Business Critical ~$3+)
-      storageRate: 0.023, // Separate storage pricing
-      storageEfficiency: 0.05, // Minimal storage optimization vs competitors
-      computeEfficiencyFactor: 1.1, // 10% higher compute usage due to separation
-      maintenanceReduction: 0.75,
-      performanceImprovement: 0.20,
-      migrationComplexity: 0.10,
-      sources: ["Enterprise contracts", "Business Critical tier pricing", "Performance benchmarks"]
+      baseCreditRate: pricingConfig.platforms.snowflake.pricing.credits.default,
+      storageRate: pricingConfig.platforms.snowflake.pricing.storage.default / 1000, // Convert TB to GB
+      storageEfficiency: 0.05,
+      computeEfficiencyFactor: pricingConfig.platforms.snowflake.pricing.compute.efficiencyFactor,
+      creditsPerMillionTransactions: pricingConfig.platforms.snowflake.pricing.compute.creditsPerMillionTransactions,
+      creditsPerMillionMovements: pricingConfig.platforms.snowflake.pricing.compute.creditsPerMillionMovements,
+      sources: pricingConfig.platforms.snowflake.sources
     },
     fabric: {
-      name: 'Microsoft Fabric',
+      name: pricingConfig.platforms.fabric.name,
       color: 'green',
-      // Research: $0.18-0.22 per CU/hour (varies by region)
-      baseCURate: 0.20, // Average CU rate per hour (~$0.18 US, ~$0.22 EU)
-      storageRate: 0.024, // OneLake storage rate (slightly higher than standard)
-      storageEfficiency: 0.10, // OneLake unified storage optimization
-      computeEfficiencyFactor: 0.95, // 5% better efficiency due to integration
-      maintenanceReduction: 0.65,
-      performanceImprovement: 0.15,
-      migrationComplexity: 0.12,
-      sources: ["Microsoft enterprise agreements", "Production capacity planning", "TCO analysis 2025"]
+      baseCURate: pricingConfig.platforms.fabric.pricing.capacityUnits.default,
+      storageRate: pricingConfig.platforms.fabric.pricing.storage.default,
+      storageEfficiency: 0.10,
+      computeEfficiencyFactor: pricingConfig.platforms.fabric.pricing.compute.efficiencyFactor,
+      cusPerMillionTransactions: pricingConfig.platforms.fabric.pricing.compute.cusPerMillionTransactions,
+      cusPerMillionMovements: pricingConfig.platforms.fabric.pricing.compute.cusPerMillionMovements,
+      sources: pricingConfig.platforms.fabric.sources
     }
   };
 
@@ -126,31 +121,34 @@ const ROICalculator = () => {
     let computeCost = 0;
     
     if (selectedPlatform === 'databricks') {
-      // DBU-based pricing: estimate DBUs needed for workload
-      const estimatedDBUsPerMillion = 15; // Research-based estimate for typical analytics workload
-      const totalDBUs = ((inputs.monthlyTransactions + inputs.monthlyMovements) / 1000000) * estimatedDBUsPerMillion;
-      computeCost = totalDBUs * platform.baseDBURate * platform.computeEfficiencyFactor;
+      // DBU-based pricing using config values
+      const transactionDBUs = (inputs.monthlyTransactions / 1000000) * platform.dbusPerMillionTransactions;
+      const movementDBUs = (inputs.monthlyMovements / 1000000) * platform.dbusPerMillionMovements;
+      const totalDBUs = transactionDBUs + movementDBUs;
+      computeCost = totalDBUs * platform.baseDBURate * platform.computeEfficiencyFactor * 730; // 730 hours per month
     } else if (selectedPlatform === 'snowflake') {
-      // Credit-based pricing: estimate credits needed for workload
-      const estimatedCreditsPerMillion = 12; // Research-based estimate for typical analytics workload
-      const totalCredits = ((inputs.monthlyTransactions + inputs.monthlyMovements) / 1000000) * estimatedCreditsPerMillion;
+      // Credit-based pricing using config values
+      const transactionCredits = (inputs.monthlyTransactions / 1000000) * platform.creditsPerMillionTransactions;
+      const movementCredits = (inputs.monthlyMovements / 1000000) * platform.creditsPerMillionMovements;
+      const totalCredits = transactionCredits + movementCredits;
       computeCost = totalCredits * platform.baseCreditRate * platform.computeEfficiencyFactor;
     } else if (selectedPlatform === 'fabric') {
-      // CU-based pricing: estimate CU hours needed for workload
-      const estimatedCUHoursPerMillion = 8; // Research-based estimate for typical analytics workload
-      const totalCUHours = ((inputs.monthlyTransactions + inputs.monthlyMovements) / 1000000) * estimatedCUHoursPerMillion;
-      computeCost = totalCUHours * platform.baseCURate * platform.computeEfficiencyFactor;
+      // CU-based pricing using config values
+      const transactionCUs = (inputs.monthlyTransactions / 1000000) * platform.cusPerMillionTransactions;
+      const movementCUs = (inputs.monthlyMovements / 1000000) * platform.cusPerMillionMovements;
+      const totalCUs = transactionCUs + movementCUs;
+      computeCost = totalCUs * platform.baseCURate * platform.computeEfficiencyFactor * 730; // 730 hours per month
     }
     
-    // Workload multiplier
-    const workloadMultipliers = { light: 0.7, medium: 1.0, heavy: 1.5 };
-    const workloadMultiplier = workloadMultipliers[inputs.expectedQueryWorkload] || 1.0;
+    // Workload multiplier from config
+    const workloadMultiplier = pricingConfig.workloadMultipliers[inputs.expectedQueryWorkload]?.factor || 1.0;
     
     const totalMonthlyCost = (storageCost + computeCost) * workloadMultiplier;
     
-    // Setup costs (one-time) - simplified without training costs
-    const setupCost = totalMonthlyCost * platform.migrationComplexity; // Setup complexity as % of monthly cost
-    const oneTimeCosts = setupCost;
+    // Setup costs (one-time) from config
+    const migrationCost = pricingConfig.additionalCosts.migration[selectedPlatform] || 50000;
+    const trainingCost = pricingConfig.additionalCosts.training[selectedPlatform] || 15000;
+    const oneTimeCosts = migrationCost + trainingCost;
     
     // Total cost over project duration
     const totalProjectCost = (totalMonthlyCost * inputs.projectDurationMonths) + oneTimeCosts;
@@ -159,7 +157,8 @@ const ROICalculator = () => {
       storageCost: storageCost,
       computeCost: computeCost,
       monthlyPlatformCost: totalMonthlyCost,
-      setupCost: setupCost,
+      migrationCost: migrationCost,
+      trainingCost: trainingCost,
       oneTimeCosts: oneTimeCosts,
       totalProjectCost: totalProjectCost,
       platform: platform,
@@ -172,10 +171,17 @@ const ROICalculator = () => {
   }, [inputs, selectedPlatform]);
 
   const handleInputChange = (field, value) => {
-    setInputs(prev => ({
-      ...prev,
-      [field]: parseFloat(value) || 0
-    }));
+    if (field === 'expectedQueryWorkload') {
+      setInputs(prev => ({
+        ...prev,
+        [field]: value
+      }));
+    } else {
+      setInputs(prev => ({
+        ...prev,
+        [field]: parseFloat(value) || 0
+      }));
+    }
   };
 
   const formatCurrency = (amount) => {
@@ -198,10 +204,10 @@ const ROICalculator = () => {
       {/* Header */}
       <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-6 rounded-xl shadow-lg mb-6 text-center">
         <h1 className="text-3xl font-bold text-white mb-2">
-          Cloud Platform Cost Comparison
+          Nuvei DWH Migration Cost Analysis
         </h1>
-        <p className="text-white/80">Compare costs across modern cloud data warehouse platforms*</p>
-        <p className="text-xs text-white/60 mt-1">*Estimates based on industry pricing models and may vary by actual usage</p>
+        <p className="text-white/80">Compare migration costs from SingleStore to cloud platforms</p>
+        <p className="text-xs text-white/60 mt-1">Current: SingleStore On-Premise ($200k/year) | Target: Cloud DWH Solutions</p>
       </div>
 
       {/* Volume-Based Estimator */}
@@ -225,14 +231,14 @@ const ROICalculator = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
                 <div>
                   <label className="block text-xs font-medium text-gray-700 mb-1">
-                    Daily Active Users
+                    Daily Transactions (Millions)
                   </label>
                   <input
                     type="number"
-                    value={volumeInputs.dailyActiveUsers}
-                    onChange={(e) => handleVolumeInputChange('dailyActiveUsers', e.target.value)}
+                    value={20}
+                    onChange={(e) => handleVolumeInputChange('dailyTransactions', e.target.value * 1000000)}
                     className="w-full px-2 py-1 text-sm border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-500"
-                    placeholder="10000"
+                    placeholder="20"
                   />
                 </div>
                 
@@ -443,6 +449,10 @@ const ROICalculator = () => {
             <div className="mt-4 bg-white p-4 rounded border">
               <div className="text-xl font-bold text-gray-800">{formatCurrency(results.totalProjectCost || 0)}</div>
               <div className="text-sm text-gray-600">Total cost over {inputs.projectDurationMonths} months</div>
+              <div className="mt-2 text-xs text-gray-500">
+                Current SingleStore: {formatCurrency(200000)} annually
+                <br />Annual projection: {formatCurrency((results.monthlyPlatformCost || 0) * 12)}
+              </div>
             </div>
           </div>
 
@@ -484,10 +494,17 @@ const ROICalculator = () => {
             
             <div className="space-y-3">
               <div className="flex justify-between items-center">
-                <InfoTooltip text="Initial setup and configuration costs based on platform complexity. More complex platforms require more setup effort.">
-                  <span className="text-gray-700">Setup & Configuration</span>
+                <InfoTooltip text="One-time migration cost from SingleStore to new platform">
+                  <span className="text-gray-700">Migration Services</span>
                 </InfoTooltip>
-                <span className="font-medium">{formatCurrency(results.setupCost || 0)}</span>
+                <span className="font-medium">{formatCurrency(results.migrationCost || 0)}</span>
+              </div>
+              
+              <div className="flex justify-between items-center">
+                <InfoTooltip text="Team training and certification costs">
+                  <span className="text-gray-700">Training & Certification</span>
+                </InfoTooltip>
+                <span className="font-medium">{formatCurrency(results.trainingCost || 0)}</span>
               </div>
               
               <div className="flex justify-between items-center py-2 border-t font-bold">
@@ -499,25 +516,39 @@ const ROICalculator = () => {
         </div>
       </div>
 
-      {/* Disclaimer */}
+      {/* Nuvei-Specific Context */}
+      <div className="mt-6 bg-green-50 border border-green-200 rounded-lg p-4">
+        <h4 className="font-medium text-green-800 mb-3">🏢 Nuvei Current State & Migration Context</h4>
+        <div className="space-y-2 text-sm text-green-700">
+          <div><strong>Current System:</strong> SingleStore On-Premise - $200,000/year fixed license</div>
+          <div><strong>Daily Volumes:</strong> 20M transactions, 10M movements (600M/300M monthly)</div>
+          <div><strong>Peak Periods:</strong> 2.5x volume during Black Friday/Cyber Monday</div>
+          <div><strong>Compliance:</strong> PCI-DSS, SOX, GDPR requirements with 7-year retention</div>
+          <div><strong>Global Operations:</strong> 5 regions requiring multi-region deployment</div>
+        </div>
+      </div>
+
       {/* Pricing Sources */}
-      <div className="mt-6 bg-blue-50 border border-blue-200 rounded-lg p-4">
-        <h4 className="font-medium text-blue-800 mb-3">📊 Pricing Sources & Research (2025)</h4>
+      <div className="mt-4 bg-blue-50 border border-blue-200 rounded-lg p-4">
+        <h4 className="font-medium text-blue-800 mb-3">📊 Pricing Methodology & Sources</h4>
         <div className="space-y-2 text-sm text-blue-700">
-          <div><strong>Databricks:</strong> DBU rates $0.15-0.65 (Standard $0.15-0.20, Premium $0.30-0.55, Enterprise $0.55-0.65) - Official pricing documentation & industry analysis</div>
-          <div><strong>Snowflake:</strong> Credit rates $2-4 on-demand, $1.50-2.50 with annual commitment (Standard ~$2, Enterprise ~$2.50, Business Critical ~$3+) - Official pricing guide & consumption analysis</div>
-          <div><strong>Microsoft Fabric:</strong> CU rates $0.18-0.22/hour (varies by region: ~$0.18 US, ~$0.22 EU) - Azure official documentation & capacity analysis</div>
-          <div className="text-xs text-blue-600 mt-2">Last updated: January 2025. Rates reflect average pricing across tiers and regions.</div>
+          {platformConfigs[selectedPlatform]?.sources?.map((source, idx) => (
+            <div key={idx}>• {source}</div>
+          ))}
+          <div className="text-xs text-blue-600 mt-2">Calculations include workload-specific estimates for payment processing patterns</div>
         </div>
       </div>
 
       <div className="mt-4 bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-        <p className="text-sm text-yellow-800">
-          <strong>Disclaimer:</strong> This calculator uses 2025 research-based pricing from official vendor documentation. 
-          Actual costs vary significantly based on specific usage patterns, contract negotiations, optimization strategies, 
-          regional pricing, and implementation details. Always obtain official vendor quotes and conduct proof-of-concept 
-          testing for accurate projections. This tool compares cloud platforms only and is not a migration ROI calculator.
-        </p>
+        <h4 className="font-medium text-yellow-800 mb-2">⚠️ Important Disclaimers</h4>
+        <ul className="text-sm text-yellow-800 space-y-1">
+          <li>• Pricing based on January 2025 public rates and may vary with enterprise agreements</li>
+          <li>• Actual costs depend on negotiated contracts, usage patterns, and optimizations</li>
+          <li>• Does not include network egress, backup, or disaster recovery costs</li>
+          <li>• Peak period scaling (2.5x for Black Friday) may require additional capacity</li>
+          <li>• Multi-region deployment costs not fully reflected in estimates</li>
+          <li>• Always obtain official vendor quotes for accurate budget planning</li>
+        </ul>
       </div>
     </div>
   );

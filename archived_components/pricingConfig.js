@@ -94,11 +94,11 @@ const pricingConfig = {
           F256: 0.22,  // Large capacity (256 CUs) - same per-CU rate
           default: 0.22 // Use verified 2025 Azure rate (~$0.22/CU/hour)
         },
-        // OneLake storage included in capacity
+        // OneLake storage - free up to capacity limit, then $0.023/GB/month
         storage: {
-          included: true,
-          overage: 0.024, // Per GB if exceeding included storage
-          default: 0
+          freePerCU: 1000, // 1TB free per CU (F2=2TB, F64=64TB, etc.)
+          overageRate: 0.023, // $0.023/GB/month when exceeding free limit
+          default: 0.023 // Use overage rate for cost calculations
         },
         // Compute estimates
         compute: {

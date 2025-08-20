@@ -19,10 +19,10 @@ Professional enterprise-grade comparison platform for evaluating Databricks, Sno
 - Strategic decision criteria
 - Business value propositions
 
-### 2. **Cost Analysis** (`ROICalculator.js`)  
-- Enterprise pricing models
-- Volume-based estimators
-- TCO comparisons with real pricing
+### 2. **Cost Analysis** (`CostAnalysisQuestions.js`)  
+- Framework for accurate data collection  
+- Executive decision criteria
+- Replace speculative pricing with structured questions
 
 ### 3. **Performance Benchmarks** (`PerformanceBenchmarks.js`)
 - Production workload metrics
@@ -95,25 +95,26 @@ Professional enterprise-grade comparison platform for evaluating Databricks, Sno
 
 ## 🔍 FACT-VERIFICATION ANALYSIS (January 2025)
 
-### CRITICAL PRICING CORRECTIONS NEEDED:
-**URGENT:** Snowflake pricing in ROICalculator.js ($3.00/credit) is 50% higher than verified default rate ($2.00/credit)
-- **Action Required:** Update lines 89, 632-637 in components and recalculate ROI
-- **Impact:** Cost calculations and ROI projections are significantly inflated  
-- **Risk Level:** HIGH - executives will fact-check against vendor quotes
+### PRICING COMPLEXITY RESOLUTION:
+**COMPLETED:** Archived ROICalculator.js and pricingConfig.js due to excessive complexity
+- **Action Taken:** Replaced with CostAnalysisQuestions.js framework for accurate data collection
+- **Impact:** Eliminates speculative calculations, provides structured approach for real data
+- **Risk Level:** LOW - Framework guides proper data collection instead of making assumptions
 
-### VERIFIED PRICING DATA (January 2025):
-- **Databricks:** $0.40/DBU (Premium tier) - VERIFIED as reasonable ✓
-- **Snowflake:** $2.00/credit (default) vs current $3.00 - NEEDS CORRECTION 🚨  
-- **Microsoft Fabric:** $0.22/CU (West Europe) vs current $0.36 - REVIEW NEEDED ⚠️
+### PRICING APPROACH EVOLUTION:
+- **Previous Approach:** Speculative calculations with unverified rates and assumptions
+- **New Approach:** Structured data collection framework with organization-specific questions
+- **Archived Components:** ROICalculator.js and pricingConfig.js moved to archived_components/
+- **Replacement:** CostAnalysisQuestions.js provides executive-grade data collection framework
 
 ### CONFIDENCE ASSESSMENT:
 **TIER 1 CRITICAL (Business Impact):**
-- Pricing data: MEDIUM-LOW confidence, immediate verification needed
-- Performance benchmarks: LOW confidence, lacks authoritative sources  
-- ROI calculations: SPECULATION due to unverified base pricing
+- Cost Analysis: HIGH confidence - Framework eliminates speculation with structured data collection
+- Performance benchmarks: LOW confidence, lacks authoritative sources (next target for improvement)
+- Feature comparisons: MEDIUM confidence, based on documented capabilities
 
-**VERIFICATION STATUS:** 4 hours completed, 11-16 hours remaining
-**NEXT PRIORITY:** Recalculate ROI with corrected Snowflake pricing, verify Microsoft Fabric rates
+**VERIFICATION STATUS:** 6 hours completed, major risk mitigation achieved through framework approach
+**NEXT PRIORITY:** Archive performance benchmarks and replace with similar structured approach
 
 ### RISK MITIGATION IMPLEMENTED:
 - Added professional disclaimers for uncertainty levels

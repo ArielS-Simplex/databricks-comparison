@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import SimplifiedComparison from './components/SimplifiedComparison';
-import ROICalculator from './components/ROICalculator';
+import CostAnalysisQuestions from './components/CostAnalysisQuestions';
 import PerformanceBenchmarks from './components/PerformanceBenchmarks';
 import FeatureComparison from './components/FeatureComparison';
 import AzureDatabricksInfraDetail from './components/AzureDatabricksInfra';
@@ -21,7 +21,7 @@ function App() {
     'costs': {
       label: 'Cost Analysis',
       icon: '💰',
-      component: <ROICalculator />
+      component: <CostAnalysisQuestions />
     },
     'performance': {
       label: 'Performance',

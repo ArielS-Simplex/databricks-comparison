@@ -1,10 +1,10 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "37e1263ffd080a2f9b8e8f6f4dd61ace",
+    "revision": "7008431c5c49272339b81fc0e4efff16",
     "url": "/dwh-comparison/index.html"
   },
   {
-    "revision": "fe27721cbd0a398c30be",
+    "revision": "756522469c098f73f0d8",
     "url": "/dwh-comparison/static/css/main.fca5d52a.chunk.css"
   },
   {
@@ -16,8 +16,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/dwh-comparison/static/js/3.68d536b4.chunk.js"
   },
   {
-    "revision": "fe27721cbd0a398c30be",
-    "url": "/dwh-comparison/static/js/main.eae63935.chunk.js"
+    "revision": "756522469c098f73f0d8",
+    "url": "/dwh-comparison/static/js/main.d49c70e0.chunk.js"
   },
   {
     "revision": "81d61eb3ce7a2edc8b39",

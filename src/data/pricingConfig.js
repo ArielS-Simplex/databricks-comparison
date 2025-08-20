@@ -67,9 +67,9 @@ const pricingConfig = {
         },
         // Compute estimates
         compute: {
-          creditsPerMillionTransactions: 20, // Enterprise payment processing with complex analytics
-          creditsPerMillionMovements: 12,   // Heavy ETL operations for financial compliance
-          efficiencyFactor: 1.0             // Baseline efficiency
+          creditsPerMillionTransactions: 2.5, // Realistic payment processing workload
+          creditsPerMillionMovements: 1.5,    // Standard ETL operations
+          efficiencyFactor: 1.0                // Baseline efficiency
         }
       },
       contractDiscounts: {

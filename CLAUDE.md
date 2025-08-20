@@ -60,10 +60,14 @@ Professional enterprise-grade comparison platform for evaluating Databricks, Sno
 5. **Performance** - Reduced bundle size by removing 14 unused components
 
 ## Current Production Configuration
-- **Default Volumes**: 50M monthly transactions, 25M monthly movements  
-- **Enterprise Pricing**: Databricks $0.55/DBU, Snowflake $3.20/credit, Fabric $0.20/CU
+- **Default Volumes**: 600M monthly transactions, 300M monthly movements  
+- **Enterprise Pricing**: Databricks $0.40/DBU, Snowflake $3.00/credit, Fabric $0.36/CU
 - **Target Audience**: C-level executives and senior management
-- **Workload Profile**: Heavy/Enterprise scale
+- **Workload Profile**: Medium/Enterprise scale
+- **Realistic Monthly Costs**: 
+  - Fabric: $4,666/month ($56k/year) - 72% savings vs SingleStore
+  - Snowflake: $5,850/month ($70k/year) - 65% savings vs SingleStore
+  - Databricks: $6,630/month ($80k/year) - 60% savings vs SingleStore
 
 ## What Was Fixed in This Update
 - ✅ **Simplified Navigation** - From 8+ confusing sections to 5 clear tabs

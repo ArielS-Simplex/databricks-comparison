@@ -57,7 +57,7 @@ const pricingConfig = {
           standard: 2.00,         // Basic edition
           enterprise: 3.00,       // Enterprise edition
           businessCritical: 4.00, // Business Critical edition
-          default: 3.00           // Use Enterprise as default
+          default: 2.00           // Use Standard as default (conservative estimate)
         },
         // Storage pricing per TB per month
         storage: {
@@ -90,9 +90,9 @@ const pricingConfig = {
         // Capacity Unit (CU) pricing per hour - Azure official rates
         capacityUnits: {
           F2: 0.18,    // Small capacity (2 CUs)
-          F64: 0.21,   // Medium capacity (64 CUs) - corrected from official pricing  
-          F256: 0.21,  // Large capacity (256 CUs) - same per-CU rate
-          default: 0.21 // Use official Azure rate
+          F64: 0.22,   // Medium capacity (64 CUs) - verified from 2025 official pricing  
+          F256: 0.22,  // Large capacity (256 CUs) - same per-CU rate
+          default: 0.22 // Use verified 2025 Azure rate (~$0.22/CU/hour)
         },
         // OneLake storage included in capacity
         storage: {

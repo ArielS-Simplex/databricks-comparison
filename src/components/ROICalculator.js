@@ -38,28 +38,25 @@ const ROICalculator = () => {
   const [selectedPlatform, setSelectedPlatform] = useState('databricks');
   const [showVolumeEstimator, setShowVolumeEstimator] = useState(false);
   const [volumeInputs, setVolumeInputs] = useState({
-    dailyActiveUsers: 10000,
-    transactionsPerUser: 50,
-    dataRetentionMonths: 24,
-    avgRecordSizeKB: 2
+    dailyTransactions: 20000000, // 20M daily transactions
+    dataRetentionMonths: 84, // 7 years for financial compliance
+    avgRecordSizeKB: 1.5
   });
 
   // Volume-based estimation functions
   const calculateFromVolumes = () => {
-    // Calculate monthly transactions from daily users
-    const monthlyTransactions = volumeInputs.dailyActiveUsers * volumeInputs.transactionsPerUser * 30;
+    // Use Nuvei's actual daily volumes
+    const monthlyTransactions = 600000000; // 20M daily * 30
+    const monthlyMovements = 300000000; // 10M daily * 30
     
-    // Estimate movements as 50% of transactions (industry average for data pipelines)
-    const monthlyMovements = monthlyTransactions * 0.5;
-    
-    // Calculate storage needed
+    // Calculate storage needed for 7 years retention
     const dataVolumeGB = (monthlyTransactions * volumeInputs.avgRecordSizeKB * volumeInputs.dataRetentionMonths) / (1024 * 1024);
     
     // Auto-fill the main form
     setInputs(prev => ({
       ...prev,
-      monthlyTransactions: Math.round(monthlyTransactions),
-      monthlyMovements: Math.round(monthlyMovements),
+      monthlyTransactions: monthlyTransactions,
+      monthlyMovements: monthlyMovements,
       dataVolumeGB: Math.round(dataVolumeGB)
     }));
     
@@ -228,71 +225,28 @@ const ROICalculator = () => {
           
           {showVolumeEstimator && (
             <div className="bg-white p-4 rounded border">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
-                <div>
-                  <label className="block text-xs font-medium text-gray-700 mb-1">
-                    Daily Transactions (Millions)
-                  </label>
-                  <input
-                    type="number"
-                    value={20}
-                    onChange={(e) => handleVolumeInputChange('dailyTransactions', e.target.value * 1000000)}
-                    className="w-full px-2 py-1 text-sm border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-500"
-                    placeholder="20"
-                  />
-                </div>
-                
-                <div>
-                  <label className="block text-xs font-medium text-gray-700 mb-1">
-                    Transactions per User/Day
-                  </label>
-                  <input
-                    type="number"
-                    value={volumeInputs.transactionsPerUser}
-                    onChange={(e) => handleVolumeInputChange('transactionsPerUser', e.target.value)}
-                    className="w-full px-2 py-1 text-sm border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-500"
-                    placeholder="50"
-                  />
-                </div>
-                
-                <div>
-                  <label className="block text-xs font-medium text-gray-700 mb-1">
-                    Data Retention (Months)
-                  </label>
-                  <input
-                    type="number"
-                    value={volumeInputs.dataRetentionMonths}
-                    onChange={(e) => handleVolumeInputChange('dataRetentionMonths', e.target.value)}
-                    className="w-full px-2 py-1 text-sm border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-500"
-                    placeholder="24"
-                  />
-                </div>
-                
-                <div>
-                  <label className="block text-xs font-medium text-gray-700 mb-1">
-                    Avg Record Size (KB)
-                  </label>
-                  <input
-                    type="number"
-                    step="0.1"
-                    value={volumeInputs.avgRecordSizeKB}
-                    onChange={(e) => handleVolumeInputChange('avgRecordSizeKB', e.target.value)}
-                    className="w-full px-2 py-1 text-sm border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-500"
-                    placeholder="2.0"
-                  />
+              <div className="bg-blue-50 p-3 rounded mb-4">
+                <h4 className="font-medium text-blue-800 mb-2">Nuvei Volume Profile</h4>
+                <div className="text-sm text-blue-700 space-y-1">
+                  <div>• Daily Transactions: 20 million</div>
+                  <div>• Daily Movements: 10 million</div>
+                  <div>• Peak Multiplier: 2.5x (Black Friday)</div>
+                  <div>• Data Retention: 7 years (compliance)</div>
+                  <div>• Global Regions: 5 regions</div>
+                  <div>• Real-time Requirements: Sub-100ms</div>
                 </div>
               </div>
               
               <div className="flex items-center justify-between">
                 <div className="text-xs text-gray-600">
-                  Estimated: {(volumeInputs.dailyActiveUsers * volumeInputs.transactionsPerUser * 30 / 1000000).toFixed(1)}M transactions/month
-                  , {((volumeInputs.dailyActiveUsers * volumeInputs.transactionsPerUser * 30 * volumeInputs.avgRecordSizeKB * volumeInputs.dataRetentionMonths) / (1024 * 1024)).toFixed(0)} GB storage
+                  <strong>Nuvei Defaults:</strong> 600M transactions/month, 300M movements/month<br/>
+                  Using: 20M daily transactions, 7-year retention, financial compliance requirements
                 </div>
                 <button
                   onClick={calculateFromVolumes}
-                  className="px-3 py-1 bg-green-600 text-white text-xs rounded hover:bg-green-700 transition-colors font-medium"
+                  className="px-4 py-2 bg-green-600 text-white text-sm rounded hover:bg-green-700 transition-colors font-medium"
                 >
-                  Auto-Fill Form
+                  Apply Nuvei Defaults
                 </button>
               </div>
             </div>
@@ -372,17 +326,17 @@ const ROICalculator = () => {
               <div className="space-y-2">
                 <input
                   type="range"
-                  min="1000000"
-                  max="100000000"
-                  step="1000000"
+                  min="10000000"
+                  max="1000000000"
+                  step="10000000"
                   value={inputs.monthlyTransactions}
                   onChange={(e) => handleInputChange('monthlyTransactions', e.target.value)}
                   className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider"
                 />
                 <div className="flex justify-between text-xs text-gray-500">
-                  <span>1M</span>
+                  <span>10M</span>
                   <span className="font-medium text-gray-700">{(inputs.monthlyTransactions / 1000000).toFixed(0)}M</span>
-                  <span>100M</span>
+                  <span>1000M</span>
                 </div>
               </div>
             </div>
@@ -394,17 +348,17 @@ const ROICalculator = () => {
               <div className="space-y-2">
                 <input
                   type="range"
-                  min="500000"
-                  max="50000000"
-                  step="500000"
+                  min="5000000"
+                  max="500000000"
+                  step="5000000"
                   value={inputs.monthlyMovements}
                   onChange={(e) => handleInputChange('monthlyMovements', e.target.value)}
                   className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider"
                 />
                 <div className="flex justify-between text-xs text-gray-500">
-                  <span>0.5M</span>
-                  <span className="font-medium text-gray-700">{(inputs.monthlyMovements / 1000000).toFixed(1)}M</span>
-                  <span>50M</span>
+                  <span>5M</span>
+                  <span className="font-medium text-gray-700">{(inputs.monthlyMovements / 1000000).toFixed(0)}M</span>
+                  <span>500M</span>
                 </div>
               </div>
             </div>
